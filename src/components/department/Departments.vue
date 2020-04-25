@@ -44,10 +44,10 @@
         >
           <el-table-column prop="id" type="index" label="ID" width="50"></el-table-column>
           <el-table-column prop="phone" label="办公电话" width="180"></el-table-column>
-          <el-table-column prop="name" label="系名" width="120"></el-table-column>
+          <el-table-column prop="name" label="部门名" width="120"></el-table-column>
           <el-table-column prop="createTime" label="创建时间"></el-table-column>
           <el-table-column prop="modifiedTime" label="修改时间"></el-table-column>
-          <el-table-column prop="mgrName" label="系主任" width="140"></el-table-column>
+          <el-table-column prop="mgrName" label="部门主任" width="140"></el-table-column>
           <el-table-column prop="address" label="地址"></el-table-column>
           <el-table-column label="操作">
             <template slot-scope="scope">
@@ -80,7 +80,7 @@
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
       ></el-pagination>
-      <!-- 系别添加弹出框 -->
+      <!-- 部门别添加弹出框 -->
       <el-dialog title="添加部门" :visible.sync="addDialogVisible" width="50%" @close="closeAddDialog">
         <span>
           <el-form
@@ -112,7 +112,7 @@
         </span>
       </el-dialog>
 
-      <!-- 系别编辑弹出框 -->
+      <!-- 部门别编辑弹出框 -->
       <el-dialog
         title="更新部门"
         :visible.sync="editDialogVisible"
@@ -189,7 +189,7 @@ export default {
       queryMap: { pageNum: 1, pageSize: 7, name: "" }, //查询对象
       addRuleForm: {}, //添加表单数据
       editRuleForm: {}, //修改表单数据
-      deans: [], //所有系主任
+      deans: [], //所有部门主任
       addRules: {
         name: [
           { required: true, message: "请输入部门名称", trigger: "blur" },
@@ -199,11 +199,11 @@ export default {
           { required: true, message: "请输入办公地址", trigger: "blur" },
           { min: 4, max: 12, message: "长度在 4 到 12 个字符", trigger: "blur" }
         ],
-        mgrId: [{ required: true, message: "请选择系主任", trigger: "blur" }],
+        mgrId: [{ required: true, message: "请选择部门主任", trigger: "blur" }],
         phone: [
           {
             required: true,
-            message: "请输入联系方式",
+            message: "请输入联部门方式",
             validator: checkPhone,
             trigger: "blur"
           }
@@ -335,7 +335,7 @@ export default {
         }
       });
     },
-    //加载系别列表
+    //加载部门别列表
     async getDepartmentList() {
       const { data: res } = await this.$http.get(
         "department/findDepartmentList",
@@ -350,11 +350,11 @@ export default {
         this.departmentData = res.data.rows;
       }
     },
-    //加载所有系主任
+    //加载所有部门主任
     async getDeanList() {
       const { data: res } = await this.$http.get("department/findDeanList");
       if (res.code !== 200) {
-        return this.$message.error("获取系主任失败");
+        return this.$message.error("获取部门主任失败");
       } else {
         this.deans = res.data;
       }

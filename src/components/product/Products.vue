@@ -7,15 +7,21 @@
       <el-breadcrumb-item>物资资料</el-breadcrumb-item>
     </el-breadcrumb>
     <!-- 右侧卡片区域 -->
-    <!-- 物资列表卡片区 -->
     <el-card class="box-card">
+            <el-container style="margin-bottom:20px;">
+              <el-alert
+              show-icon
+    title="友情提示:  商品的分类只支持三级分类"
+    type="warning">
+  </el-alert>
+      </el-container> 
       <el-row :gutter="6">
         <el-col :span="5">
           <el-cascader
             :change-on-select="true"
             @change="selectChange"
             v-model="categorykeys"
-            :props="selectProps"
+            :props="searchSelectProps"
             :options="catetorys"
             @clear="search"
             clearable
@@ -36,6 +42,7 @@
           <el-button type="success" icon="el-icon-circle-plus-outline" @click="openAdd">添加</el-button>
         </el-col>
       </el-row>
+
       <!-- 表格区域 -->
       <template>
         <el-table
@@ -44,7 +51,7 @@
           stripe
           :data="productData"
           style="width: 100%;margin-top:20px;"
-          height="460"
+          height="400"
         >
           <el-table-column prop="id" type="index" label="ID"></el-table-column>
 
@@ -52,6 +59,7 @@
           <el-table-column prop="imageUrl" label="图片" align="center" width="150px" padding="0px">
             <template slot-scope="scope">
               <img
+                slot="error"
                 :src="'http://www.zykhome.club/'+scope.row.imageUrl"
                 alt
                 style="width: 50px;height:50px"
@@ -104,7 +112,7 @@
             <el-form-item label="物资图片" prop="name">
               <!-- 图片上传部分 -->
               <el-upload
-                action="http://www.zykhome.club:8081/upload/image"
+                action="http://www.localhost:8081/upload/image"
                 :class="{ disabled: uploadDisabled }"
                 list-type="picture-card"
                 :limit="limitcount"
@@ -141,7 +149,6 @@
                 </div>
               </el-col>
             </el-row>
-
             <el-row>
               <el-col :span="12">
                 <div class="grid-content bg-purple">
@@ -277,8 +284,18 @@ export default {
         expandTrigger: "hover",
         value: "id",
         label: "name",
-        children: "children"
+        children: "children",
+        checkStrictly: false
       }, //级联选择器配置项
+      searchSelectProps: {
+        expandTrigger: "hover",
+        value: "id",
+        label: "name",
+        children: "children",
+        checkStrictly: true
+      }, //级联搜索选择器配置项
+
+
       editDialogVisible: false,
       addDialogVisible: false, //添加弹框是否显示
       total: 0, //总共多少条数据
@@ -326,17 +343,23 @@ export default {
     };
   },
   methods: {
-    //打开添加
+    /**
+     * 打开添加物资弹框
+     */
     openAdd() {
       this.getCatetorys();
       this.addDialogVisible = true;
     },
-    //搜索
+    /**
+     * 搜索物资
+     */
     search() {
       this.queryMap.pageNum = 1;
       this.getproductList();
     },
-    //删除物资
+    /**
+     * 删除物资
+     */
     async del(id) {
       var res = await this.$confirm(
         "此操作将永久删除该物资, 是否继续?",

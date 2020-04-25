@@ -9,7 +9,13 @@ import 'nprogress/nprogress.css'  // 这个nprogress样式必须引入
 import axios from 'axios'
 import echarts from 'echarts'
 import ZkTable from 'vue-table-with-tree-grid'
+import VueQuillEditor from 'vue-quill-editor'
+import 'quill/dist/quill.core.css' // import styles
+import 'quill/dist/quill.snow.css' // for snow theme
+import 'quill/dist/quill.bubble.css' // for bubble theme
 
+
+Vue.use(VueQuillEditor, /* { default global options } */)
 Vue.use(ZkTable)
 Vue.use(echarts)
 

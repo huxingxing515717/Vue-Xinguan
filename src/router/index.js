@@ -15,8 +15,10 @@ import AddStocks from '../components/product/AddStocks.vue'
 import GobalMap from '../components/map/map.vue'
 import Swagger from '../components/doc/Swagger.vue'
 import Druid from '../components/doc/Druid.vue'
+import Attachments from '../components/doc/Attachments.vue'
 import LoginLog from '../components/log/LoginLog.vue'
-import Message from '../components/message/Message.vue'
+import Notices from '../components/notice/Notices.vue'
+import AddNotices from '../components/notice/AddNotices.vue'
 import Logs from '../components/log/Logs.vue'
 import Consumers from '../components/product/Consumers.vue'
 import Stocks from'../components/product/Stocks.vue'
@@ -38,6 +40,7 @@ const routes = [
   {
     path: '/home',
     component: Home,
+    meta:{title: '首页'},
     redirect: '/welcome',
     children: [{
       path: '/welcome',
@@ -45,10 +48,12 @@ const routes = [
     }, {
       path: '/users',
       component: Users,
+      meta:{title: '用户管理'},
     }
     , {
       path: '/roles',
       component: Roles,
+      meta:{title: '角色管理'},
     }
     , {
       path: '/menus',
@@ -100,8 +105,12 @@ const routes = [
     },
   
     {
-      path: '/messages',
-      component: Message
+      path: '/notices',
+      component: Notices
+    },
+    {
+      path: '/notices/add',
+      component: AddNotices
     },
     {
       path: '/logs',
@@ -120,6 +129,10 @@ const routes = [
     {
       path: '/icons',
       component: Icons
+    },
+    {
+      path: '/attachments',
+      component: Attachments
     },
   
     ]

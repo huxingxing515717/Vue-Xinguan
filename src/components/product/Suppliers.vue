@@ -41,11 +41,12 @@
         >
           <el-table-column prop="id" type="index" label="ID" width="50"></el-table-column>
           <el-table-column prop="name" label="物资提供方" width="120"></el-table-column>
-          <el-table-column prop="createTime" label="创建时间"></el-table-column>
+          <el-table-column prop="contact" label="联系人" width="120"></el-table-column>
+          <el-table-column prop="createTime" label="创建时间" width="120"></el-table-column>
           <el-table-column prop="email" label="邮箱"></el-table-column>
           <el-table-column prop="address" label="地址"></el-table-column>
           <el-table-column prop="phone" label="电话"></el-table-column>
-          <el-table-column prop="sort" label="排序"></el-table-column>
+          <el-table-column prop="sort" label="排序" width="80"></el-table-column>
           <el-table-column label="操作">
             <template slot-scope="scope">
               <el-button
@@ -72,7 +73,7 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="this.queryMap.pageNum"
-        :page-sizes="[7, 10, 15, 20]"
+        :page-sizes="[6, 10, 15, 20]"
         :page-size="this.queryMap.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
@@ -198,7 +199,7 @@ export default {
       addDialogVisible: false, //添加弹框是否显示
       total: 0, //总共多少条数据
       supplierData: [], //表格数据
-      queryMap: { pageNum: 1, pageSize: 7, name: "" }, //查询对象
+      queryMap: { pageNum: 1, pageSize: 6, name: "" }, //查询对象
       addRuleForm: {}, //添加表单数据
       editRuleForm: {}, //修改表单数据
       deans: [], //所有系主任

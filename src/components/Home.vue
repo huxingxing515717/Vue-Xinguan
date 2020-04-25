@@ -42,11 +42,13 @@
           text-color="rgba(255,255,255,0.7)"
           unique-opened
         >
-          <Menu :menuList="this.menuList"></Menu>
+          <Menu  :menuList="this.menuList"></Menu>
         </el-menu>
       </el-aside>
+   
       <!--右边主体-->
       <el-main v-loading="loading">
+     
         <router-view></router-view>
       </el-main>
     </el-container>
@@ -63,7 +65,8 @@ export default {
       activePath: "", //激活的路径
       isOpen: false,
       menuList: {},
-      userInfo: {}
+      userInfo: {},
+     
     };
   },
   components: {
@@ -97,7 +100,7 @@ export default {
       const { data: res } = await this.$http.get("user/findMenu");
       if (res.code !== 200)
         return this.$message.error("获取菜单失败:" + res.msg);
-      this.menuList = res.data;
+       this.menuList = res.data;
     },
     /**
       获取用户信息
@@ -119,7 +122,6 @@ export default {
         });
         this.userInfo = res.data;
         //保存用户
-        window.localStorage.setItem("userInfo", JSON.stringify(res.data));
         this.$store.commit("setUserInfo", res.data);
       }
     },
@@ -128,7 +130,8 @@ export default {
      */
     toggleMenu() {
       this.isOpen = !this.isOpen;
-    }
+    },
+  
   },
   mounted() {
     this.getUserInfo();
@@ -178,4 +181,5 @@ export default {
   letter-spacing: 0.2em;
   cursor: pointer;
 }
+
 </style>

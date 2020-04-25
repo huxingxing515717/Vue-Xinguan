@@ -37,16 +37,23 @@ export default {
   name: "Menu", //模板名称
   data() {
     return {
+     
     };
   },
   beforeMount() {},
-  props: ["menuList"],
+  props: ["menuList","tagList"],
   methods:{
      //保存激活路径
     savePath(path) {
       window.sessionStorage.setItem("activePath", path);
       this.activePath = path;
-    }
+      console.log(this.menuList);
+      console.log(this.tagList);
+    
+    },
+  },
+  created(){
+   
   }
 };
 </script>
