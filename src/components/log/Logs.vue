@@ -42,7 +42,7 @@
             <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
           </el-input>
         </el-col>
-        <el-button type="danger"  @click="deleteFileOrDirectory(sels)" :disabled="this.sels.length === 0" class="el-icon-delete">批量删除</el-button>
+        <el-button type="danger"  @click="deleteFileOrDirectory(sels)" :disabled="this.sels.length === 0" class="el-icon-delete">批量</el-button>
       </el-row>
 
       <!-- 表格区域 -->
@@ -91,7 +91,7 @@
           <el-table-column prop="ip" label="IP地址" width="140"></el-table-column>
           <el-table-column label="操作" width="100px;">
             <template slot-scope="scope">
-              <el-button type="text" size="mini" icon="el-icon-delete" @click="del(scope.row.id)">删除</el-button>
+              <el-button type="text" size="mini"  v-hasPermission="'log:delete'" icon="el-icon-delete" @click="del(scope.row.id)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>

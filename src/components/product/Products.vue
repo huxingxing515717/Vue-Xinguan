@@ -39,7 +39,8 @@
 
         <el-col :span="6">
           <el-button type="primary" icon="el-icon-search" @click="search">查找</el-button>
-          <el-button type="success" icon="el-icon-circle-plus-outline" @click="openAdd">添加</el-button>
+          <el-button type="success" icon="el-icon-circle-plus-outline" @click="openAdd" v-hasPermission="'product:add'">添加</el-button>
+            <el-button icon="el-icon-refresh" @click="getproductList">刷新</el-button>
         </el-col>
       </el-row>
 
@@ -60,7 +61,7 @@
             <template slot-scope="scope">
               <img
                 slot="error"
-                :src="'http://www.zykhome.club/'+scope.row.imageUrl"
+                :src="'https://www.zykhome.club/'+scope.row.imageUrl"
                 alt
                 style="width: 50px;height:50px"
               />
@@ -77,9 +78,9 @@
           <el-table-column prop="createTime" label="创建时间"></el-table-column>
           <el-table-column label="操作">
             <template slot-scope="scope">
-              <el-button type="text" size="mini" icon="el-icon-edit" @click="edit(scope.row.id)">编辑</el-button>
+              <el-button type="text" size="mini" v-hasPermission="'product:edit'" icon="el-icon-edit" @click="edit(scope.row.id)">编辑</el-button>
 
-              <el-button type="text" size="mini" icon="el-icon-delete" @click="del(scope.row.id)">删除</el-button>
+              <el-button type="text" size="mini" v-hasPermission="'product:delete'" icon="el-icon-delete" @click="del(scope.row.id)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -112,7 +113,7 @@
             <el-form-item label="物资图片" prop="name">
               <!-- 图片上传部分 -->
               <el-upload
-                action="http://www.localhost:8081/upload/image"
+                action="https://www.zykhome.club:8081/upload/image"
                 :class="{ disabled: uploadDisabled }"
                 list-type="picture-card"
                 :limit="limitcount"
@@ -198,7 +199,7 @@
             <el-form-item label="物资图片" prop="name">
               <!-- 图片上传部分 -->
               <el-upload
-                action="http://www.zykhome.club:8081/upload/image"
+                action="https://www.zykhome.club:8081/upload/image"
                 :class="{ disabled: uploadDisabled }"
                 list-type="picture-card"
                 :limit="limitcount"

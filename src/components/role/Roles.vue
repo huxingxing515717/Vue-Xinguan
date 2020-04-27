@@ -23,6 +23,7 @@
         </el-col>
         <el-col :span="2">
           <el-button
+            v-hasPermission="'role:add'"
             type="success"
             icon="el-icon-circle-plus-outline"
             @click="addDialogVisible=true"
@@ -31,6 +32,7 @@
         <el-col :span="2">
           <el-button
             type="danger"
+            v-hasPermission="'role:export'"
             icon="el-icon-download"
             @click="downExcel"
           >导出</el-button>
@@ -57,13 +59,15 @@
           <el-table-column fixed="right" label="操作" width="200">
             <template slot-scope="scope">
               <el-button
+                v-hasPermission="'role:authority'"
                 @click="grant(scope.row.id)"
                 type="text"
                 icon="el-icon-present"
                 size="small"
               >授权</el-button>
-              <el-button @click="edit(scope.row.id)" type="text" icon="el-icon-edit" size="small">编辑</el-button>
+              <el-button @click="edit(scope.row.id)" v-hasPermission="'role:edit'" type="text" icon="el-icon-edit" size="small">编辑</el-button>
               <el-button
+               v-hasPermission="'role:delete'"
                 @click="del(scope.row.id)"
                 type="text"
                 icon="el-icon-delete"

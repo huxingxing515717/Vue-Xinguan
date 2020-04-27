@@ -23,6 +23,7 @@
         </el-col>
         <el-col :span="8">
           <el-button
+           v-hasPermission="'supplier:add'"
             type="warning"
             icon="el-icon-circle-plus-outline"
             @click="addDialogVisible=true"
@@ -39,17 +40,20 @@
           style="width: 100%;margin-top:20px;"
           height="460"
         >
-          <el-table-column prop="id" type="index" label="ID" width="50"></el-table-column>
-          <el-table-column prop="name" label="物资提供方" width="120"></el-table-column>
-          <el-table-column prop="contact" label="联系人" width="120"></el-table-column>
+        <el-table-column prop="id" type="index" label="ID" width="50"></el-table-column>
+          <el-table-column prop="address" label="省市区县"></el-table-column>
+          
+          <el-table-column prop="name" label="具体信息" width="120"></el-table-column>
+          
           <el-table-column prop="createTime" label="创建时间" width="120"></el-table-column>
           <el-table-column prop="email" label="邮箱"></el-table-column>
-          <el-table-column prop="address" label="地址"></el-table-column>
+          <el-table-column prop="contact" label="联系人" width="120"></el-table-column>
           <el-table-column prop="phone" label="电话"></el-table-column>
           <el-table-column prop="sort" label="排序" width="80"></el-table-column>
-          <el-table-column label="操作">
+          <el-table-column label="操作" fixed="right">
             <template slot-scope="scope">
               <el-button
+              v-hasPermission="'supplier:edit'"
                 type="text"
                 size="mini"
                 icon="el-icon-edit"
@@ -57,6 +61,7 @@
               >编辑</el-button>
 
               <el-button
+              v-hasPermission="'supplier:delete'"
                 type="text"
                size="mini"
                 icon="el-icon-delete"
@@ -73,7 +78,7 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="this.queryMap.pageNum"
-        :page-sizes="[6, 10, 15, 20]"
+        :page-sizes="[7, 10, 15, 20]"
         :page-size="this.queryMap.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
@@ -88,13 +93,69 @@
             label-width="100px"
             class="demo-ruleForm"
           >
+           <el-row>
+              <el-col :span="8">
+                <div class="grid-content bg-purple"></div>
+                <el-form-item label="省份" prop="valueProvince">
+                  <el-select
+                    v-model="addRuleForm.valueProvince"
+                    placeholder="请选择省"
+                    @change="changeProvince"
+                  >
+                    <el-option
+                      v-for="item in provinceList"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <div class="grid-content bg-purple-light">
+                  <el-form-item label="城市" prop="valueCity">
+                    <el-select
+                      v-model="addRuleForm.valueCity"
+                      placeholder="请选择市"
+                      @change="changeCity"
+                    >
+                      <el-option
+                        v-for="item in cityOptions"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value"
+                      ></el-option>
+                    </el-select>
+                  </el-form-item>
+                </div>
+              </el-col>
+              <el-col :span="8">
+                <div class="grid-content bg-purple">
+                  <el-form-item label="区县" prop="valueOrigin">
+                    <el-select
+                      v-model="addRuleForm.valueOrigin"
+                      placeholder="请选择区"
+                      @change="changeOrigin"
+                    >
+                      <el-option
+                        v-for="item in originOptions"
+                        :key="item.label"
+                        :label="item.label"
+                        :value="item.value"
+                      ></el-option>
+                    </el-select>
+                  </el-form-item>
+                </div>
+              </el-col>
+            </el-row>
             <el-form-item label="来源 名称" prop="name">
               <el-input v-model="addRuleForm.name"></el-input>
             </el-form-item>
-
-            <el-form-item label="地址" prop="address">
-              <el-input v-model="addRuleForm.address"></el-input>
+            <el-form-item label="联系人" prop="contact">
+              <el-input v-model="addRuleForm.contact"></el-input>
             </el-form-item>
+
+            
             <el-form-item label="邮箱" prop="email">
               <el-input v-model="addRuleForm.email"></el-input>
             </el-form-item>
@@ -127,14 +188,18 @@
             label-width="100px"
             class="demo-ruleForm"
           >
-            <el-form-item label="来源 名称" prop="name">
-              <el-input v-model="editRuleForm.name"></el-input>
+            <el-form-item label="省市区县" prop="address">
+              <el-input disabled v-model="editRuleForm.address"></el-input>
             </el-form-item>
 
-            <el-form-item label="地址" prop="address">
-              <el-input v-model="editRuleForm.address"></el-input>
+            <el-form-item label="来源详细地" prop="name">
+              <el-input type="textarea" v-model="editRuleForm.name"></el-input>
+            </el-form-item>
+             <el-form-item label="联系人" prop="contact">
+              <el-input v-model="editRuleForm.contact"></el-input>
             </el-form-item>
 
+          
             <el-form-item label="邮箱" prop="email">
               <el-input v-model="editRuleForm.email"></el-input>
             </el-form-item>
@@ -199,7 +264,7 @@ export default {
       addDialogVisible: false, //添加弹框是否显示
       total: 0, //总共多少条数据
       supplierData: [], //表格数据
-      queryMap: { pageNum: 1, pageSize: 6, name: "" }, //查询对象
+      queryMap: { pageNum: 1, pageSize: 7, name: "" }, //查询对象
       addRuleForm: {}, //添加表单数据
       editRuleForm: {}, //修改表单数据
       deans: [], //所有系主任
@@ -213,7 +278,17 @@ export default {
           { min: 2, max: 12, message: "长度在 2 到 12 个字符", trigger: "blur" }
         ],
         email: [{ required: true, validator: checkEmail, trigger: "blur" }],
-
+         valueProvince: [
+          { required: true, message: "请输入省份", trigger: "blur" }
+        ],
+        valueCity: [{ required: true, message: "请输入城市", trigger: "blur" }],
+        valueOrigin: [
+          { required: true, message: "请输入区县", trigger: "blur" }
+        ],
+        sort: [
+          { required: true, message: "请输入排序号", trigger: "blur" }
+        ],
+        contact: [{ required: true, message: "请输入联系人", trigger: "blur" }],
         phone: [
           {
             required: true,
@@ -223,6 +298,12 @@ export default {
           }
         ]
       } //添加验证
+      ,
+      provinceList: [], // 省列表
+      cityList: [], // 市列表
+      originList: [], // 区列表
+      cityOptions: [], // 市下拉框数据
+      originOptions: [] // 区下拉框数据
     };
   },
   methods: {
@@ -263,6 +344,7 @@ export default {
         if (!valid) {
           return;
         } else {
+
           const { data: res } = await this.$http.put(
             "supplier/update/" + this.editRuleForm.id,
             this.editRuleForm
@@ -299,6 +381,12 @@ export default {
         if (!valid) {
           return;
         } else {
+           this.addRuleForm.address =
+            this.addRuleForm.province +
+            "/" +
+            this.addRuleForm.city +
+            "/" +
+            this.addRuleForm.origin;
           const { data: res } = await this.$http.post(
             "supplier/add",
             this.addRuleForm
@@ -346,10 +434,106 @@ export default {
     closeEditDialog() {
       this.$refs.editRuleFormRef.clearValidate();
       this.editRuleForm = {};
+    },
+     // 选择省
+    changeProvince(val) {
+      this.provinceList.forEach((province, index) => {
+        if (val.toString() === this.provinceList[index].value) {
+          this.cityOptions = this.provinceList[index].children;
+          this.addRuleForm.valueCity = this.provinceList[
+            index
+          ].children[0].value; //设置市的值
+          this.addRuleForm.city = this.provinceList[index].children[0].label;
+
+          this.addRuleForm.valueOrigin = this.provinceList[
+            index
+          ].children[0].children[0].value; //设置县的值
+          this.addRuleForm.origin = this.provinceList[
+            index
+          ].children[0].children[0].label;
+
+          this.originOptions = this.provinceList[index].children[0].children;
+          //set value
+          this.addRuleForm.province = this.provinceList[index].label;
+        }
+      });
+    },
+    // 选择市
+    changeCity(val) {
+      this.cityList.forEach((city, index) => {
+        if (val.toString() === this.cityList[index].value) {
+          this.originOptions = this.cityList[index].children;
+          this.addRuleForm.valueOrigin = this.cityList[index].children[0].value; //设置县的值;
+          //set value
+          this.addRuleForm.city = this.cityList[index].label;
+        }
+      });
+    },
+    // 选择区
+    changeOrigin(val) {
+      this.addRuleForm.valueOrigin = val;
+
+      this.originList.forEach((origin, index) => {
+        if (val.toString() === this.originList[index].value) {
+          //set value
+          this.addRuleForm.origin = this.originList[index].label;
+        }
+      });
+      //添加this.$forceUpdate();进行强制渲染，效果实现。搜索资料得出结果：因为数据层次太多，render函数没有自动更新，需手动强制刷新。
+      this.$forceUpdate();
+    },
+
+    _getJsonData() {
+      this.$http.get("/json/provinces.json").then(res => {
+        this.provinceList = [];
+        this.cityList = [];
+        this.originList = [];
+        res.data.forEach(item => {
+          if (item.value.match(/0000$/)) {
+            this.provinceList.push({
+              value: item.value,
+              label: item.name,
+              children: []
+            });
+          } else if (item.value.match(/00$/)) {
+            this.cityList.push({
+              value: item.value,
+              label: item.name,
+              children: []
+            });
+          } else {
+            this.originList.push({
+              value: item.value,
+              label: item.name
+            });
+          }
+        });
+        for (let index in this.provinceList) {
+          for (let index1 in this.cityList) {
+            if (
+              this.provinceList[index].value.slice(0, 2) ===
+              this.cityList[index1].value.slice(0, 2)
+            ) {
+              this.provinceList[index].children.push(this.cityList[index1]);
+            }
+          }
+        }
+        for (let item1 in this.cityList) {
+          for (let item2 in this.originList) {
+            if (
+              this.originList[item2].value.slice(0, 4) ===
+              this.cityList[item1].value.slice(0, 4)
+            ) {
+              this.cityList[item1].children.push(this.originList[item2]);
+            }
+          }
+        }
+      });
     }
   },
   created() {
     this.getSupplierList();
+    this._getJsonData();
        setTimeout(() => {
           this.loading = false;
     }, 500);

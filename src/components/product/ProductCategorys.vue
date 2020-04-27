@@ -9,7 +9,7 @@
     <el-card class="box-card">
       <el-row :gutter="20">
         <el-col :span="8">
-          <el-button type="warning"  icon="el-icon-circle-plus-outline" @click="openAdd">添加</el-button>
+          <el-button type="warning"  icon="el-icon-circle-plus-outline" @click="openAdd" v-hasPermission="'productCategory:add'">添加</el-button>
         </el-col>
       </el-row>
       <!-- 表格部分 -->
@@ -35,8 +35,8 @@
         </template>
         <!-- 操作 -->
         <template slot="caozuo" slot-scope="scope">
-          <el-button type="primary" size="mini" icon="el-icon-edit" @click="edit(scope.row.id)"></el-button>
-          <el-button type="danger" size="mini" icon="el-icon-delete" @click="del(scope.row.id)"></el-button>
+          <el-button  v-hasPermission="'productCategory:edit'" type="primary" size="mini" icon="el-icon-edit" @click="edit(scope.row.id)"></el-button>
+          <el-button v-hasPermission="'productCategory:delete'" type="danger" size="mini" icon="el-icon-delete" @click="del(scope.row.id)"></el-button>
         </template>
       </zk-table>
       <!-- 分页 -->

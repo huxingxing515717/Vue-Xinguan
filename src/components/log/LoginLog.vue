@@ -41,7 +41,7 @@
             <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
           </el-input>
         </el-col>
-        <el-button @click="deleteFileOrDirectory(sels)" :disabled="this.sels.length === 0">批量删除</el-button>
+        <el-button @click="deleteFileOrDirectory(sels)" icon="el-icon-delete" type="danger" :disabled="this.sels.length === 0">批量</el-button>
       </el-row>
 
       <!-- 表格区域 -->
@@ -65,7 +65,8 @@
           <el-table-column label="操作" width="100px;">
             <template slot-scope="scope">
               <el-button
-                type="danger"
+               v-hasPermission="'loginLog:delete'"
+                type="text"
                 size="mini"
                 icon="el-icon-delete"
                 @click="del(scope.row.id)"

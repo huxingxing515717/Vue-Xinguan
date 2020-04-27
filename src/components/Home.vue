@@ -110,19 +110,10 @@ export default {
       if (res.code !== 200) {
         return this.$message.error("获取用户信息失败:" + res.msg);
       } else {
-        var urls = [];
-        res.data.menus.forEach((item, index, array) => {
-          //执行代码
-          if (item != null && item != "") {
-            urls.push(item.url);
-          }
-        });
-        var m = urls.filter(s => {
-          return s && s.trim();
-        });
         this.userInfo = res.data;
         //保存用户
         this.$store.commit("setUserInfo", res.data);
+        console.log(this);
       }
     },
     /**

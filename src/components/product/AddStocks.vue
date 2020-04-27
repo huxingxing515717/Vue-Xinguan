@@ -13,6 +13,13 @@
       <el-col :span="10">
         <div class="grid-content bg-purple">
           <el-card>
+             <el-alert
+              title="温馨提示"
+              type="warning"
+              close-text="知道了"
+              description="勾选右侧物资后,在下方的明细中添加其入库数量"
+              show-icon style="margin-bottom:20px;">
+            </el-alert>
             <el-form
               ref="addRuleFormRef"
               :rules="addRules"
@@ -20,7 +27,7 @@
               :model="addRuleForm"
               label-width="80px"
             >
-              <el-form-item label="商品来源" prop="supplierId">
+              <el-form-item label="物资来源" prop="supplierId">
                 <el-select
                   style="width:100%;"
                   filterable
@@ -105,7 +112,7 @@
               >
                 <template slot-scope="scope">
                   <img
-                    :src="'http://www.zykhome.club/'+scope.row.imageUrl"
+                    :src="'https://www.zykhome.club/'+scope.row.imageUrl"
                     alt
                     style="width: 50px;height:50px"
                   />
@@ -140,7 +147,7 @@
                   >
                     <template slot-scope="scope">
                       <img
-                        :src="'http://www.zykhome.club/'+scope.row.imageUrl"
+                        :src="'https://www.zykhome.club/'+scope.row.imageUrl"
                         alt
                         style="width: 50px;height:50px"
                       />

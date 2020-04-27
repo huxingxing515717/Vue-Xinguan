@@ -28,6 +28,7 @@
           </el-col>
            <el-col :span="2">
                 <el-button
+                v-hasPermission="'menu:export'"
                 type="danger"
                 style="margin-left:20px;"
                 icon="el-icon-download"
@@ -382,7 +383,6 @@ export default {
     },
     //前端添加节点
     append(data, newChild) {
-      console.log(newChild);
       //   var newChild = { id: 1231, label: "qqqqq", children: [] };
       if (!data.children) {
         this.$set(data, "children", []);

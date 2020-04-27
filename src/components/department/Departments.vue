@@ -23,13 +23,19 @@
         </el-col>
         <el-col :span="2">
           <el-button
+            v-hasPermission="'department:add'"
             type="success"
             icon="el-icon-circle-plus-outline"
             @click="addDialogVisible=true"
           >添加</el-button>
         </el-col>
         <el-col :span="2">
-          <el-button type="danger" icon="el-icon-download" @click="downExcel">导出</el-button>
+          <el-button
+            type="danger"
+            icon="el-icon-download"
+            v-hasPermission="'department:export'"
+            @click="downExcel"
+          >导出</el-button>
         </el-col>
       </el-row>
       <!-- 表格区域 -->
@@ -52,6 +58,7 @@
           <el-table-column label="操作">
             <template slot-scope="scope">
               <el-button
+                v-hasPermission="'department:edit'"
                 type="primary"
                 size="mini"
                 icon="el-icon-edit"
@@ -59,6 +66,7 @@
               >编辑</el-button>
 
               <el-button
+                v-hasPermission="'department:delete'"
                 type="danger"
                 size="mini"
                 icon="el-icon-delete"
@@ -239,13 +247,16 @@ export default {
           window.URL.revokeObjectURL(url);
         });
     },
-
-    //搜索
+    /**
+     * 搜索部门
+     */
     search() {
       this.queryMap.pageNum = 1;
       this.getDepartmentList();
     },
-    //删除部门
+    /**
+     * 删除部门
+     */
     async del(id) {
       var res = await this.$confirm(
         "此操作将永久删除该用户, 是否继续?",

@@ -36,11 +36,11 @@
  </el-col>
         <el-col :span="3">
           <router-link to="/inStocks/addStocks">
-            <el-button type="success" plain icon="el-icon-circle-plus-outline">添加入库</el-button>
+            <el-button type="success" icon="el-icon-circle-plus-outline"  v-hasPermission="'inStock:in'">入库</el-button>
           </router-link>
         </el-col>
         <el-col :span="2">
-         <el-button type="button">导出表格<i class="el-icon-download el-icon--right"></i></el-button>
+         <el-button type="button">导出<i class="el-icon-download el-icon--right"></i></el-button>
         </el-col>
       </el-row>
       <!-- 表格区域 -->
@@ -62,7 +62,7 @@
         <el-table-column prop="operator" label="操作员" width="180"></el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button @click="detail(scope.row.id)" type="text" size="small">明细</el-button>
+            <el-button v-hasPermission="'inStock:detail'" @click="detail(scope.row.id)" type="text" size="small">明细</el-button>
             <el-button type="text" size="small">编辑</el-button>
           </template>
         </el-table-column>
@@ -96,7 +96,7 @@
               >
                 <template slot-scope="scope">
                   <img
-                    :src="'http://www.zykhome.club/'+scope.row.imageUrl"
+                    :src="'https://www.zykhome.club/'+scope.row.imageUrl"
                     alt
                     style="width: 30px;height:30px"
                   />

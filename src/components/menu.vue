@@ -47,9 +47,6 @@ export default {
     savePath(path) {
       window.sessionStorage.setItem("activePath", path);
       this.activePath = path;
-      console.log(this.menuList);
-      console.log(this.tagList);
-    
     },
   },
   created(){

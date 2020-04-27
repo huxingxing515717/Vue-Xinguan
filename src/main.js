@@ -13,39 +13,58 @@ import VueQuillEditor from 'vue-quill-editor'
 import 'quill/dist/quill.core.css' // import styles
 import 'quill/dist/quill.snow.css' // for snow theme
 import 'quill/dist/quill.bubble.css' // for bubble theme
+import { hasPermission } from './utils/permissionDirect'
+ 
+const Plugins = [ hasPermission ]
+Plugins.map((plugin) => {
+  Vue.use(plugin)
+})
+ 
 
 
-Vue.use(VueQuillEditor, /* { default global options } */)
+Vue.use(VueQuillEditor)
 Vue.use(ZkTable)
 Vue.use(echarts)
 
-NProgress.configure({ease:'ease',speed:500});
-NProgress.configure({minimum:0.3});
+NProgress.configure({ ease: 'ease', speed: 500 });
+NProgress.configure({ minimum: 0.3 });
 Vue.prototype.$http = axios
-axios.defaults.baseURL='http://www.localhost:8081/'
-axios.interceptors.request.use(config => {
-    NProgress.start() // 设置加载进度条(开始..)
-    config.headers.Authorization = window.localStorage.getItem('JWT_TOKEN');
-    return config;
-}
-, error => {
-  return Promise.reject(error)
-});
+axios.defaults.baseURL = 'http://www.localhost:8081/'
 
-// axios响应拦截器
+
+
+/**
+ *  axios请求拦截器
+ */
+axios.interceptors.request.use(config => {
+  NProgress.start() // 设置加载进度条(开始..)
+  config.headers.Authorization = window.localStorage.getItem('JWT_TOKEN');
+  return config;
+}
+  , error => {
+    return Promise.reject(error)
+  });
+
+
+/**
+ * axios响应拦截器
+ */
 axios.interceptors.response.use(
-  function(response) {
+  function (response) {
     NProgress.done() // 设置加载进度条(结束..)
-    if(response.data.code==4001){//如果返回的code==4001说明token错误或者token过期
+    if (response.data.code == 4001) {//如果返回的code==4001说明token错误或者token过期
       window.localStorage.clear();
       router.push("/login")
     }
     return response;
   },
-  function(error) {
+  function (error) {
     return Promise.reject(error)
   }
 )
+/**
+ * 自定义权限指令
+ */
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)

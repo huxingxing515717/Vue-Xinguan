@@ -144,17 +144,11 @@ export default {
   },
   created() {
     this.userInfo = this.$store.state.userInfo;
-    var roles = "";
-    if (this.userInfo.roles.length > 0) {
-      this.userInfo.roles.forEach(item => {
-        roles += item.roleName + ",";
-      });
-    }
     this.tableInfo.push({
       username: this.userInfo.username,
       nickname: this.userInfo.nickname,
       department: this.userInfo.department,
-      roles: roles.substring(0, roles.length - 1)
+      roles: this.userInfo.roles,
     });
   }
 };

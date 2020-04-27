@@ -72,8 +72,9 @@
             type="success"
             icon="el-icon-circle-plus-outline"
             @click="addDialogVisible=true"
+            v-hasPermission="'user:add'"
           >添加</el-button>
-          <el-button @click="downExcel" type="danger" icon="el-icon-download">导出</el-button>
+          <el-button @click="downExcel" v-hasPermission="'user:export'" type="danger" icon="el-icon-download">导出</el-button>
         </el-form-item>
       </el-form>
 
@@ -97,11 +98,11 @@
             <el-switch v-model="scope.row.status" @change="changUserStatus(scope.row)"></el-switch>
           </template>
         </el-table-column>
-        <el-table-column label="操作">
+        <el-table-column label="操作" fixed="right">
           <template slot-scope="scope">
-            <el-button type="primary" size="mini" icon="el-icon-edit" @click="edit(scope.row.id)"></el-button>
+            <el-button  v-hasPermission="'user:edit'" type="primary" size="mini" icon="el-icon-edit" @click="edit(scope.row.id)"></el-button>
 
-            <el-button type="danger" size="mini" icon="el-icon-delete" @click="del(scope.row.id)"></el-button>
+            <el-button v-hasPermission="'user:delete'" type="danger" size="mini" icon="el-icon-delete" @click="del(scope.row.id)"></el-button>
             <el-tooltip
               class="item"
               effect="dark"
@@ -110,6 +111,7 @@
               :enterable="false"
             >
               <el-button
+                v-hasPermission="'user:assign'"
                 type="warning"
                 size="mini"
                 icon="el-icon-s-tools"
@@ -186,7 +188,6 @@
                 </div>
               </el-col>
             </el-row>
-
             <el-form-item label="密码" prop="password">
               <el-input v-model="addForm.password"></el-input>
             </el-form-item>
@@ -465,8 +466,9 @@ export default {
           window.URL.revokeObjectURL(url);
         });
     },
-
-    //弹出用户分配角色
+    /**
+     * 弹出用户分配角色
+     */
     async assignRoles(id) {
       const loading = this.$loading({
         lock: true,
@@ -486,7 +488,9 @@ export default {
         }, 400);
       }
     },
-    //确定分配角色
+    /**
+     * 确定分配角色
+     */
     async doAssignRoles() {
       this.assignDialogVisible = true;
       this.btnLoading = true;
@@ -504,7 +508,9 @@ export default {
       this.btnLoading = false;
       this.btnDisabled = false;
     },
-    //加载用户列表
+    /**
+     * 加载用户列表
+     */
     async getUserList() {
       const { data: res } = await this.$http.get("user/findUserList", {
         params: this.queryMap
@@ -516,7 +522,9 @@ export default {
     showSex(row, column) {
       return row.sex == 1 ? "帅哥" : "美女";
     },
-    //删除用户
+    /**
+     * 删除用户
+     */
     async del(id) {
       var res = await this.$confirm(
         "此操作将永久删除该用户, 是否继续?",
@@ -543,7 +551,9 @@ export default {
         }
       }
     },
-    //添加用户
+    /**
+     * 添加用户
+     */
     async addUser() {
       this.$refs.addFormRef.validate(async valid => {
         if (!valid) {
@@ -565,7 +575,9 @@ export default {
         }
       });
     },
-    //更新用户
+    /**
+     * 更新用户
+     */
     async updateUser() {
       this.$refs.editFormRef.validate(async valid => {
         if (!valid) {
@@ -595,12 +607,16 @@ export default {
         }
       });
     },
-    //搜索
+    /**
+     * 搜索用户
+     */
     searchUser() {
       this.queryMap.pageNum = 1;
       this.getUserList();
     },
-    //修改
+    /**
+     * 修改用户信息
+     */
     async edit(id) {
       const { data: res } = await this.$http.get("user/edit/" + id);
       if (res.code == 200) {
@@ -610,27 +626,39 @@ export default {
         return this.$message.error("用户信息编辑失败:" + res.msg);
       }
     },
-    //改变页码
+    /**
+     *  改变页码
+     */
     handleSizeChange(newSize) {
       this.queryMap.pageSize = newSize;
       this.getUserList();
     },
-    //翻页
+    /**
+     * 翻页
+     */
     handleCurrentChange(current) {
       this.queryMap.pageNum = current;
       this.getUserList();
     },
-    //关闭弹出框
+    
+    /**
+     * 关闭添加弹出框
+     */
     closeDialog() {
       this.$refs.addFormRef.clearValidate();
       this.addForm.birth = "";
       this.addForm = {};
     },
+    /**
+     * 关闭编辑弹出框
+     */
     editClose() {
       this.$refs.editFormRef.clearValidate();
       this.editForm = {};
     },
-    //改变用户禁用状态
+    /**
+     * 禁用启用用户
+     */
     async changUserStatus(row) {
       const { data: res } = await this.$http.put(
         "user/updateStatus/" + row.id + "/" + row.status
@@ -650,9 +678,12 @@ export default {
       if (res.code !== 200) return this.$message.error("获取部门列表失败");
       this.departments = res.data;
     },
+    /**
+     * 显示用户性别
+     */
     showSex(row, column) {
       return row.sex == 1 ? "帅哥" : "美女";
-    }
+    },
   },
   created() {
     this.getUserList();
