@@ -14,15 +14,18 @@
           />
         </span>
       </div>
-
       <el-dropdown>
         <div class="block">
           <el-avatar :size="50" :src="this.userInfo.avatar" style="cursor: pointer;"></el-avatar>
         </div>
-
         <el-dropdown-menu slot="dropdown" trigger="click">
+           <el-dropdown-item>
+             <span type="danger"  @click="toWelcome"><span class="el-icon-house"></span> &nbsp;系统首页</span>
+          </el-dropdown-item>
           <el-dropdown-item>
-            <span type="danger" @click="logout">退出登入</span>
+           
+            <span type="danger" @click="logout"><span class="el-icon-switch-button"></span> &nbsp;退出登入</span>
+           
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -94,6 +97,12 @@ export default {
       }
     },
     /**
+     * 去系统首页
+     */
+    toWelcome(){
+      this.$router.push("/welcome");
+    },
+    /**
       加载菜单数据
      */
     async getMenuList() {
@@ -113,7 +122,6 @@ export default {
         this.userInfo = res.data;
         //保存用户
         this.$store.commit("setUserInfo", res.data);
-        console.log(this);
       }
     },
     /**

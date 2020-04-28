@@ -210,7 +210,6 @@ export default {
           top: 20,
           bottom: 20,
           data: this.legendData,
-
           selected: this.selected
         },
         series: [

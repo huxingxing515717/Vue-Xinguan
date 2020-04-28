@@ -324,10 +324,15 @@ export default {
         this.$refs.editRuleFormRef.clearValidate();
       this.editRuleForm = {};
   
+    },
+    clearParent(){
+      this.addRuleForm.pid='';
     }
+  
   },
   created() {
     this.getCategoryList();
+    
       setTimeout(() => {
           this.loading = false;
     }, 500);

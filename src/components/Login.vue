@@ -103,7 +103,7 @@ export default {
       Img6,
       Img7,
       isShow:false,
-      dialogVisible:false,
+      dialogVisible:true,
       imgCode: undefined,
       //表单用户登入数据
       loading: false,

@@ -67,14 +67,15 @@
         </el-form-item>-->
 
         <el-form-item style="margin-left:50px;">
+          
           <el-button type="primary" @click="searchUser" icon="el-icon-search">查询</el-button>
           <el-button
             type="success"
-            icon="el-icon-circle-plus-outline"
+            icon="el-icon-plus"
             @click="addDialogVisible=true"
             v-hasPermission="'user:add'"
           >添加</el-button>
-          <el-button @click="downExcel" v-hasPermission="'user:export'" type="danger" icon="el-icon-download">导出</el-button>
+          <el-button @click="downExcel" v-hasPermission="'user:export'"  icon="el-icon-download">导出</el-button>
         </el-form-item>
       </el-form>
 
@@ -111,7 +112,6 @@
               :enterable="false"
             >
               <el-button
-                v-hasPermission="'user:assign'"
                 type="warning"
                 size="mini"
                 icon="el-icon-s-tools"
@@ -326,6 +326,7 @@
         <span slot="footer" class="dialog-footer">
           <el-button @click="assignDialogVisible = false" class="el-icon-close">取消分配</el-button>
           <el-button
+            v-hasPermission="'user:assign'"
             type="primary"
             @click="doAssignRoles"
             class="el-icon-check"

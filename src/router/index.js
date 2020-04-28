@@ -165,7 +165,7 @@ router.beforeEach((to, from, next) => {
     // }else{
     //   alert("非法访问");
     // }
-
+    window.sessionStorage.setItem("activePath", to.path);
     return next();
   }
 })

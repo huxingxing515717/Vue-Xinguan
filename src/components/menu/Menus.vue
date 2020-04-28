@@ -29,7 +29,6 @@
            <el-col :span="2">
                 <el-button
                 v-hasPermission="'menu:export'"
-                type="danger"
                 style="margin-left:20px;"
                 icon="el-icon-download"
                @click="downExcel"

@@ -215,7 +215,8 @@ export default {
       total: 0,
       queryMap: {
         pageNum: 1,
-        pageSize: 5
+        pageSize: 5,
+        del:0,
       },
       form: {},
       tableData: [],

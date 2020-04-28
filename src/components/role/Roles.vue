@@ -10,7 +10,7 @@
     <el-card class="box-card">
       <!-- 上面工具栏 -->
       <el-row :gutter="20">
-        <el-col :span="10">
+        <el-col :span="8">
           <el-input
             clearable
             placeholder="请输入角色名查询"
@@ -31,7 +31,6 @@
         </el-col>
         <el-col :span="2">
           <el-button
-            type="danger"
             v-hasPermission="'role:export'"
             icon="el-icon-download"
             @click="downExcel"
@@ -59,7 +58,7 @@
           <el-table-column fixed="right" label="操作" width="200">
             <template slot-scope="scope">
               <el-button
-                v-hasPermission="'role:authority'"
+               
                 @click="grant(scope.row.id)"
                 type="text"
                 icon="el-icon-present"
@@ -147,6 +146,7 @@
         <span slot="footer" class="dialog-footer">
           <el-button @click="grantDialogVisible = false">取 消</el-button>
           <el-button
+            v-hasPermission="'role:authority'"
             type="primary"
             icon="el-icon-setting"
             @click="authority"

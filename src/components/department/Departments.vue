@@ -31,7 +31,6 @@
         </el-col>
         <el-col :span="2">
           <el-button
-            type="danger"
             icon="el-icon-download"
             v-hasPermission="'department:export'"
             @click="downExcel"

@@ -29,7 +29,7 @@ Vue.use(echarts)
 NProgress.configure({ ease: 'ease', speed: 500 });
 NProgress.configure({ minimum: 0.3 });
 Vue.prototype.$http = axios
-axios.defaults.baseURL = 'http://www.localhost:8081/'
+axios.defaults.baseURL = 'http://localhost:8081/'
 
 
 

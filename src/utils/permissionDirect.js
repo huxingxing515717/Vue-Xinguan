@@ -8,7 +8,7 @@ export const hasPermission = {
           
           var value=binding.value;
         
-          if(userInfo.roles.indexOf('admin')!=-1){
+          if(userInfo.isAdmin){
             //如果是超级管理员
             flag=true;
           }else if(userInfo.perms.indexOf(value)!=-1){
@@ -16,13 +16,13 @@ export const hasPermission = {
             flag=true;
           }
           if (!flag) {
-            if (!el.parentNode) {
-              el.style.display = 'none'
-            } else {
-              el.parentNode.removeChild(el);
-            }
-            // el.setAttribute("disabled",true);
-            // el.classList.add("is-disabled");
+            // if (!el.parentNode) {
+            //   el.style.display = 'none'
+            // } else {
+            //   el.parentNode.removeChild(el);
+            // }
+            el.setAttribute("disabled",true);
+            el.classList.add("is-disabled");
           }
         }
       })

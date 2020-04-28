@@ -4,109 +4,97 @@
       <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>欢迎</el-breadcrumb-item>
     </el-breadcrumb>
-    <el-row :gutter="20">
-      <el-col :span="12">
-        <div class="grid-content bg-purple-light">
-          <el-card class="box-card">
-            <div slot="header" class="clearfix">
-              <span>用户信息</span>
-              <el-button style="float: right;" size="mini" type="danger">用户中心</el-button>
-            </div>
-            <el-tooltip class="item" effect="dark" content="Top Left 提示文字" placement="top-start">
-              <el-avatar
-                shape="square"
-                :size="60"
-                :src="userInfo.avatar"
-                style="float:left;"
-                :key="1"
-              ></el-avatar>
-            </el-tooltip>
-            <div class="right" style="float:right;width:520px;">
-              <el-table :data="tableInfo" border height="120">
-                <el-table-column prop="username" label="用户账号"></el-table-column>
-                <el-table-column prop="nickname" label="用户昵称"></el-table-column>
-                <el-table-column prop="department" label="所属部门"></el-table-column>
-                <el-table-column fixed="right" prop="roles" label="用户角色" width="150"></el-table-column>
-              </el-table>
-            </div>
-          </el-card>
-
-          <el-row style="margin-top:10px;" :gutter="10">
-            <el-card style="height:125px;">
-              <el-col :span="6">
-                <div class="grid-content bg-purple">
-                  <router-link to="/products">
-                    <img
-                      src="../assets/11.png"
-                      alt
-                      width="60.8px;"
-                      style="margin:0px auto; cursor: pointer;margin-left:20px;"
-                    />
-                  </router-link>
-                  <div style="font-size:12px;margin-top:5px;margin-left:25px;">物资资料</div>
-                </div>
-              </el-col>
-              <el-col :span="6">
-                <div class="grid-content bg-purple-light">
-                  <router-link to="/stocks">
-                    <img
-                      src="../assets/22.png"
-                      alt
-                      width="60.8px;"
-                      style="cursor: pointer;margin-left:20px;"
-                    />
-                  </router-link>
-                  <div style="font-size:12px;margin-top:5px;margin-left:25px;">物资库存</div>
-                </div>
-              </el-col>
-
-              <el-col :span="6">
-                <div class="grid-content bg-purple-light">
-                  <router-link to="/inStocks">
-                    <img
-                      src="../assets/44.png"
-                      alt
-                      width="60.8px;"
-                      style="cursor: pointer;margin-left:20px;"
-                    />
-                  </router-link>
-
-                  <div style="font-size:12px;margin-top:5px;margin-left:25px;">物资入库</div>
-                </div>
-              </el-col>
-              <el-col :span="6">
-                <div class="grid-content bg-purple"></div>
-
-                <img
-                  src="../assets/33.png"
-                  alt
-                  width="60.8px;"
-                  style="cursor: pointer;margin-left:20px;"
-                />
-                <div style="font-size:12px;margin-top:5px;margin-left:25px;">物资发放</div>
-              </el-col>
-            </el-card>
-          </el-row>
-          <el-card class="box-card" style="margin-top:20px;">
-            <div slot="header" class="clearfix">
-              <span>轮播图</span>
-              <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
-            </div>
-            <div class="text item">
-              <div class="block">
-                <el-carousel height="150px">
-                  <el-carousel-item v-for="item in 4" :key="item">
-                    <h3 class="small"></h3>
-                  </el-carousel-item>
-                </el-carousel>
+    <el-row :gutter="15">
+      <!-- 左边部分 -->
+      <el-col :span="13">
+        <!-- 用户信息表格 -->
+        <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <span>用户信息</span>
+            <el-button style="float: right;" size="mini" type="danger">用户中心</el-button>
+          </div>
+          <el-tooltip class="item" effect="dark" content="Top Left 提示文字" placement="top-start">
+            <el-avatar
+              shape="square"
+              :size="90"
+              :src="userInfo.avatar"
+              style="float:left;"
+              :key="1"
+            ></el-avatar>
+          </el-tooltip>
+          <div class="right" style="float:right;width:520px;">
+            <el-table :data="tableInfo" border height="120">
+              <el-table-column prop="username" label="用户账号"></el-table-column>
+              <el-table-column prop="nickname" label="用户昵称"></el-table-column>
+              <el-table-column prop="department" label="所属部门"></el-table-column>
+              <el-table-column fixed="right" prop="roles" label="用户角色" width="150"></el-table-column>
+            </el-table>
+          </div>
+        </el-card>
+        <!-- 功能列表 -->
+        <el-row style="margin-top:10px;" :gutter="10">
+          <el-card style="height:125px;">
+            <el-col :span="6">
+              <div class="grid-content bg-purple">
+                <router-link to="/products">
+                  <img
+                    src="../assets/11.png"
+                    alt
+                    width="60.8px;"
+                    style="margin:0px auto; cursor: pointer;margin-left:20px;"
+                  />
+                </router-link>
+                <div style="font-size:12px;margin-top:5px;margin-left:25px;">物资资料</div>
               </div>
-              <div class="block"></div>
-            </div>
-          </el-card>
-        </div>
-      </el-col>
+            </el-col>
+            <el-col :span="6">
+              <div class="grid-content bg-purple-light">
+                <router-link to="/stocks">
+                  <img
+                    src="../assets/22.png"
+                    alt
+                    width="60.8px;"
+                    style="cursor: pointer;margin-left:20px;"
+                  />
+                </router-link>
+                <div style="font-size:12px;margin-top:5px;margin-left:25px;">物资库存</div>
+              </div>
+            </el-col>
 
-      <el-col :span="12">
+            <el-col :span="6">
+              <div class="grid-content bg-purple-light">
+                <router-link to="/inStocks">
+                  <img
+                    src="../assets/44.png"
+                    alt
+                    width="60.8px;"
+                    style="cursor: pointer;margin-left:20px;"
+                  />
+                </router-link>
+
+                <div style="font-size:12px;margin-top:5px;margin-left:25px;">物资入库</div>
+              </div>
+            </el-col>
+            <el-col :span="6">
+              <div class="grid-content bg-purple"></div>
+
+              <img
+                src="../assets/33.png"
+                alt
+                width="60.8px;"
+                style="cursor: pointer;margin-left:20px;"
+              />
+              <div style="font-size:12px;margin-top:5px;margin-left:25px;">物资发放</div>
+            </el-col>
+          </el-card>
+        </el-row>
+        <el-card class="box-card" style="margin-top:20px;padding:0px;">
+          <!-- 用户登入报表 -->
+          <div id="loginReport" style="width: 650px;height:270px;"></div>
+        </el-card>
+      </el-col>
+      <!-- 右边部分 -->
+      <el-col :span="11">
         <div class="grid-content bg-purple">
           <el-card class="box-card">
             <div slot="header" class="clearfix">
@@ -134,22 +122,123 @@
   </div>
 </template>
 <script>
+import echarts from "echarts";
 export default {
   data() {
     return {
+      xData: [],
+      yData: [],
+      myData:[],
       value: new Date(),
       userInfo: {},
       tableInfo: []
     };
   },
+  methods: {
+    /**
+     * 加载登入报表数据
+     */
+    async loginReport() {
+      const { data: res } = await this.$http.post("loginLog/loginReport",{});
+      if (res.code !== 200) {
+        return this.$message.error("获取登入报表数据失败");
+      } else {
+        var $this = this;
+        this.xData = [];
+        this.yData = [];
+        this.myData=[];
+        res.data.forEach(element => {
+          $this.xData.push(element.days);
+          $this.yData.push(element.count);
+        });
+      }
+      this.draw();
+    },
+    async myloginReport(username) {
+      const { data: res } = await this.$http.post("loginLog/loginReport",{username:username});
+      if (res.code !== 200) {
+        return this.$message.error("获取我的登入报表数据失败");
+      } else {
+        var $this = this;
+        this.xData = [];
+        this.myData=[];
+        res.data.forEach(element => {
+          $this.xData.push(element.days);
+          $this.myData.push(element.count);
+        });
+      }
+      this.draw();
+    },
+    /**
+     * 绘制登入报表
+     */
+    draw() {
+      var myChart = echarts.init(document.getElementById("loginReport"));
+      // 指定图表的配置项和数据
+      var option = {
+        title: {
+          text: "用户登入统计"
+        },
+        toolbox: {
+          show: true,
+          feature: {
+            dataZoom: {
+              yAxisIndex: "none"
+            },
+            dataView: { readOnly: false }, //  缩放
+            magicType: { type: ["bar","line"] }, ///　　折线  直方图切换
+            restore: {}, // 重置
+            saveAsImage: {} // 导出图片
+          }
+        },
+        tooltip: {},
+        legend: {
+          data: ["全部","我"]
+        },
+        xAxis: {
+          data: this.xData
+        },
+        yAxis: {
+          type: "value"
+        },
+        series: [
+          {
+            name:"全部",
+            data: this.yData,
+            type: "bar",
+            showBackground: true,
+            animationDuration: 1000,
+            animationEasing: "cubicInOut"
+          },
+           {
+            name:"我",
+            data: this.myData,
+            type: "bar",
+            showBackground: true,
+            animationDuration: 1000,
+            animationEasing: "cubicInOut"
+          }
+        ]
+      };
+      // 使用刚指定的配置项和数据显示图表。
+      myChart.setOption(option);
+    }
+  },
+
   created() {
     this.userInfo = this.$store.state.userInfo;
+    var roles = this.userInfo.isAdmin ? "超级管理员" : this.userInfo.roles;
     this.tableInfo.push({
       username: this.userInfo.username,
       nickname: this.userInfo.nickname,
       department: this.userInfo.department,
-      roles: this.userInfo.roles,
+      roles: roles
     });
+  },
+  mounted: function() {
+    this.loginReport();
+    this.myloginReport(this.userInfo.username);
+    this.draw();
   }
 };
 </script>
