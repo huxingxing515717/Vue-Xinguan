@@ -230,7 +230,6 @@ export default {
       this.info.push(data6);
       this.info.push(data7);
       this.info.push(data8);
-      console.log(this.info);
       this.loading=false;
     }
   }

@@ -79,25 +79,34 @@
       ></el-pagination>
       <!-- 上传弹出框 -->
       <el-dialog title="上传图片附件" :visible.sync="centerDialogVisible" width="38%" center>
+
         <span>
+
           <el-upload
-            :multiple="false"
+            accept="image/*"
+            :auto-upload="false"
+            :multiple="true"
+            ref="upload"
+            :limit="10"
+            :on-exceed="exceed"
             class="upload-demo"
             drag
-            action="https://jsonplaceholder.typicode.com/posts/"
+            :headers="headerObject"
+            :on-success="handleUploadSuccess"
+            action="https://www.zykhome.club:8081/upload/image"
           >
             <i class="el-icon-upload"></i>
             <div class="el-upload__text">
               将文件拖到此处，或
               <em>点击上传</em>
             </div>
-            <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+            <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb,最多支持10张图片一起上传</div>
           </el-upload>
         </span>
-        <!-- <span slot="footer" class="dialog-footer">
-          <el-button @click="centerDialogVisible = false">取 消</el-button>
-          <el-button type="primary" @click="centerDialogVisible = false">确 定</el-button>
-        </span>-->
+       <span slot="footer" class="dialog-footer">
+          <el-button @click="closeUpload" size="small"  >取消返回</el-button>
+          <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
+        </span>
       </el-dialog>
     </el-card>
   </div>
@@ -114,10 +123,38 @@ export default {
       fits: "contain",
       queryMap: {},
       list: [],
-      srcList: []
+      srcList: [],
+      headerObject: {
+        Authorization: window.localStorage.getItem("JWT_TOKEN")
+      }, //图片上传请求头
     };
   },
   methods: {
+    /**
+     * 取消上传
+     */
+    closeUpload(){
+      this.centerDialogVisible=false;
+      this.$refs.upload.clearFiles();
+    },
+    /**
+     * 上传之后的回调
+     */
+    handleUploadSuccess(response, file, fileList){
+      if(response.code!=200){
+        this.$refs.upload.clearFiles();
+        return this.$message.error("上传失败:"+response.msg);
+      }else {
+        this.getImgeList();
+      }
+    },
+    /**
+     *
+     * 点击上传到服务器
+     */
+     submitUpload() {
+      this.$refs.upload.submit();
+    },
     /**
      * 删除图片
      */
@@ -138,7 +175,7 @@ export default {
         params: this.queryMap
       });
       if (res.code !== 200) {
-        return this.$message.error("获取附件列表失败");
+        return this.$message.error("获取附件列表失败:"+res.msg);
       } else {
         var $this = this;
         this.total = res.data.total;
@@ -165,6 +202,12 @@ export default {
     search() {
       this.queryMap.pageNum = 1;
       this.getImgeList();
+    },
+    /**
+     * 超出允许上传的时候
+     */
+    exceed(){
+      this.$message.warning("超出允许上传图片的数量");
     }
   },
   created() {

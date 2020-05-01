@@ -29,7 +29,8 @@ Vue.use(echarts)
 NProgress.configure({ ease: 'ease', speed: 500 });
 NProgress.configure({ minimum: 0.3 });
 Vue.prototype.$http = axios
-axios.defaults.baseURL = 'http://localhost:8081/'
+
+axios.defaults.baseURL = 'http://www.localhost:8081/'
 
 
 
@@ -54,9 +55,12 @@ axios.interceptors.response.use(
     NProgress.done() // 设置加载进度条(结束..)
     if (response.data.code == 4001) {//如果返回的code==4001说明token错误或者token过期
       window.localStorage.clear();
-      router.push("/login")
+      // var vm=new Vue();
+      // vm.$message.error("您的登入状态已失效,请您重新登入~")
+      return router.push("/login");
+    }else {
+        return response;
     }
-    return response;
   },
   function (error) {
     return Promise.reject(error)

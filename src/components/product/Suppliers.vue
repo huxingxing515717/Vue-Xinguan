@@ -271,7 +271,7 @@ export default {
       addRules: {
         name: [
           { required: true, message: "请输入来源名称", trigger: "blur" },
-          { min: 2, max: 10, message: "长度在 2 到 10 个字符", trigger: "blur" }
+          { min: 2, max: 50, message: "长度在 2 到 50 个字符", trigger: "blur" }
         ],
         address: [
           { required: true, message: "请输入地址信息", trigger: "blur" },

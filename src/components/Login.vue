@@ -59,20 +59,39 @@
 <el-dialog
   title="提示"
   :visible.sync="dialogVisible"
-  width="30%"
+  width="45%"
   >
   <span>《新冠-物资管理系统》 该项目后端采用SpringBoot，Shiro，通用Mapper开发API接口，
     前端使用当今较为流行的Vue.js。
   </span>
-  <p>一个可供初学者接触的前后端分离项目</p>
-  <p>项目开源：
-    <ul>
-    
-      <li>后端项目： <el-link href='https://github.com/zykzhangyukang/Xinguan'  type="primary"> 厂库链接地址</el-link></li>
-      <br>
-      <li>前端项目： <el-link href='https://github.com/zykzhangyukang/Vue-Xinguan' type="primary">    厂库链接地址</el-link></li>
-    </ul>
-  </p>
+  <el-table
+           border
+          :data="tableData"
+          style="width: 100%">
+    <el-table-column
+            prop="date"
+            label="账号"
+            width="180">
+    </el-table-column>
+    <el-table-column
+            prop="name"
+            label="密码"
+            width="180">
+    </el-table-column>
+    <el-table-column
+            prop="address"
+            label="描述">
+    </el-table-column>
+
+  </el-table>
+  <br>
+  一个可供初学者接触的前后端分离项目
+
+      后端项目： <el-link href='https://github.com/zykzhangyukang/Xinguan'  type="primary"> 厂库链接地址</el-link>
+&nbsp;&nbsp;&nbsp;
+      前端项目： <el-link href='https://github.com/zykzhangyukang/Vue-Xinguan' type="primary">    厂库链接地址</el-link>
+
+
   <p>项目不定期更新：因为我比较懒~，觉得不错的话，还望各位大佬给个Star哟~。</p>
   <span slot="footer" class="dialog-footer">
     <el-button @click="dialogVisible = false">点个赞</el-button>
@@ -123,7 +142,24 @@ export default {
           { required: true, message: "请输入用户密码", trigger: "blur" },
           { min: 6, max: 15, message: "长度在 6 到 15 个字符", trigger: "blur" }
         ]
-      }
+      },
+      tableData: [{
+        date: 'employee1',
+        name: '123456',
+        address: '系统入库操作员'
+      }, {
+        date: 'employee2',
+        name: '123456',
+        address: '系统信息维护员'
+      }, {
+        date: 'employee3',
+        name: '123456',
+        address: '系统监控员'
+      }, {
+        date: 'employee4',
+        name: '123456',
+        address: '物资审核员'
+      }]
     };
   },
   components:{

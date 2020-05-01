@@ -14,12 +14,15 @@
         <div class="grid-content bg-purple">
           <el-card>
              <el-alert
-              title="温馨提示"
+              title="勾选右侧物资后,在下方的明细中添加其入库数量"
               type="warning"
-              close-text="知道了"
-              description="勾选右侧物资后,在下方的明细中添加其入库数量"
               show-icon style="margin-bottom:20px;">
             </el-alert>
+            <el-steps align-center style="margin-bottom: 5px;" :space="200" :active="1" finish-status="success">
+              <el-step  title="进行中" ></el-step>
+              <el-step title="审核入库单"></el-step>
+              <el-step title="进入库存"></el-step>
+            </el-steps>
             <el-form
               ref="addRuleFormRef"
               :rules="addRules"
@@ -216,7 +219,7 @@ export default {
       queryMap: {
         pageNum: 1,
         pageSize: 5,
-        del:0,
+        status:0,
       },
       form: {},
       tableData: [],
@@ -247,7 +250,7 @@ export default {
               "入库商品的数量不能为空，请勾选物资后在明细中添加数量"
             );
           }
-          var res = await this.$confirm("此操作将商品入库, 是否继续?", "提示", {
+          var res = await this.$confirm("此操作将提交入库单, 是否继续?", "提示", {
             confirmButtonText: "确定",
             cancelButtonText: "取消",
             type: "warning"
@@ -263,7 +266,7 @@ export default {
               this.addRuleForm
             );
             if (res.code == 200) {
-              this.$message.success("商品入库成功");
+              this.$message.warning("物资入库进入审核状态");
               this.$router.push("/inStocks");
             } else {
               return this.$message.error("商品入库失败:" + res.msg);
@@ -275,10 +278,10 @@ export default {
       });
     },
     /**
-     * 加载商品列表
+     * 加载商品列表(可入库)
      */
     async loadTableData() {
-      const { data: res } = await this.$http.get("product/findProductList", {
+      const { data: res } = await this.$http.get("product/findProducts", {
         params: this.queryMap
       });
       if (res.code !== 200) {

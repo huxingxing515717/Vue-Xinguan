@@ -138,37 +138,36 @@ export default {
     /**
      * 加载登入报表数据
      */
-    async loginReport() {
-      const { data: res } = await this.$http.post("loginLog/loginReport",{});
+    async loginReport(username) {
+      const { data: res } = await this.$http.post("loginLog/loginReport",{username:username});
       if (res.code !== 200) {
-        return this.$message.error("获取登入报表数据失败");
+        return this.$message.error("获取登入报表数据失败:"+res.msg);
       } else {
         var $this = this;
         this.xData = [];
         this.yData = [];
         this.myData=[];
-        res.data.forEach(element => {
-          $this.xData.push(element.days);
-          $this.yData.push(element.count);
+        res.data.all.forEach(e1 => {
+          $this.xData.push(e1.days);
+          $this.yData.push(e1.count);
         });
+
+        for(var i=0;i<this.xData.length;i++){
+          var count=0;
+          for(var j=0;j<res.data.me.length;j++){
+            if($this.xData[i]===res.data.me[j].days){
+              count=res.data.me[j].count;
+              break;
+            }else {
+              count=0;
+            }
+          }
+          $this.myData.push(count);
+        }
       }
       this.draw();
     },
-    async myloginReport(username) {
-      const { data: res } = await this.$http.post("loginLog/loginReport",{username:username});
-      if (res.code !== 200) {
-        return this.$message.error("获取我的登入报表数据失败");
-      } else {
-        var $this = this;
-        this.xData = [];
-        this.myData=[];
-        res.data.forEach(element => {
-          $this.xData.push(element.days);
-          $this.myData.push(element.count);
-        });
-      }
-      this.draw();
-    },
+
     /**
      * 绘制登入报表
      */
@@ -207,7 +206,7 @@ export default {
             data: this.yData,
             type: "bar",
             showBackground: true,
-            animationDuration: 1000,
+            animationDuration: 900,
             animationEasing: "cubicInOut"
           },
            {
@@ -215,8 +214,8 @@ export default {
             data: this.myData,
             type: "bar",
             showBackground: true,
-            animationDuration: 1000,
-            animationEasing: "cubicInOut"
+            animationDuration: 900,
+            animationEasing: "cubicInOut",
           }
         ]
       };
@@ -236,8 +235,7 @@ export default {
     });
   },
   mounted: function() {
-    this.loginReport();
-    this.myloginReport(this.userInfo.username);
+    this.loginReport(this.userInfo.username);
     this.draw();
   }
 };

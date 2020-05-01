@@ -23,6 +23,8 @@ import Logs from '../components/log/Logs.vue'
 import Consumers from '../components/product/Consumers.vue'
 import Stocks from'../components/product/Stocks.vue'
 import Icons from '../components/doc/Icons.vue'
+import Rumors from '../components/doc/Rumors.vue'
+import RumorDetail from '../components/doc/RumorDetail.vue'
 
 Vue.use(VueRouter)
 
@@ -134,7 +136,15 @@ const routes = [
       path: '/attachments',
       component: Attachments
     },
-  
+    {
+      path: '/rumors',
+      component: Rumors
+    },
+    {
+      path: '/rumors/detail',
+      component: RumorDetail
+    },
+
     ]
   },
 ]

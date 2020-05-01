@@ -39,18 +39,17 @@
         </el-col>
         <el-col :span="5">
           <template>
-            <el-select @clear="search" v-model="queryMap.del" @click="search" clearable placeholder="请选择状态">
-               <el-option label="全部" selected value=""></el-option>
-               <el-option label="正常" value="0"></el-option>
-               <el-option label="回收站" value="1"></el-option>
+            <el-select  v-model="queryMap.status" @click="search"  placeholder="请选择状态">
+               <el-option label="正常" :value="0"></el-option>
+               <el-option label="回收站" :value="1"></el-option>
+               <el-option label="待审核" :value="2"></el-option>
             </el-select>
           </template>
         </el-col>
         <el-col :span="6">
-          
           <el-button type="primary" icon="el-icon-search" @click="search">查找</el-button>
           <el-button type="success" icon="el-icon-circle-plus-outline" @click="openAdd" v-hasPermission="'product:add'">添加</el-button>
-            <el-button icon="el-icon-refresh" @click="getproductList">刷新</el-button>
+          <el-button icon="el-icon-refresh" @click="getproductList">刷新</el-button>
         </el-col>
       </el-row>
 
@@ -85,18 +84,22 @@
           </el-table-column>
           <el-table-column prop="unit" label="单位" width="80"></el-table-column>
           <el-table-column prop="remark" label="备注"></el-table-column>
-          <el-table-column prop="del" label="状态" width="100">
+          <el-table-column prop="status" label="状态" width="100">
             <template slot-scope="scope">
-           <el-tag size="mini"  type="danger" effect="plain" v-if="scope.row.del==1">回收</el-tag>
-           <el-tag size="mini"  effect="plain" v-else>正常</el-tag>
+              <el-tag size="mini"  type="danger" effect="plain" v-if="scope.row.status==1">回收</el-tag>
+              <el-tag size="mini"  effect="plain" v-if="scope.row.status==0">正常</el-tag>
+              <el-tag size="mini"  effect="plain" type="warning" v-if="scope.row.status==2">审核中</el-tag>
             </template>
           </el-table-column>
           <el-table-column prop="createTime" label="创建时间"></el-table-column>
           <el-table-column label="操作">
             <template slot-scope="scope">
-              <span v-if="scope.row.del==1" >
+<!--              给管理员提供的恢复和删除-->
+
+              <span   v-if="scope.row.status==1">
                  <el-popconfirm
-                  @onConfirm="back(scope.row.id)" 
+
+                   @onConfirm="back(scope.row.id)"
                   style="margin-left:10px;"
                   confirmButtonText='好的'
                   cancelButtonText='不用了'
@@ -104,14 +107,15 @@
                   iconColor="green"
                   title="这是一段内容确定恢复吗？"
                 >
-                <el-button type="text" size="mini"  slot="reference" v-hasPermission="'product:back'" icon="el-icon-back" >恢复</el-button>
+                <el-button type="text" size="mini"  slot="reference"  icon="el-icon-back" >恢复</el-button>
                  </el-popconfirm>
-                <el-button style="margin-left:10px;"  type="text" size="mini" v-hasPermission="'product:delete'" icon="el-icon-delete" @click="del(scope.row.id)">删除</el-button>
+              <el-button style="margin-left:10px;" type="text" size="mini"  icon="el-icon-delete" @click="del(scope.row.id)">删除</el-button>
               </span>
-             <span  v-if="scope.row.del==0">
-               <el-button type="text" size="mini"  v-hasPermission="'product:edit'" icon="el-icon-edit" @click="edit(scope.row.id)">编辑</el-button>
+
+                <!--              给操作员提供的编辑和回收-->
+              <span v-if="scope.row.status==0" >
+               <el-button type="text" size="mini"   icon="el-icon-edit" @click="edit(scope.row.id)">编辑</el-button>
               <el-popconfirm
-              
               @onConfirm="remove(scope.row.id)" 
               style="margin-left:10px;"
               confirmButtonText='好的'
@@ -120,10 +124,25 @@
               iconColor="red"
               title="这是一段内容确定移入回收站吗？"
             >
-              <el-button  type="text" slot="reference" size="mini" v-hasPermission="'product:remove'" icon="el-icon-s-operation">回收站</el-button>
+              <el-button  type="text" slot="reference" size="mini"  icon="el-icon-s-operation">回收站</el-button>
             </el-popconfirm>
-             </span>
-              
+              </span>
+
+<!--          给管理员提供的审核和不通过-->
+              <span  v-if="scope.row.status==2">
+              <el-popconfirm
+              @onConfirm="publish(scope.row.id)" 
+              style="margin-left:10px;"
+              confirmButtonText='是的'
+              cancelButtonText='不用了'
+              icon="el-icon-info"
+              iconColor="blue"
+              title="确定审核通过吗？"
+            >
+              <el-button  type="text" slot="reference" size="mini"  icon="el-icon-s-operation">通过</el-button>
+            </el-popconfirm>
+              <el-button style="margin-left:10px;" type="text" size="mini"  icon="el-icon-delete" @click="del(scope.row.id)">删除</el-button>
+                </span>
             </template>
           </el-table-column>
         </el-table>
@@ -349,7 +368,9 @@ export default {
         pageSize: 4,
         name: "",
         categoryId: "",
-        supplier: ""
+        supplier: "",
+        status:0,
+
       }, //查询对象
       addRuleForm: {}, //添加表单数据
       editRuleForm: {}, //修改表单数据
@@ -400,6 +421,18 @@ export default {
     search() {
       this.queryMap.pageNum = 1;
       this.getproductList();
+    },
+    /**
+     * 物资添加审核
+     */
+    async publish(id){
+       const { data: res } = await this.$http.put("product/publish/"+id);
+      if (res.code !== 200) {
+        return this.$message.error("审核失败:"+res.msg);
+      } else {
+        this.getproductList();
+         return this.$message.success("物资已审核通过");
+      }
     },
     /**
      * 删除物资
@@ -515,7 +548,7 @@ export default {
      * 移除回收站
      */
     async remove(id){
-       const { data: res } = await this.$http.get("product/remove/"+id);
+       const { data: res } = await this.$http.put("product/remove/"+id);
       if (res.code !== 200) {
         return this.$message.error("移入回收站失败:"+res.msg);
       } else {
@@ -527,7 +560,7 @@ export default {
      * 从回收站恢复
      */
     async back(id){
-       const { data: res } = await this.$http.get("product/back/"+id);
+       const { data: res } = await this.$http.put("product/back/"+id);
       if (res.code !== 200) {
         return this.$message.error("从回收站恢复失败:"+res.msg);
       } else {

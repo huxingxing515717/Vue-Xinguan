@@ -51,8 +51,9 @@
    
       <!--右边主体-->
       <el-main v-loading="loading">
-     
+
         <router-view></router-view>
+
       </el-main>
     </el-container>
   </el-container>
