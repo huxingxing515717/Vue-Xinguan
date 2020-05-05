@@ -84,10 +84,10 @@
         <!-- <el-table-column type="selection" width="40"></el-table-column> -->
         <el-table-column label="#" prop="id" width="50"></el-table-column>
         <el-table-column prop="username" label="用户名" width="110"></el-table-column>
-        <el-table-column prop="sex" :formatter="showSex" label="性别" width="80">
+        <el-table-column prop="sex" :formatter="showSex" label="性别" width="100">
           <template slot-scope="scope">
-            <el-tag v-if="scope.row.sex==1">帅哥</el-tag>
-            <el-tag type="danger" v-else>美女</el-tag>
+            <el-tag size="mini" effect="plain" type="success" v-if="scope.row.sex==1">帅哥</el-tag>
+            <el-tag size="mini" effect="plain" type="warning" v-else>美女</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="departmentName" label="所属部门" width="180" sortable></el-table-column>
@@ -99,10 +99,9 @@
             <el-switch v-model="scope.row.status" @change="changUserStatus(scope.row)"></el-switch>
           </template>
         </el-table-column>
-        <el-table-column label="操作" fixed="right">
+        <el-table-column label="操作" >
           <template slot-scope="scope">
-            <el-button  v-hasPermission="'user:edit'" type="primary" size="mini" icon="el-icon-edit" @click="edit(scope.row.id)"></el-button>
-
+            <el-button   v-hasPermission="'user:edit'" type="primary" size="mini" icon="el-icon-edit" @click="edit(scope.row.id)"></el-button>
             <el-button v-hasPermission="'user:delete'" type="danger" size="mini" icon="el-icon-delete" @click="del(scope.row.id)"></el-button>
             <el-tooltip
               class="item"
@@ -129,7 +128,7 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="queryMap.pageNo"
-        :page-sizes="[5, 10, 20, 30]"
+        :page-sizes="[6, 10, 20, 30]"
         :page-size="queryMap.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
@@ -388,7 +387,7 @@ export default {
       //查询对象
       queryMap: {
         pageNum: 1,
-        pageSize: 5,
+        pageSize: 6,
         username: "",
         sex: "",
         nickname: ""

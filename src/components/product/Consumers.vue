@@ -27,7 +27,7 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="el-icon-search" @click="search">查询</el-button>
-          <el-button type="warning" icon="el-icon-circle-plus-outline" v-hasPermission="'consumer:add'" @click="openAdd">添加</el-button>
+          <el-button type="success" icon="el-icon-circle-plus-outline" v-hasPermission="'consumer:add'" @click="openAdd">添加</el-button>
         </el-form-item>
       </el-form>
 

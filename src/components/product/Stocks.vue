@@ -28,7 +28,7 @@
                 <el-input clearable @clear="search" v-model="queryMap.name" placeholder="物资名称"></el-input>
               </el-form-item>
               <el-form-item>
-                <el-button type="primary" @click="search">查询</el-button>
+                <el-button type="primary" @click="search" icon="el-icon-search">查询</el-button>
               </el-form-item>
             </el-form>
             <el-table height="560" border :data="tableData" style="width: 100%">

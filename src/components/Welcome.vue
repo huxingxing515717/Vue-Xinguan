@@ -207,7 +207,7 @@ export default {
             type: "bar",
             showBackground: true,
             animationDuration: 900,
-            animationEasing: "cubicInOut"
+            animationEasing: "cubicInOut",
           },
            {
             name:"我",

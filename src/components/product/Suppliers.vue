@@ -9,27 +9,38 @@
     <!-- 右侧卡片区域 -->
     <!-- 用户列表卡片区 -->
     <el-card class="box-card">
-      <el-row :gutter="20">
-        <el-col :span="8">
+      <el-form :inline="true" :model="queryMap" class="demo-form-inline">
+        <el-form-item label="省市区县">
+          <el-input v-model="queryMap.address" clearable @clear="search" placeholder="省市区县"></el-input>
+        </el-form-item>
+        <el-form-item label="联系人">
+          <el-input v-model="queryMap.contact" clearable @clear="search" placeholder="联系人"></el-input>
+        </el-form-item>
+        <el-form-item label="具体地点">
           <el-input
-            clearable
-            v-model="queryMap.name"
-            placeholder="请输入来源查询"
-            @clear="search"
-            class="input-with-select"
-          >
-            <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
-          </el-input>
-        </el-col>
-        <el-col :span="8">
+                  clearable
+                  v-model="queryMap.name"
+                  placeholder="请具体地点查询"
+                  @clear="search"
+                  class="input-with-el-select"
+          ></el-input>
+        </el-form-item>
+        <el-form-item>
+         <el-button icon="el-icon-search" @click="search" type="primary"> 查询</el-button>
           <el-button
-           v-hasPermission="'supplier:add'"
-            type="warning"
-            icon="el-icon-circle-plus-outline"
-            @click="addDialogVisible=true"
+                  v-hasPermission="'supplier:add'"
+                  type="success"
+                  icon="el-icon-circle-plus-outline"
+                  @click="addDialogVisible=true"
           >添加</el-button>
-        </el-col>
-      </el-row>
+        </el-form-item>
+      </el-form>
+
+
+
+
+
+
       <!-- 表格区域 -->
       <template>
         <el-table

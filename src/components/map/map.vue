@@ -9,22 +9,60 @@
     <el-row :gutter="10">
       <el-col :span="12">
         <div class="grid-content bg-purple">
-          <el-card>
-            <el-table  v-loading="loading" :data="info" style="width: 100%" height="520">
-              <el-table-column prop="name" label="名称" width="180"></el-table-column>
-              <el-table-column prop="value" label="数量" width="180">
-                <template slot-scope="scope">
-                  <el-tag>{{scope.row.value}}人</el-tag>
-                </template>
+
+
+            <el-tabs type="border-card">
+              <el-tab-pane label="疫情概览">
+                <el-table  v-loading="loading" border :data="info" style="width: 100%" height="495">
+                  <el-table-column prop="name" label="名称" width="150"></el-table-column>
+                  <el-table-column prop="value" label="数量" >
+                    <template slot-scope="scope">
+                      <el-tag effect="plain" size="mini">{{scope.row.value}}人</el-tag>
+                    </template>
+                  </el-table-column>
+                  <el-table-column prop="yesterday" label="较昨日" width="100">
+                    <template slot-scope="scope">
+                      <el-tag effect="plain" size="mini" v-if="scope.row.yesterday>0" type="danger">{{scope.row.yesterday}} 人</el-tag>
+                      <el-tag effect="plain" size="mini" v-else type="success">{{scope.row.yesterday}}人</el-tag>
+                    </template>
+                  </el-table-column>
+                  <el-table-column prop="name" label="时间"> <span style="font-size: 11px;">{{times}}</span></el-table-column>
+                </el-table>
+              </el-tab-pane>
+              <el-tab-pane label="TOP10城市" >
+                <el-table
+
+                        height="495"
+                        border
+                    :data="top10"
+                    style="width: 100%;font-size: 10px;">
+
+              <el-table-column
+
+                      prop="name"
+                      label="城市名称"
+                      width="180">
               </el-table-column>
-              <el-table-column prop="yesterday" label="较昨日">
-                <template slot-scope="scope">
-                  <el-tag v-if="scope.row.yesterday>0" type="danger">{{scope.row.yesterday}} 人</el-tag>
-                  <el-tag v-else type="success">{{scope.row.yesterday}}人</el-tag>
-                </template>
+              <el-table-column
+
+                      prop="ename"
+                      label="English">
               </el-table-column>
-            </el-table>
-          </el-card>
+                  <el-table-column
+                          prop="jwsrNum"
+                          label="确诊人数"
+                          width="180">
+                    <template slot-scope="scope">
+                      <el-tag v-text="scope.row.jwsrNum+'人'" size="mini" type="danger" effect="plain"></el-tag>
+                    </template>
+                  </el-table-column>
+                </el-table>
+              </el-tab-pane>
+
+            </el-tabs>
+
+
+
         </div>
       </el-col>
       <el-col :span="12">
@@ -95,7 +133,7 @@ const option = {
       /*      控制地图板块的颜色和边框*/
       itemStyle: {
         areaColor: "#83b5e7",
-        borderColor: "green" //边框颜色
+        borderColor: "yellow" //边框颜色
       },
       /*     控制鼠标滑过之后的背景色和字体颜色*/
       emphasis: {
@@ -128,7 +166,7 @@ const option = {
       //textStyle() 分段大小
       inRange: {
         symbol: "rect",
-        color: ["#ffc0b1", "#9c0505"]
+        color: ["#ffc0b1", "#970bfa"]
       },
       itemWidth: 20,
       itemHeight: 10
@@ -142,9 +180,11 @@ export default {
   name: "HelloWorld",
   data() {
     return {
+      times:'',
       loading:true,
       info: [],
-      tableData: []
+      tableData: [],
+      top10:[],
     };
   },
   mounted() {
@@ -221,6 +261,8 @@ export default {
         value: data.sustotal,
         yesterday: data.add_daily["wjw_addsus_new"]
       };
+      this.times=data.times;
+      this.top10=data.jwsrTop;
 
       this.info.push(data1);
       this.info.push(data2);

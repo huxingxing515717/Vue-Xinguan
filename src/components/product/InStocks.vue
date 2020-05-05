@@ -63,7 +63,7 @@
                     </template>
                 </el-table-column>
 
-                <el-table-column prop="productNumber" label="总数" width="70"></el-table-column>
+                <el-table-column prop="productNumber" label="总数"  width="70"></el-table-column>
                 <el-table-column prop="phone" label="联系方式" width="150"></el-table-column>
                 <el-table-column prop="createTime" label="入库时间" width="180"></el-table-column>
                 <el-table-column prop="supplierName" label="物资提供方" width="180"></el-table-column>
