@@ -9,87 +9,73 @@
     <!-- 右侧卡片区域 -->
     <!-- 用户列表卡片区 -->
     <el-card class="box-card">
-      <el-row :gutter="20">
-        <el-col :span="5">
-          <el-input
-            clearable
-             @keyup.enter.native="search"
-            v-model="queryMap.username"
-            placeholder="请输入用户名查询"
-            @clear="search"
-            class="input-with-select"
-          ></el-input>
-        </el-col>
-        <el-col :span="5">
-          <el-input
-            clearable
-            v-model="queryMap.ip"
-            placeholder="请输入IP查询"
-            @clear="search"
-             @keyup.enter.native="search"
-            class="input-with-select"
-          ></el-input>
-        </el-col>
-        <el-col :span="8">
-          <el-input
-            clearable
-            v-model="queryMap.location"
-            placeholder="请输入登入地点查询"
-            @clear="search"
-             @keyup.enter.native="search"
-            class="input-with-select"
-          >
-            <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
-          </el-input>
-        </el-col>
-        <el-button type="danger"  @click="deleteFileOrDirectory(sels)" :disabled="this.sels.length === 0" class="el-icon-delete">批量</el-button>
-      </el-row>
 
+    <el-form :inline="true" :model="queryMap" class="demo-form-inline">
+        <el-form-item label="操作人">
+          <el-input   @keyup.enter.native="search"  clearable  @clear="search" v-model="queryMap.username" placeholder="操作人"></el-input>
+        </el-form-item>
+        <el-form-item label="ip地址">
+           <el-input   @keyup.enter.native="search"  clearable  @clear="search" v-model="queryMap.ip" placeholder="ip地址"></el-input>
+        </el-form-item>
+      
+        <el-form-item label="操作位置">
+           <el-input   @keyup.enter.native="search"  clearable  @clear="search" v-model="queryMap.location" placeholder="操作位置"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary"  @click="search" icon="el-icon-search">查询</el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-button  @click="deleteFileOrDirectory(sels)" :disabled="this.sels.length === 0" class="el-icon-delete">批量</el-button>
+        </el-form-item>
+      </el-form>
+  
       <!-- 表格区域 -->
       <template>
         <el-table
           border
           stripe
           :data="LogData"
-          style="width: 100%;margin-top:20px;"
+          style="width: 100%;"
           height="460"
           @selection-change="selsChange"
         >
          <el-table-column type="selection" width="55" align="center"></el-table-column>
-          <el-table-column prop="params" type="expand" label="方法参数" width="100">
-            <template slot-scope="props">
-              <el-form label-position="left" inline class="demo-table-expand">
-                <el-form-item>
-                  <el-tag type="info">参数</el-tag>&nbsp;&nbsp;
-                  <span>{{ props.row.params }}</span>
-                </el-form-item>
-                <el-form-item>
-                  <el-tag type="success">方法</el-tag>&nbsp;&nbsp;
-                  <span>{{ props.row.method }}</span>
-                </el-form-item>
-                <el-form-item>
-                  <el-tag type="danger">时间</el-tag>&nbsp;&nbsp;
-                  <span>{{ props.row.createTime }}</span>
-                </el-form-item>
-              </el-form>
+          <el-table-column prop="operation" label="操作" width="150"></el-table-column>
+
+       <el-table-column :show-overflow-tooltip="true" prop="method" label="方法" width="180">
+
+          </el-table-column>
+
+          <el-table-column :show-overflow-tooltip="true" prop="params"  label="参数" width="100">
+            <template slot-scope="scope">
+                  <span>{{ scope.row.params }}</span>
             </template>
           </el-table-column>
-         
-          <el-table-column prop="time" label="耗时" width="150">
+
+          <el-table-column prop="time" label="耗时" width="120">
               <template slot-scope="scope">
-                   <i class="el-icon-timer"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <span  v-text="scope.row.time+'ms'"></span>
-                  
+                  <el-tag v-if="scope.row.time>=2000" size="mini" type="danger" effect="plain">
+                   {{scope.row.time+'毫秒'}}
+                  </el-tag>
+                  <el-tag v-else-if="scope.row.time>=1000&&scope.row.time<=2000" size="mini"  effect="plain">
+                   {{scope.row.time+'毫秒'}}
+                  </el-tag>
+                  <el-tag v-else size="mini" type="success" effect="plain">
+                   {{scope.row.time+'毫秒'}}
+                  </el-tag>
               </template>
           </el-table-column>
-
-          <el-table-column prop="operation" label="动作" ></el-table-column>
-
-          <el-table-column prop="username" label="操作人" ></el-table-column>
          
-          <el-table-column prop="location" label="操作地点" ></el-table-column>
-          <el-table-column prop="ip" label="IP地址" width="140"></el-table-column>
-          <el-table-column label="操作" width="100px;">
+
+         
+          <el-table-column prop="createTime" label="时间" width="180"></el-table-column>
+
+
+          <el-table-column prop="username" label="操作人" width="150" ></el-table-column>
+
+          <el-table-column prop="location" label="操作地点" width="250"></el-table-column>
+          <el-table-column prop="ip" label="IP地址" width="130"></el-table-column>
+          <el-table-column label="操作" width="100px;" fixed="right">
             <template slot-scope="scope">
               <el-button type="text" size="mini"  v-hasPermission="'log:delete'" icon="el-icon-delete" @click="del(scope.row.id)">删除</el-button>
             </template>
@@ -213,3 +199,7 @@ export default {
   }
 };
 </script>
+
+<style>
+.el-tooltip__popper{max-width: 200px;}
+</style>

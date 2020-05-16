@@ -18,10 +18,17 @@
           >
             <el-option
               v-for="department in departments"
-              :key="department.id"
               :label="department.name"
+              :key="department.id"
               :value="department.id"
-            ></el-option>
+            >
+              <span style="float: left">{{ department.name }}</span>
+              <span style="float: right; color: #8492a6; font-size: 13px">
+                <el-tag size="mini" effect="plain" type="success">
+                  {{ department.total }}人
+                </el-tag>
+              </span>
+            </el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="用户名">

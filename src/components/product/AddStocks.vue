@@ -105,20 +105,21 @@
             >
               <el-table-column type="selection" :reserve-selection="true"></el-table-column>
               <el-table-column prop="name" label="名称"></el-table-column>
-              <el-table-column prop="pnum" label="商品编号"></el-table-column>
-              <el-table-column
-                prop="imageUrl"
-                label="图片"
-                align="center"
-                width="150px"
-                padding="0px"
-              >
+              <el-table-column prop="pnum" label="商品编号" :show-overflow-tooltip='true'></el-table-column>
+              <el-table-column prop="imageUrl" label="图片" align="center" width="150px" padding="0px">
+                <!--            <template slot-scope="scope">-->
+                <!--              <img-->
+                <!--                slot="error"-->
+                <!--                :src="'https://www.zykhome.club/'+scope.row.imageUrl"-->
+                <!--                alt-->
+                <!--                style="width: 55px;height:55px"-->
+                <!--              />-->
+                <!--            </template>-->
                 <template slot-scope="scope">
-                  <img
-                    :src="'https://www.zykhome.club/'+scope.row.imageUrl"
-                    alt
-                    style="width: 50px;height:50px"
-                  />
+                  <el-popover placement="right"  trigger="hover">
+                    <img :src="'https://www.zykhome.club/'+scope.row.imageUrl"  style="height: 200px;width: 200px"/>
+                    <img  slot="reference" :src="'https://www.zykhome.club/'+scope.row.imageUrl" :alt="scope.row.imgUrl" style="height: 38px;width: 38px;cursor: pointer">
+                  </el-popover>
                 </template>
               </el-table-column>
               <el-table-column prop="model" label="型号"></el-table-column>
@@ -131,7 +132,7 @@
               @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
               :current-page="queryMap.pageNum"
-              :page-sizes="[5, 8, 16, 20]"
+              :page-sizes="[6, 8, 16, 20]"
               :page-size="queryMap.pageSize"
               layout="total, sizes, prev, pager, next"
               :total="total"
@@ -139,7 +140,7 @@
             <!-- 抽屉 -->
             <el-drawer size="50%" title="入库明细" :visible.sync="drawer" :with-header="false">
               <span>
-                <el-table :data="products" border>
+                <el-table height="700" :data="products" border>
                   <el-table-column prop="name" label="名称" width="120px;"></el-table-column>
                   <el-table-column
                     prop="imageUrl"
@@ -152,7 +153,7 @@
                       <img
                         :src="'https://www.zykhome.club/'+scope.row.imageUrl"
                         alt
-                        style="width: 50px;height:50px"
+                        style="width: 30px;height:30px"
                       />
                     </template>
                   </el-table-column>
@@ -174,7 +175,7 @@
                     <template slot-scope="scope">
                       <el-button
                         type="danger"
-                        size="small"
+                        size="mini"
                         icon="el-icon-close"
                         @click="removeItem(scope.row.id)"
                       >移除</el-button>
@@ -218,7 +219,7 @@ export default {
       total: 0,
       queryMap: {
         pageNum: 1,
-        pageSize: 5,
+        pageSize: 6,
         status:0,
       },
       form: {},

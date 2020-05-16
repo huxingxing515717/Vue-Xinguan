@@ -82,7 +82,7 @@
                 <template slot-scope="scope">
                   <el-table  :data="scope.row.city" style="width: 100%">
                     <el-table-column prop="name" label="城市/区" width="200"></el-table-column>
-                   
+
                     <el-table-column sortable label="现存确诊" prop="econNum"></el-table-column>
                     <el-table-column sortable label="累计确诊" prop="cureNum"></el-table-column>
                     <el-table-column sortable label="疑似" prop="susNum"></el-table-column>
@@ -166,7 +166,7 @@ const option = {
       //textStyle() 分段大小
       inRange: {
         symbol: "rect",
-        color: ["#ffc0b1", "#970bfa"]
+        color: ["#ffc0b1", "#e70520"]
       },
       itemWidth: 20,
       itemHeight: 10
@@ -208,7 +208,7 @@ export default {
             })); //从接口获取到数据后，使用map()函数，进行接口数据映射
             option.series[0].data = list;
             this.tableData = data.data.list;
-            console.log(this.tableData);
+
             this.mychart.setOption(option);
             //这行代码能执行的前提是DOM已经渲染完成，只有DOM已渲染完成才能echarts初始化
             this.buildTable(data); //构建表格数据

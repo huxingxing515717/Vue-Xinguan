@@ -48,20 +48,49 @@
           v-loading="loading"
           stripe
           :data="supplierData"
-          style="width: 100%;margin-top:20px;"
+          style="width: 100%;"
           height="460"
         >
         <el-table-column prop="id" type="index" label="ID" width="50"></el-table-column>
-          <el-table-column prop="address" label="省市区县"></el-table-column>
-          
-          <el-table-column prop="name" label="具体信息" width="120"></el-table-column>
-          
-          <el-table-column prop="createTime" label="创建时间" width="120"></el-table-column>
-          <el-table-column prop="email" label="邮箱"></el-table-column>
+
+          <el-table-column label="物资提供方地址">
+            <el-table-column
+                    prop="address"
+                    label="省份"
+                    width="100">
+              <template slot-scope="scope">
+                <span v-text="scope.row.address.split('/')[0]"></span>
+              </template>
+            </el-table-column>
+            <el-table-column
+                    prop="address"
+                    label="市"
+                    width="100">
+              <template slot-scope="scope">
+                <span v-text="scope.row.address.split('/')[1]"></span>
+              </template>
+            </el-table-column>
+            <el-table-column
+                    prop="address"
+                    label="区县"
+                    width="100">
+              <template slot-scope="scope">
+                <span v-text="scope.row.address.split('/')[2]"></span>
+              </template>
+            </el-table-column>
+            <el-table-column
+                    prop="name"
+                    label="地址"
+                    width="180">
+            </el-table-column>
+          </el-table-column>
+
+          <el-table-column prop="createTime" label="创建时间" width="180"></el-table-column>
+          <el-table-column prop="email" label="邮箱" width="180"></el-table-column>
           <el-table-column prop="contact" label="联系人" width="120"></el-table-column>
-          <el-table-column prop="phone" label="电话"></el-table-column>
+          <el-table-column prop="phone" label="电话" width="120"></el-table-column>
           <el-table-column prop="sort" label="排序" width="80"></el-table-column>
-          <el-table-column label="操作" fixed="right">
+          <el-table-column label="操作" fixed="right" width="180">
             <template slot-scope="scope">
               <el-button
               v-hasPermission="'supplier:edit'"
@@ -166,7 +195,7 @@
               <el-input v-model="addRuleForm.contact"></el-input>
             </el-form-item>
 
-            
+
             <el-form-item label="邮箱" prop="email">
               <el-input v-model="addRuleForm.email"></el-input>
             </el-form-item>
@@ -210,7 +239,7 @@
               <el-input v-model="editRuleForm.contact"></el-input>
             </el-form-item>
 
-          
+
             <el-form-item label="邮箱" prop="email">
               <el-input v-model="editRuleForm.email"></el-input>
             </el-form-item>

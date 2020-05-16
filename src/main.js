@@ -14,12 +14,11 @@ import 'quill/dist/quill.core.css' // import styles
 import 'quill/dist/quill.snow.css' // for snow theme
 import 'quill/dist/quill.bubble.css' // for bubble theme
 import { hasPermission } from './utils/permissionDirect'
- 
+
 const Plugins = [ hasPermission ]
 Plugins.map((plugin) => {
   Vue.use(plugin)
 })
- 
 
 
 Vue.use(VueQuillEditor)
@@ -30,6 +29,7 @@ NProgress.configure({ ease: 'ease', speed: 500 });
 NProgress.configure({ minimum: 0.3 });
 Vue.prototype.$http = axios
 
+// axios.defaults.baseURL = 'https://www.zykhome.club/api/'
 axios.defaults.baseURL = 'http://www.localhost:8081/'
 
 

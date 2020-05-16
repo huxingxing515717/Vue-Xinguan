@@ -37,8 +37,9 @@
             <el-col :span="6">
               <div class="grid-content bg-purple">
                 <router-link to="/products">
+
                   <img
-                    src="../assets/11.png"
+                    src="../assets/1.svg"
                     alt
                     width="60.8px;"
                     style="margin:0px auto; cursor: pointer;margin-left:20px;"
@@ -51,7 +52,7 @@
               <div class="grid-content bg-purple-light">
                 <router-link to="/stocks">
                   <img
-                    src="../assets/22.png"
+                    src="../assets/2.svg"
                     alt
                     width="60.8px;"
                     style="cursor: pointer;margin-left:20px;"
@@ -65,7 +66,7 @@
               <div class="grid-content bg-purple-light">
                 <router-link to="/inStocks">
                   <img
-                    src="../assets/44.png"
+                    src="../assets/3.svg"
                     alt
                     width="60.8px;"
                     style="cursor: pointer;margin-left:20px;"
@@ -79,7 +80,7 @@
               <div class="grid-content bg-purple"></div>
 
               <img
-                src="../assets/33.png"
+                src="../assets/4.svg"
                 alt
                 width="60.8px;"
                 style="cursor: pointer;margin-left:20px;"

@@ -38,12 +38,29 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item>
+                    <el-date-picker
+                            :clearable="false"
+                            v-model="range"
+                            type="datetimerange"
+                            :value-format="'yyyy-MM-dd HH:mm:ss'"
+                            :picker-options="pickerOptions"
+                            range-separator="至"
+                            start-placeholder="开始日期"
+                            end-placeholder="结束日期"
+                            align="right">
+                    </el-date-picker>
+                </el-form-item>
+                <el-form-item>
                     <el-button type="primary" icon="el-icon-search" @click="search">查询</el-button>
                 </el-form-item>
+
                 <el-form-item>
                     <router-link to="/inStocks/addStocks">
                         <el-button type="success" icon="el-icon-plus">入库</el-button>
                     </router-link>
+                </el-form-item>
+                <el-form-item>
+                    <el-button icon="el-icon-refresh" type="warning" @click="clearTime">重置</el-button>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="button" icon="el-icon-download">导出</el-button>
@@ -51,10 +68,10 @@
 
             </el-form>
             <!-- 表格区域 -->
-            <el-table v-loading="loading" :data="tableData" border style="width: 100%;height:460px;">
+            <el-table  v-loading="loading" :data="tableData" border style="width: 100%;" height="380">
                 <el-table-column label="#" prop="id" width="50"></el-table-column>
-                <el-table-column prop="inNum" label="入库单号" width="180"></el-table-column>
-                <el-table-column prop="supplier" label="物资类型" width="100">
+                <el-table-column  prop="inNum" :show-overflow-tooltip='true' label="入库单号" width="180"></el-table-column>
+                <el-table-column prop="type" label="物资类型" width="100">
                     <template slot-scope="scope">
                         <el-tag size="mini" effect="dark" type="success" v-if="scope.row.type===1">捐赠</el-tag>
                         <el-tag size="mini" effect="dark" v-else-if="scope.row.type===2">下拨</el-tag>
@@ -146,28 +163,58 @@
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
                     :current-page="queryMap.pageNum"
-                    :page-sizes="[10, 20, 30, 40]"
+                    :page-sizes="[6, 20, 30, 40]"
                     :page-size="queryMap.pageSize"
                     layout="total, sizes, prev, pager, next, jumper"
                     :total="total"
             ></el-pagination>
             <!-- 入库明细 -->
-            <el-dialog title="入库明细" :visible.sync="dialogVisible" width="50%">
-                <el-steps v-if="pStatus==0"  style="margin-left: 150px;margin-bottom: 5px;" :space="200" :active="3" finish-status="success">
+            <el-dialog title="入库明细" :visible.sync="dialogVisible"  width="60%">
+                <!--                来源信息-->
+                <el-card class="box-card" style="margin-bottom: 10px;">
+                    <div  class="text item">
+                        <el-row :gutter="20">
+                            <el-col :span="6">
+                                <div class="grid-content bg-purple">
+                                    <span style="font-size: 11px;color: #303030;">省区市:</span> &nbsp;<el-tag size="mini" effect="plain" type="danger">{{supplier.address}}</el-tag>
+                                </div>
+                            </el-col>
+                            <el-col :span="6">
+                                <div class="grid-content bg-purple">
+                                    <span style="font-size: 11px;color: #303030;">具体位置:</span> &nbsp;<el-tag size="mini" type="danger" effect="plain">{{supplier.name}}</el-tag>
+                                </div>
+                            </el-col>
+                            <el-col :span="6">
+                                <div class="grid-content bg-purple">
+                                    <span style="font-size: 11px;color: #303030;">联系人 :</span> &nbsp;<el-tag size="mini" type="danger" effect="plain">{{supplier.contact}}</el-tag>
+                                </div>
+                            </el-col>
+                            <el-col :span="6">
+                                <div class="grid-content bg-purple">
+                                    <span style="font-size: 11px;color: #303030;">电话 : </span>&nbsp;<el-tag size="mini" type="danger" effect="plain">{{supplier.phone}}</el-tag>
+                                </div>
+                            </el-col>
+
+                        </el-row>
+                    </div>
+                </el-card>
+
+                <!--                步骤条-->
+                <el-steps simple v-if="pStatus==0"  style="margin-left: 10px;margin-bottom: 5px;" :space="200" :active="3" finish-status="success">
                     <el-step title="提交入库单" ></el-step>
                     <el-step title="审核入库单"></el-step>
                     <el-step title="进入库存"></el-step>
                 </el-steps>
-                <el-steps v-if="pStatus==2"  style="margin-left: 150px;margin-bottom: 5px;" :space="200" :active="2" finish-status="success">
+                <el-steps simple v-if="pStatus==2"  style="margin-left: 10px;margin-bottom: 5px;" :space="200" :active="2" finish-status="success">
                     <el-step title="提交入库单" ></el-step>
                     <el-step title="审核入库单"></el-step>
                     <el-step title="进入库存"></el-step>
                 </el-steps>
         <span>
           <template>
-            <el-table max-height="350" border :data="detailTable" style="width: 100%">
+            <el-table height="260" max-height="350" border :data="detailTable" style="width: 100%">
               <el-table-column prop="name" label="名称"></el-table-column>
-              <el-table-column prop="pnum" label="商品编号"></el-table-column>
+              <el-table-column :show-overflow-tooltip="true" prop="pnum" label="商品编号"></el-table-column>
                <el-table-column prop="model" label="规格"></el-table-column>
               <el-table-column
                       prop="imageUrl"
@@ -187,12 +234,18 @@
                <el-table-column prop="count" label="数量"></el-table-column>
                 <el-table-column prop="unit" label="单位"></el-table-column>
             </el-table>
-
+<!--              明细分页-->
+        <el-pagination
+                style="margin-top:20px;"
+                background
+                @current-change="handleDetailSizeChange"
+                :current-page="this.pageNum"
+                :page-size="3"
+                layout="prev, pager, next,total"
+                :total="this.detailTotal">
+        </el-pagination>
           </template>
-        </span>
-                <span slot="footer" class="dialog-footer">
-          <el-button @click="dialogVisible = false">取 消</el-button>
-          <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+
         </span>
             </el-dialog>
         </el-card>
@@ -203,16 +256,89 @@
     export default {
         data() {
             return {
+                pickerOptions: {
+                    shortcuts: [
+                        {
+                            text: '今天(此刻)',
+                            onClick(picker) {
+                                const end = new Date();
+                                const start = new Date(new Date(new Date().toLocaleDateString()).getTime());
+                                picker.$emit('pick', [start, end]);
+                            }
+                        },
+                        {
+                            text: '昨天',
+                            onClick(picker) {
+                                const end = new Date(new Date(new Date().toLocaleDateString()).getTime());
+                                const start = new Date(new Date(new Date().toLocaleDateString()).getTime());
+                                start.setTime(start.getTime() - 3600 * 1000 * 24);
+                                picker.$emit('pick', [start, end]);
+                            }
+                        },
+                        {
+                        text: '最近一周',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                            picker.$emit('pick', [start, end]);
+                        }
+                    }, {
+                        text: '最近一个月',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                            picker.$emit('pick', [start, end]);
+                        }
+                    }, {
+                    }, {
+                        text: '最近两个月',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 60);
+                            picker.$emit('pick', [start, end]);
+                        }
+                    }, {
+                        text: '最近三个月',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+                            picker.$emit('pick', [start, end]);
+                        }
+                    }]
+                },
+                supplier:{},
+                detailTotal:0,
+                pageNum:1,
+                detailId:undefined,
                 loading: true,
                 detailTable: [],
                 dialogVisible: false,
                 total: 0,
-                queryMap: {pageNum: 1, pageSize: 10, status: 0},
+                queryMap: {pageNum: 1, pageSize: 6, status: 0},
                 tableData: [],
+                range:[],
                 pStatus:'',//步骤flag
             };
         },
         methods: {
+            clearTime(){
+                this.queryMap= {pageNum: 1, pageSize: 6, status: 0};
+                this.queryMap.startTime=null;
+                this.queryMap.endTime=null;
+                this.range=[];
+            },
+            /**
+             *  改变页码
+             */
+            handleDetailSizeChange(newSize) {
+                this.pageNum = newSize;
+                this.detail(this.detailId);
+            },
+
             /**
              *物资入库审核
              */
@@ -264,23 +390,18 @@
              * 查看入库单明细
              */
             async detail(id) {
-                const loading = this.$loading({
-                    lock: true,
-                    text: 'Loading',
-                    spinner: 'el-icon-loading',
-                    background: 'rgba(0, 0, 0, 0.7)'
-                });
-                const {data: res} = await this.$http.get("inStock/detail/" + id);
+                this.detailId=id;
+                const {data: res} = await this.$http.get("inStock/detail/" + id+"?pageNum="+this.pageNum);
                 if (res.code !== 200) {
                     this.$message.error("获取明细失败:" + res.msg);
-                    loading.close();
+
                 } else {
                     this.detailTable = res.data.itemVOS;
+                    this.detailTotal = res.data.total;
+                    this.supplier=res.data.supplierVO;
                     this.pStatus=res.data.status;
-                    setTimeout(() => {
-                        loading.close();
-                        this.dialogVisible = true;
-                    }, 500);
+                    this.dialogVisible = true;
+
                 }
 
             },
@@ -288,6 +409,14 @@
              * 加载表格数据
              */
             async loadTableData() {
+
+                if(this.range!=null&&this.range.length===1){
+                    this.queryMap.startTime=this.range[0];
+                }else if(this.range!=null&&this.range.length===2){
+                    this.queryMap.startTime=this.range[0];
+                    this.queryMap.endTime=this.range[1];
+                }
+
                 const {data: res} = await this.$http.get("inStock/findInStockList", {
                     params: this.queryMap
                 });

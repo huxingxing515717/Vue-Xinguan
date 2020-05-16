@@ -38,17 +38,47 @@
           v-loading="loading"
           stripe
           :data="consumerData"
-          style="width: 100%;margin-top:20px;"
+          style="width: 100%;"
           height="440"
         >
           <el-table-column prop="id" type="index" label="ID" width="50"></el-table-column>
-          <el-table-column prop="address" label="省/市/区县" width="200"></el-table-column>
-          <el-table-column prop="name" label="具体地点" width="200"></el-table-column>
-          <el-table-column prop="createTime" label="创建时间"></el-table-column>
-          <el-table-column prop="contact" label="联系人"></el-table-column>
-          <el-table-column prop="phone" label="电话"></el-table-column>
+          <el-table-column label="物资去向地址">
+            <el-table-column
+                    prop="address"
+                    label="省份"
+                    width="120">
+              <template slot-scope="scope">
+                <span v-text="scope.row.address.split('/')[0]"></span>
+              </template>
+            </el-table-column>
+            <el-table-column
+                    prop="address"
+                    label="市"
+                    width="120">
+              <template slot-scope="scope">
+                <span v-text="scope.row.address.split('/')[1]"></span>
+              </template>
+            </el-table-column>
+            <el-table-column
+                    prop="address"
+                    label="区县"
+                    width="100">
+              <template slot-scope="scope">
+                <span v-text="scope.row.address.split('/')[2]"></span>
+              </template>
+            </el-table-column>
+            <el-table-column
+                    prop="name"
+                    label="地址"
+                    width="200">
+            </el-table-column>
+          </el-table-column>
+
+          <el-table-column prop="createTime" label="创建时间" width="190"></el-table-column>
+          <el-table-column prop="contact" label="联系人" width="140"></el-table-column>
+          <el-table-column prop="phone" label="电话" width="140"></el-table-column>
           <el-table-column prop="sort" label="排序" width="100"></el-table-column>
-          <el-table-column label="操作" fixed="right">
+          <el-table-column label="操作" fixed="right" width="150">
             <template slot-scope="scope">
               <el-button v-hasPermission="'consumer:edit'" type="text" size="mini" icon="el-icon-edit" @click="edit(scope.row.id)">编辑</el-button>
 
@@ -64,7 +94,7 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="this.queryMap.pageNum"
-        :page-sizes="[7, 10, 15, 20]"
+        :page-sizes="[6, 10, 15, 20]"
         :page-size="this.queryMap.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
@@ -234,7 +264,7 @@ export default {
       addDialogVisible: false, //添加弹框是否显示
       total: 0, //总共多少条数据
       consumerData: [], //表格数据
-      queryMap: { pageNum: 1, pageSize: 7, name: "" }, //查询对象
+      queryMap: { pageNum: 1, pageSize: 6, name: "" }, //查询对象
       addRuleForm: {}, //添加表单数据
       editRuleForm: {}, //修改表单数据
       deans: [], //所有系主任

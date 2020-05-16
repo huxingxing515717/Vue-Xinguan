@@ -11,6 +11,7 @@ import ProductCategorys from '../components/product/ProductCategorys.vue'
 import Suppliers from '../components/product/Suppliers.vue'
 import Products from '../components/product/Products.vue'
 import InStocks from '../components/product/InStocks.vue'
+import OutStocks from '../components/product/OutStocks.vue'
 import AddStocks from '../components/product/AddStocks.vue'
 import GobalMap from '../components/map/map.vue'
 import Swagger from '../components/doc/Swagger.vue'
@@ -25,6 +26,9 @@ import Stocks from'../components/product/Stocks.vue'
 import Icons from '../components/doc/Icons.vue'
 import Rumors from '../components/doc/Rumors.vue'
 import RumorDetail from '../components/doc/RumorDetail.vue'
+import Health from '../components/user/Health.vue'
+import Blog from '../components/doc/Blog.vue'
+import NotFound from '../components/doc/NotFound.vue'
 
 Vue.use(VueRouter)
 
@@ -38,7 +42,7 @@ const routes = [
     name: 'Login',
     component: Login
   },
- 
+
   {
     path: '/home',
     component: Home,
@@ -65,12 +69,12 @@ const routes = [
       path: '/departments',
       component: Departments,
     }
-  
+
     , {
       path: '/productCategorys',
       component: ProductCategorys,
     }
-  
+
     , {
       path: '/suppliers',
       component: Suppliers,
@@ -91,12 +95,12 @@ const routes = [
       path: '/map',
       component: GobalMap
     },
-  
+
     {
       path: '/swagger',
       component: Swagger
     },
-  
+
     {
       path: '/druid',
       component: Druid
@@ -105,7 +109,7 @@ const routes = [
       path: '/loginLog',
       component: LoginLog
     },
-  
+
     {
       path: '/notices',
       component: Notices
@@ -118,12 +122,12 @@ const routes = [
       path: '/logs',
       component: Logs
     },
-  
+
     {
       path: '/consumers',
       component: Consumers
     },
-  
+
     {
       path: '/stocks',
       component: Stocks
@@ -144,6 +148,25 @@ const routes = [
       path: '/rumors/detail',
       component: RumorDetail
     },
+    {
+      path: '/health',
+      component: Health
+    },
+    {
+      path: '/blog',
+      component: Blog
+    },
+    {
+      path: '/outStocks',
+      component: OutStocks
+    },
+    // {
+    //   path: "/404",
+    //   component: NotFound
+    // }, {
+    //   path: "/*", // 此处需特别注意置于最底部
+    //   redirect: "/404"
+    // }
 
     ]
   },
@@ -154,6 +177,9 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
+
+import store from '../store'//引入store
+
 //路由导航守卫
 router.beforeEach((to, from, next) => {
   const token = window.localStorage.getItem('JWT_TOKEN');
@@ -166,15 +192,23 @@ router.beforeEach((to, from, next) => {
   }
   if (!token) {
     return next('/login');
-  } else {
+  }else {
     //判断是否有访问该路径的权限
-    // const urls = window.localStorage.getItem('urls');
-    // if(urls.indexOf(to.path) > -1){
-    //   //则包含该元素
-    //   return next();
+    // const urls =store.state.userInfo.url;
+    //
+    // //如果是管理员
+    // if(store.state.userInfo.isAdmin){
+    //   return next('/welcome');
     // }else{
-    //   alert("非法访问");
+    //   if(urls.indexOf(to.path) > -1){
+    //     //则包含该元素
+    //     window.sessionStorage.setItem("activePath", to.path);
+    //     return next();
+    //   }else{
+    //     alert("无法访问");
+    //   }
     // }
+
     window.sessionStorage.setItem("activePath", to.path);
     return next();
   }

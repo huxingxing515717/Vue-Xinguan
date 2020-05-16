@@ -50,6 +50,12 @@
           <el-table-column prop="id" type="index" label="ID" width="50"></el-table-column>
           <el-table-column prop="phone" label="办公电话" width="180"></el-table-column>
           <el-table-column prop="name" label="部门名" width="120"></el-table-column>
+          <el-table-column prop="total" label="人数" width="100">
+            <template slot-scope="scope">
+              <el-tag effect="plain" v-text="scope.row.total+'人'" size="mini">
+              </el-tag>
+            </template>
+          </el-table-column>
           <el-table-column prop="createTime" label="创建时间"></el-table-column>
           <el-table-column prop="modifiedTime" label="修改时间"></el-table-column>
           <el-table-column prop="mgrName" label="部门主任" width="140"></el-table-column>
@@ -58,7 +64,7 @@
             <template slot-scope="scope">
               <el-button
                 v-hasPermission="'department:edit'"
-                type="primary"
+                type="text"
                 size="mini"
                 icon="el-icon-edit"
                 @click="edit(scope.row.id)"
@@ -66,7 +72,7 @@
 
               <el-button
                 v-hasPermission="'department:delete'"
-                type="danger"
+                type="text"
                 size="mini"
                 icon="el-icon-delete"
                 @click="del(scope.row.id)"

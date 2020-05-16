@@ -14,7 +14,7 @@
     title="友情提示:  商品的分类只支持三级分类"
     type="warning">
   </el-alert>
-      </el-container> 
+      </el-container>
       <el-row :gutter="6">
         <el-col :span="5">
           <el-cascader
@@ -24,7 +24,6 @@
             v-model="categorykeys"
             :props="searchSelectProps"
             :options="catetorys"
-            @clear="search"
             clearable
           ></el-cascader>
         </el-col>
@@ -65,18 +64,28 @@
         >
           <el-table-column prop="id" type="index" label="ID"></el-table-column>
 
-          <el-table-column prop="name" label="物资名称"></el-table-column>
           <el-table-column prop="imageUrl" label="图片" align="center" width="150px" padding="0px">
+            <!--            <template slot-scope="scope">-->
+            <!--              <img-->
+            <!--                slot="error"-->
+            <!--                :src="'https://www.zykhome.club/'+scope.row.imageUrl"-->
+            <!--                alt-->
+            <!--                style="width: 55px;height:55px"-->
+            <!--              />-->
+            <!--            </template>-->
             <template slot-scope="scope">
-              <img
-                slot="error"
-                :src="'https://www.zykhome.club/'+scope.row.imageUrl"
-                alt
-                style="width: 50px;height:50px"
-              />
+              <el-popover placement="right"  trigger="hover">
+                <img :src="'https://www.zykhome.club/'+scope.row.imageUrl"  style="height: 200px;width: 200px"/>
+                <img  slot="reference" :src="'https://www.zykhome.club/'+scope.row.imageUrl" :alt="scope.row.imgUrl" style="height: 38px;width: 38px;cursor: pointer">
+              </el-popover>
             </template>
           </el-table-column>
-          <el-table-column prop="pnum" label="物资编号"></el-table-column>
+
+          <el-table-column prop="name" label="物资名称"></el-table-column>
+
+
+
+          <el-table-column prop="pnum" :show-overflow-tooltip='true' label="物资编号"></el-table-column>
           <el-table-column label="物资规格" width="100">
             <template slot-scope="scope">
               <el-tag type="success" size="mini" closable v-text="scope.row.model"></el-tag>
@@ -116,7 +125,7 @@
               <span v-if="scope.row.status==0" >
                <el-button type="text" size="mini"   icon="el-icon-edit" @click="edit(scope.row.id)">编辑</el-button>
               <el-popconfirm
-              @onConfirm="remove(scope.row.id)" 
+              @onConfirm="remove(scope.row.id)"
               style="margin-left:10px;"
               confirmButtonText='好的'
               cancelButtonText='不用了'
@@ -131,7 +140,7 @@
 <!--          给管理员提供的审核和不通过-->
               <span  v-if="scope.row.status==2">
               <el-popconfirm
-              @onConfirm="publish(scope.row.id)" 
+              @onConfirm="publish(scope.row.id)"
               style="margin-left:10px;"
               confirmButtonText='是的'
               cancelButtonText='不用了'
@@ -154,7 +163,7 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="this.queryMap.pageNum"
-        :page-sizes="[4,6, 10, 15, 20]"
+        :page-sizes="[5, 10, 15, 20]"
         :page-size="this.queryMap.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
@@ -365,7 +374,7 @@ export default {
       productData: [], //表格数据
       queryMap: {
         pageNum: 1,
-        pageSize: 4,
+        pageSize: 5,
         name: "",
         categoryId: "",
         supplier: "",
@@ -422,6 +431,7 @@ export default {
       this.queryMap.pageNum = 1;
       this.getproductList();
     },
+
     /**
      * 物资添加审核
      */
@@ -520,7 +530,7 @@ export default {
      * 添加物资
      */
     add() {
-     
+
       this.$refs.addRuleFormRef.validate(async valid => {
         if (!valid) {
           return;
@@ -659,7 +669,6 @@ export default {
       }
       str = str.substring(0, str.length - 1);
       this.queryMap.categorys = str;
-      this.getproductList();
     }
   },
   created() {

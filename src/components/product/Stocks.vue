@@ -23,17 +23,46 @@
       <el-col :span="11">
         <div class="grid-content bg-purple-dark">
           <el-card class="box-card">
-            <el-form :inline="true" :model="queryMap" class="demo-form-inline">
-              <el-form-item label="物资名称">
-                <el-input clearable @clear="search" v-model="queryMap.name" placeholder="物资名称"></el-input>
-              </el-form-item>
+            <el-form size="mini" :inline="true" :model="queryMap" class="demo-form-inline">
               <el-form-item>
-                <el-button type="primary" @click="search" icon="el-icon-search">查询</el-button>
+                <el-cascader
+                        placeholder="请选择分类查询"
+                        :change-on-select="true"
+                        @change="selectChange"
+                        v-model="categorykeys"
+                        :props="searchSelectProps"
+                        :options="catetorys"
+                        clearable
+                ></el-cascader>
+              </el-form-item>
+
+              <el-form-item>
+                <el-input clearable @clear="search" v-model="queryMap.name" placeholder="物资名称" ></el-input>
+              </el-form-item>
+
+              <el-form-item>
+                <el-button size="mini" type="primary" @click="search" icon="el-icon-search">查询</el-button>
               </el-form-item>
             </el-form>
-            <el-table height="560" border :data="tableData" style="width: 100%">
-              <el-table-column prop="name" label="名称" width="180"></el-table-column>
-              <el-table-column prop="model" label="规格" width="150"></el-table-column>
+            <el-table height="590" border :data="tableData" style="width: 100%">
+              <el-table-column prop="imageUrl" label="图片" align="center" width="80" padding="0px">
+                <!--            <template slot-scope="scope">-->
+                <!--              <img-->
+                <!--                slot="error"-->
+                <!--                :src="'https://www.zykhome.club/'+scope.row.imageUrl"-->
+                <!--                alt-->
+                <!--                style="width: 55px;height:55px"-->
+                <!--              />-->
+                <!--            </template>-->
+                <template slot-scope="scope">
+                  <el-popover placement="right"  trigger="hover">
+                    <img :src="'https://www.zykhome.club/'+scope.row.imageUrl"  style="height: 200px;width: 200px"/>
+                    <img  slot="reference" :src="'https://www.zykhome.club/'+scope.row.imageUrl" :alt="scope.row.imgUrl" style="height: 29px;width: 29px;cursor: pointer">
+                  </el-popover>
+                </template>
+              </el-table-column>
+              <el-table-column prop="name" label="名称" width="140"></el-table-column>
+              <el-table-column prop="model" label="规格" width="120"></el-table-column>
               <el-table-column prop="stock" label="库存">
                   <template slot-scope="scope">
                       <el-tag size="mini" closable>{{scope.row.stock}}</el-tag>
@@ -47,8 +76,8 @@
               background
               @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
-              :current-page="queryMap.pageNo"
-              layout="total, sizes, prev, pager, next, jumper"
+              :current-page="queryMap.pageNum"
+              layout="total, prev, pager, next, jumper"
               :total="total"
             ></el-pagination>
           </el-card>
@@ -63,9 +92,18 @@ import echarts from "echarts";
 export default {
   data() {
     return {
+      catetorys: [], //类别选择
+      searchSelectProps: {
+        expandTrigger: "hover",
+        value: "id",
+        label: "name",
+        children: "children",
+        checkStrictly: true
+      }, //级联搜索选择器配置项
+      categorykeys: [] ,
       total: 0,
       tableData: [],
-      queryMap: { pageSize: 10, pageNo: 1 },
+      queryMap: { pageSize: 9, pageNum: 1 },
       xData: [],
       yData: [],
       legendData: [], //饼图存放物资名称
@@ -78,7 +116,7 @@ export default {
      * 搜索
      */
     search() {
-      this.queryMap.pageNo = 1;
+      this.queryMap.pageNum = 1;
       this.getStockList();
     },
     /**
@@ -175,7 +213,7 @@ export default {
                     }
                 },
           },
-          
+
         ]
       };
 
@@ -256,10 +294,35 @@ export default {
         //重新绘制表格
         this.drawRound();
       }
-    }
+    },
+    /**
+     * 分类搜索改变时
+     */
+    selectChange() {
+      var str = "";
+      for (var i = 0; i < this.categorykeys.length; i++) {
+        str += this.categorykeys[i] + ",";
+      }
+      str = str.substring(0, str.length - 1);
+      this.queryMap.categorys = str;
+    },
+    /**
+     * 加载物资类别
+     */
+    async getCatetorys() {
+      const { data: res } = await this.$http.get(
+              "productCategory/categoryTree"
+      );
+      if (res.code !== 200) {
+        return this.$message.error("获取物资类别失败");
+      } else {
+        this.catetorys = res.data.rows;
+      }
+    },
   },
   created() {
     this.getStockList();
+    this.getCatetorys();
     this.findAllProductStocks();
   },
   mounted: function() {
