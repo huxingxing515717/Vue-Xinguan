@@ -45,8 +45,9 @@
             </el-select>
           </template>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="8">
           <el-button type="primary" icon="el-icon-search" @click="search">查找</el-button>
+          <el-button icon="el-icon-refresh-right" type="warning" @click="resetForm">重置</el-button>
           <el-button type="success" icon="el-icon-circle-plus-outline" @click="openAdd" v-hasPermission="'product:add'">添加</el-button>
           <el-button icon="el-icon-refresh" @click="getproductList">刷新</el-button>
         </el-col>
@@ -417,6 +418,17 @@ export default {
     };
   },
   methods: {
+    //重置查询表单
+    resetForm(){
+      this.queryMap= {
+        pageNum: 1,
+                pageSize: 5,
+                name: "",
+                categoryId: "",
+                supplier: "",
+                status:0,
+      };
+    },
     /**
      * 打开添加物资弹框
      */

@@ -11,7 +11,7 @@
             <!-- 搜索部分 -->
             <el-form :inline="true" :model="queryMap" class="demo-form-inline">
                 <el-form-item label="类型">
-                    <el-select @change="search" clearable @clear="search" v-model="queryMap.type" placeholder="请选择入库类型">
+                    <el-select  clearable  v-model="queryMap.type" placeholder="请选择入库类型">
                         <el-option label="捐赠" value="1"></el-option>
                         <el-option label="下拨" value="2"></el-option>
                         <el-option label="采购" value="3"></el-option>
@@ -31,7 +31,7 @@
                     </el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-select v-model="queryMap.status" @click="search" placeholder="请选择状态">
+                    <el-select    v-model="queryMap.status" placeholder="请选择状态">
                         <el-option label="已入库" :value="0"></el-option>
                         <el-option label="回收站" :value="1"></el-option>
                         <el-option label="待审核" :value="2"></el-option>
@@ -53,37 +53,35 @@
                 <el-form-item>
                     <el-button type="primary" icon="el-icon-search" @click="search">查询</el-button>
                 </el-form-item>
-
+                <el-form-item>
+                    <el-button icon="el-icon-refresh" type="warning" @click="clearTime">重置</el-button>
+                </el-form-item>
                 <el-form-item>
                     <router-link to="/inStocks/addStocks">
                         <el-button type="success" icon="el-icon-plus">入库</el-button>
                     </router-link>
                 </el-form-item>
-                <el-form-item>
-                    <el-button icon="el-icon-refresh" type="warning" @click="clearTime">重置</el-button>
-                </el-form-item>
+
                 <el-form-item>
                     <el-button type="button" icon="el-icon-download">导出</el-button>
                 </el-form-item>
 
             </el-form>
             <!-- 表格区域 -->
-            <el-table  v-loading="loading" :data="tableData" border style="width: 100%;" height="380">
+            <el-table  v-loading="loading" :data="tableData" border style="width: 100%;" height="395">
                 <el-table-column label="#" prop="id" width="50"></el-table-column>
                 <el-table-column  prop="inNum" :show-overflow-tooltip='true' label="入库单号" width="180"></el-table-column>
                 <el-table-column prop="type" label="物资类型" width="100">
                     <template slot-scope="scope">
-                        <el-tag size="mini" effect="dark" type="success" v-if="scope.row.type===1">捐赠</el-tag>
-                        <el-tag size="mini" effect="dark" v-else-if="scope.row.type===2">下拨</el-tag>
-                        <el-tag size="mini" effect="dark" type="danger" v-else-if="scope.row.type===3">采购</el-tag>
-                        <el-tag size="mini" effect="dark" type="warning" v-else>借用</el-tag>
+                        <el-tag  type="success" v-if="scope.row.type===1">捐赠</el-tag>
+                        <el-tag  v-else-if="scope.row.type===2">下拨</el-tag>
+                        <el-tag  type="danger" v-else-if="scope.row.type===3">采购</el-tag>
+                        <el-tag  type="warning" v-else>借用</el-tag>
                     </template>
                 </el-table-column>
 
-                <el-table-column prop="productNumber" label="总数"  width="70"></el-table-column>
+                <el-table-column prop="productNumber" label="数量" sortable width="100"></el-table-column>
                 <el-table-column prop="phone" label="联系方式" width="150"></el-table-column>
-                <el-table-column prop="createTime" label="入库时间" width="180"></el-table-column>
-                <el-table-column prop="supplierName" label="物资提供方" width="180"></el-table-column>
                 <el-table-column prop="status" label="状态" width="100">
                     <template slot-scope="scope">
                         <el-tag size="mini" type="danger" effect="plain" v-if="scope.row.status==1">回收</el-tag>
@@ -91,7 +89,10 @@
                         <el-tag size="mini" effect="plain" type="warning" v-if="scope.row.status==2">审核中</el-tag>
                     </template>
                 </el-table-column>
+
                 <el-table-column prop="operator" label="操作员" width="180"></el-table-column>
+                <el-table-column prop="supplierName" label="物资提供方" width="180"></el-table-column>
+                <el-table-column prop="createTime" label="入库时间" sortable width="180"></el-table-column>
                 <el-table-column label="操作" fixed="right" width="200">
                     <template slot-scope="scope">
                         <el-button icon="el-icon-view"  @click="detail(scope.row.id)"
@@ -163,35 +164,35 @@
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
                     :current-page="queryMap.pageNum"
-                    :page-sizes="[6, 20, 30, 40]"
+                    :page-sizes="[5, 20, 30, 40]"
                     :page-size="queryMap.pageSize"
                     layout="total, sizes, prev, pager, next, jumper"
                     :total="total"
             ></el-pagination>
             <!-- 入库明细 -->
-            <el-dialog title="入库明细" :visible.sync="dialogVisible"  width="60%">
+            <el-dialog title="入库明细" :visible.sync="dialogVisible" @close="closeDetail" width="60%">
                 <!--                来源信息-->
                 <el-card class="box-card" style="margin-bottom: 10px;">
                     <div  class="text item">
                         <el-row :gutter="20">
                             <el-col :span="6">
                                 <div class="grid-content bg-purple">
-                                    <span style="font-size: 11px;color: #303030;">省区市:</span> &nbsp;<el-tag size="mini" effect="plain" type="danger">{{supplier.address}}</el-tag>
+                                    <span style="font-size: 11px;color: #303030;">省区市:</span> &nbsp;<el-tag size="mini" >{{supplier.address}}</el-tag>
                                 </div>
                             </el-col>
                             <el-col :span="6">
                                 <div class="grid-content bg-purple">
-                                    <span style="font-size: 11px;color: #303030;">具体位置:</span> &nbsp;<el-tag size="mini" type="danger" effect="plain">{{supplier.name}}</el-tag>
+                                    <span style="font-size: 11px;color: #303030;">具体位置:</span> &nbsp;<el-tag size="mini" >{{supplier.name}}</el-tag>
                                 </div>
                             </el-col>
                             <el-col :span="6">
                                 <div class="grid-content bg-purple">
-                                    <span style="font-size: 11px;color: #303030;">联系人 :</span> &nbsp;<el-tag size="mini" type="danger" effect="plain">{{supplier.contact}}</el-tag>
+                                    <span style="font-size: 11px;color: #303030;">联系人 :</span> &nbsp;<el-tag size="mini"  >{{supplier.contact}}</el-tag>
                                 </div>
                             </el-col>
                             <el-col :span="6">
                                 <div class="grid-content bg-purple">
-                                    <span style="font-size: 11px;color: #303030;">电话 : </span>&nbsp;<el-tag size="mini" type="danger" effect="plain">{{supplier.phone}}</el-tag>
+                                    <span style="font-size: 11px;color: #303030;">电话 : </span>&nbsp;<el-tag size="mini" >{{supplier.phone}}</el-tag>
                                 </div>
                             </el-col>
 
@@ -318,15 +319,21 @@
                 detailTable: [],
                 dialogVisible: false,
                 total: 0,
-                queryMap: {pageNum: 1, pageSize: 6, status: 0},
+                queryMap: {pageNum: 1, pageSize: 5, status: 0},
                 tableData: [],
                 range:[],
                 pStatus:'',//步骤flag
             };
         },
         methods: {
+            /**
+             * 关闭明细
+             */
+            closeDetail(){
+                this.pageNum=1;
+            },
             clearTime(){
-                this.queryMap= {pageNum: 1, pageSize: 6, status: 0};
+                this.queryMap= {pageNum: 1, pageSize: 5, status: 0};
                 this.queryMap.startTime=null;
                 this.queryMap.endTime=null;
                 this.range=[];
@@ -458,5 +465,3 @@
     };
 </script>
 
-<style>
-</style>

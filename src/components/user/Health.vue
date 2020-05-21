@@ -6,7 +6,7 @@
             <el-breadcrumb-item>健康报备</el-breadcrumb-item>
             <el-breadcrumb-item>每日打卡</el-breadcrumb-item>
         </el-breadcrumb>
-        <!--       打卡部分-->
+        <!--       打卡部分 style="height: 590px;"-->
         <el-card style="height: 590px;">
             <el-alert
                     :closable="false"
@@ -17,8 +17,12 @@
                     type="success">
             </el-alert>
             <h5 style="margin: 0px;padding: 0px;">基本信息  <div style="float: right;margin-bottom: 10px;vertical-align: center;">
-                <el-button @click="OpenHistory"  icon="el-icon-search" size="mini" type="warning">签到记录</el-button></div></h5>
-<!--            抽屉-->
+            <el-button @click="OpenHistory"   size="mini" type="warning">签到记录</el-button>
+                <el-button style="margin-top: 5px;" type="primary"   size="mini" @click="onSubmit" v-if="!reported">立即打卡</el-button>
+                <el-button @click="reset"  size="mini" v-if="!reported">重置</el-button>
+            </div></h5>
+
+            <!--            抽屉-->
             <el-drawer
                     :with-header="false"
                     :visible.sync="drawer"
@@ -213,8 +217,6 @@
                     </el-col>
                 </el-row>
 
-                <el-button style="margin-top: 5px;" type="primary" @click="onSubmit" :disabled="reported">立即打卡</el-button>
-                <el-button @click="reset" :disabled="reported">重置</el-button>
             </el-form>
 
         </el-card>

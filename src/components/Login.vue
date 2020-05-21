@@ -1,6 +1,6 @@
 <template>
   <div id="login">
-
+    <h1 style="position: absolute;color: #fff;left: 50%;transform: translateX(-50%); top: -110px;">新冠-物资管理系统</h1>
     <el-form
       :model="userLoginForm"
       :rules="loginRules"
@@ -88,7 +88,7 @@ export default {
   data() {
     return {
       isShow: false,
-      dialogVisible: true,
+      dialogVisible: false,
       imgCode: undefined,
       //表单用户登入数据
       loading: false,
@@ -219,8 +219,8 @@ export default {
   position: relative;
   -webkit-border-radius: 5px;
   border-radius: 5px;
-  margin: 180px auto;
-  width: 350px;
+  margin: 190px auto;
+  width: 370px;
   padding: 40px 35px 15px;
   background: #fff;
   border: 1px solid #eaeaea;

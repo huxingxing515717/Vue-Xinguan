@@ -23,9 +23,9 @@
              <span type="danger"  @click="toWelcome"><span class="el-icon-house"></span> &nbsp;系统首页</span>
           </el-dropdown-item>
           <el-dropdown-item>
-           
+
             <span type="danger" @click="logout"><span class="el-icon-switch-button"></span> &nbsp;退出登入</span>
-           
+
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -48,7 +48,7 @@
           <Menu  :menuList="this.menuList"></Menu>
         </el-menu>
       </el-aside>
-   
+
       <!--右边主体-->
       <el-main v-loading="loading">
 
@@ -70,7 +70,7 @@ export default {
       isOpen: false,
       menuList: {},
       userInfo: {},
-     
+
     };
   },
   components: {
@@ -131,7 +131,7 @@ export default {
     toggleMenu() {
       this.isOpen = !this.isOpen;
     },
-  
+
   },
   mounted() {
     this.getUserInfo();
@@ -173,7 +173,7 @@ export default {
   height: 100% !important;
 }
 .toggle-btn {
-  background-color: #6b37ff;
+  background-color: #409EFF !important;
   font-size: 10px;
   line-height: 24px;
   color: #fff;

@@ -57,7 +57,7 @@
             <el-table-column
                     prop="address"
                     label="省份"
-                    width="100">
+                    width="130">
               <template slot-scope="scope">
                 <span v-text="scope.row.address.split('/')[0]"></span>
               </template>
@@ -118,12 +118,12 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="this.queryMap.pageNum"
-        :page-sizes="[7, 10, 15, 20]"
+        :page-sizes="[6, 10, 15, 20]"
         :page-size="this.queryMap.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
       ></el-pagination>
-      <!-- 系别添加弹出框 -->
+      <!-- 来源添加弹出框 -->
       <el-dialog title="添加来源" :visible.sync="addDialogVisible" width="50%" @close="closeAddDialog">
         <span>
           <el-form
@@ -304,7 +304,7 @@ export default {
       addDialogVisible: false, //添加弹框是否显示
       total: 0, //总共多少条数据
       supplierData: [], //表格数据
-      queryMap: { pageNum: 1, pageSize: 7, name: "" }, //查询对象
+      queryMap: { pageNum: 1, pageSize: 6, name: "" }, //查询对象
       addRuleForm: {}, //添加表单数据
       editRuleForm: {}, //修改表单数据
       deans: [], //所有系主任

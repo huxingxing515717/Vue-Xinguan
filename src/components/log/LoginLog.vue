@@ -9,40 +9,24 @@
     <!-- 右侧卡片区域 -->
     <!-- 用户列表卡片区 -->
     <el-card class="box-card">
-      <el-row :gutter="20">
-        <el-col :span="5">
-          <el-input
-            clearable
-            v-model="queryMap.username"
-            placeholder="请输入用户名查询"
-            @clear="search"
-             @keyup.enter.native="search"
-            class="input-with-select"
-          ></el-input>
-        </el-col>
-        <el-col :span="5">
-          <el-input
-            clearable
-            v-model="queryMap.ip"
-            placeholder="请输入IP查询"
-            @clear="search"
-             @keyup.enter.native="search"
-            class="input-with-select"
-          ></el-input>
-        </el-col>
-        <el-col :span="8">
-          <el-input
-            clearable
-            v-model="queryMap.location"
-            placeholder="请输入登入地点查询"
-            @clear="search"
-            class="input-with-select"
-          >
-            <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
-          </el-input>
-        </el-col>
-        <el-button @click="deleteFileOrDirectory(sels)" icon="el-icon-delete" type="danger" :disabled="this.sels.length === 0">批量</el-button>
-      </el-row>
+      <el-form :inline="true" :model="queryMap" class="demo-form-inline">
+        <el-form-item label="用户名">
+          <el-input v-model="queryMap.username" placeholder="请输入用户名查询"></el-input>
+        </el-form-item>
+        <el-form-item label="IP地址">
+          <el-input v-model="queryMap.ip" placeholder="请输入IP查询"></el-input>
+        </el-form-item>
+        <el-form-item label="登入地址">
+          <el-input v-model="queryMap.location" placeholder="请输入登入地址查询"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button  icon="el-icon-search" @click="search" type="primary">查询</el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-button @click="deleteFileOrDirectory(sels)" icon="el-icon-delete"  :disabled="this.sels.length === 0">批量</el-button>
+        </el-form-item>
+      </el-form>
+
 
       <!-- 表格区域 -->
       <template>
@@ -50,7 +34,7 @@
           border
           stripe
           :data="LoginLogData"
-          style="width: 100%;margin-top:20px;"
+          style="width: 100%;"
           height="460"
           @selection-change="selsChange"
         >

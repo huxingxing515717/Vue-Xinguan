@@ -17,7 +17,7 @@
         <el-form-item label="ip地址">
            <el-input   @keyup.enter.native="search"  clearable  @clear="search" v-model="queryMap.ip" placeholder="ip地址"></el-input>
         </el-form-item>
-      
+
         <el-form-item label="操作位置">
            <el-input   @keyup.enter.native="search"  clearable  @clear="search" v-model="queryMap.location" placeholder="操作位置"></el-input>
         </el-form-item>
@@ -28,7 +28,7 @@
           <el-button  @click="deleteFileOrDirectory(sels)" :disabled="this.sels.length === 0" class="el-icon-delete">批量</el-button>
         </el-form-item>
       </el-form>
-  
+
       <!-- 表格区域 -->
       <template>
         <el-table
@@ -52,29 +52,25 @@
             </template>
           </el-table-column>
 
-          <el-table-column prop="time" label="耗时" width="120">
+          <el-table-column prop="time" label="耗时" width="120" sortable>
               <template slot-scope="scope">
-                  <el-tag v-if="scope.row.time>=2000" size="mini" type="danger" effect="plain">
+                  <el-tag v-if="scope.row.time>=2000" size="mini" type="danger" >
                    {{scope.row.time+'毫秒'}}
                   </el-tag>
-                  <el-tag v-else-if="scope.row.time>=1000&&scope.row.time<=2000" size="mini"  effect="plain">
+                  <el-tag size="mini" v-else-if="scope.row.time>=1000&&scope.row.time<=2000" >
                    {{scope.row.time+'毫秒'}}
                   </el-tag>
-                  <el-tag v-else size="mini" type="success" effect="plain">
+                  <el-tag v-else  type="success" size="mini">
                    {{scope.row.time+'毫秒'}}
                   </el-tag>
               </template>
           </el-table-column>
-         
-
-         
-          <el-table-column prop="createTime" label="时间" width="180"></el-table-column>
-
-
+            <el-table-column prop="location" label="操作地点" width="240"></el-table-column>
+            <el-table-column prop="ip" label="IP地址" width="160"></el-table-column>
           <el-table-column prop="username" label="操作人" width="150" ></el-table-column>
+            <el-table-column prop="createTime" label="时间" sortable width="180"></el-table-column>
 
-          <el-table-column prop="location" label="操作地点" width="250"></el-table-column>
-          <el-table-column prop="ip" label="IP地址" width="130"></el-table-column>
+
           <el-table-column label="操作" width="100px;" fixed="right">
             <template slot-scope="scope">
               <el-button type="text" size="mini"  v-hasPermission="'log:delete'" icon="el-icon-delete" @click="del(scope.row.id)">删除</el-button>

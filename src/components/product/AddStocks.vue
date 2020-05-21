@@ -10,69 +10,200 @@
     <!-- 卡片区域 -->
 
     <el-row :gutter="20">
-      <el-col :span="10">
+      <el-col :span="11">
         <div class="grid-content bg-purple">
           <el-card>
-             <el-alert
-              title="勾选右侧物资后,在下方的明细中添加其入库数量"
-              type="warning"
-              show-icon style="margin-bottom:20px;">
-            </el-alert>
-            <el-steps align-center style="margin-bottom: 5px;" :space="200" :active="1" finish-status="success">
-              <el-step  title="进行中" ></el-step>
-              <el-step title="审核入库单"></el-step>
-              <el-step title="进入库存"></el-step>
+
+            <el-steps style="margin-bottom: 20px;" :active="1" simple>
+              <el-step title="填写" icon="el-icon-edit"></el-step>
+              <el-step title="审核" icon="el-icon-postcard"></el-step>
+              <el-step title="入库" icon="el-icon-set-up"></el-step>
             </el-steps>
             <el-form
+                    size="mini"
               ref="addRuleFormRef"
               :rules="addRules"
-              style="height:460px;"
               :model="addRuleForm"
               label-width="80px"
             >
-              <el-form-item label="物资来源" prop="supplierId">
-                <el-select
-                  style="width:100%;"
-                  filterable
-                  v-model="addRuleForm.supplierId"
-                  placeholder="请选择"
-                >
-                  <el-option
-                    v-for="item in suppliers"
-                    :key="item.id"
-                    :label="item.name"
-                    :value="item.id"
-                  ></el-option>
-                </el-select>
+              <el-form-item label="添加方式" >
+                <el-col :span="24"><div class="grid-content bg-purple">
+                  <el-radio border size="mini"  @change="existenceChange(existence)" v-model="existence"  :label="0">新增来源</el-radio>
+                  <el-radio border size="mini" @change="existenceChange(existence)"  v-model="existence" :label="1">已知来源</el-radio>
+                </div></el-col>
               </el-form-item>
+
+              <el-form-item v-if="existence==1" label="物资来源" prop="supplierId">
+
+                <el-col :span="12">
+                  <div class="grid-content bg-purple">
+
+                  <el-select
+                          v-if="existence==1"
+                          style="width:100%;"
+                          filterable
+                          @change="supplerSelectChange(addRuleForm.supplierId)"
+                          v-model="addRuleForm.supplierId"
+                          placeholder="选择已存在来源"
+                  >
+                    <el-option
+                            v-for="item in suppliers"
+                            :key="item.id"
+                            :label="item.name"
+                            :value="item.id"
+                    ></el-option>
+                  </el-select>
+                </div>
+                </el-col>
+              </el-form-item>
+
+
               <el-form-item label="入库类型" prop="type">
                 <el-radio-group v-model="addRuleForm.type">
-                  <el-radio :label="1">捐赠</el-radio>
-                  <el-radio :label="2">下拨</el-radio>
-                  <el-radio :label="3">采购</el-radio>
-                  <el-radio :label="4">借用</el-radio>
+                  <el-radio  :size="'mini'" :label="1">捐赠</el-radio>
+                  <el-radio  :size="'mini'" :label="2">下拨</el-radio>
+                  <el-radio  :size="'mini'" :label="3">采购</el-radio>
+                  <el-radio  :size="'mini'" :label="4">借用</el-radio>
                 </el-radio-group>
               </el-form-item>
-              <el-form-item label="物资总类">
-                <el-input-number v-model="itemNum" :disabled="true"></el-input-number>
-              </el-form-item>
-              <el-form-item label="物资明细">
+
+              <div v-if="existence==0">
+                <el-row>
+                  <el-col :span="8">
+                    <div class="grid-content bg-purple"></div>
+                    <el-form-item label="省份" prop="valueProvince">
+                      <el-select
+                              v-model="addRuleForm.valueProvince"
+                              placeholder="请选择省"
+                              @change="changeProvince"
+                      >
+                        <el-option
+                                v-for="item in provinceList"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value"
+                        ></el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="8">
+                    <div class="grid-content bg-purple-light">
+                      <el-form-item label="城市" prop="valueCity">
+                        <el-select
+                                v-model="addRuleForm.valueCity"
+                                placeholder="请选择市"
+                                @change="changeCity"
+                        >
+                          <el-option
+                                  v-for="item in cityOptions"
+                                  :key="item.value"
+                                  :label="item.label"
+                                  :value="item.value"
+                          ></el-option>
+                        </el-select>
+                      </el-form-item>
+                    </div>
+                  </el-col>
+                  <el-col :span="8">
+                    <div class="grid-content bg-purple">
+                      <el-form-item label="区县" prop="valueOrigin">
+                        <el-select
+                                v-model="addRuleForm.valueOrigin"
+                                placeholder="请选择区"
+                                @change="changeOrigin"
+                        >
+                          <el-option
+                                  v-for="item in originOptions"
+                                  :key="item.label"
+                                  :label="item.label"
+                                  :value="item.value"
+                          ></el-option>
+                        </el-select>
+                      </el-form-item>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-form-item label="具体来源" prop="name">
+                  <el-input placeholder="请输入具体来源" v-model="addRuleForm.name"></el-input>
+                </el-form-item>
+                <el-form-item label="联系人" prop="contact">
+                  <el-input placeholder="请输入联系人名称" v-model="addRuleForm.contact"></el-input>
+                </el-form-item>
+
+
+                <el-form-item label="邮箱" prop="email">
+                  <el-input  placeholder="请输入邮箱地址" v-model="addRuleForm.email"></el-input>
+                </el-form-item>
+                <el-form-item label="电话" prop="phone">
+                  <el-input placeholder="请输入电话号码" v-model="addRuleForm.phone"></el-input>
+                </el-form-item>
+                <el-form-item label="排序" prop="sort">
+                  <el-input-number v-model="addRuleForm.sort" :min="1" :max="10" label="排序"></el-input-number>
+                </el-form-item>
+              </div>
+
+              <div v-if="existence==1">
+                <el-card class="box-card" style="margin-bottom: 30px;">
+                  <div  class="text item" style="font-size: 12px;padding: 5px;">
+                    物资名称: <span style="margin-left: 200px;color: #999">
+                    <el-tag size="mini" type="info">{{supplierInfo.name}}</el-tag>
+                  </span>
+                  </div>
+                  <div  class="text item" style="font-size: 12px;padding: 5px;">
+                    物资地址: <span style="margin-left: 200px;color: #999">
+                    <el-tag size="mini" type="info">{{supplierInfo.address}}
+                    </el-tag></span>
+                  </div>
+                  <div  class="text item" style="font-size: 12px;padding: 5px;">
+                    联系方式: <span style="margin-left: 200px;color: #999">
+                    <el-tag size="mini" type="info">{{supplierInfo.phone}}
+                    </el-tag></span>
+                  </div>
+                  <div  class="text item" style="font-size: 12px;padding: 5px;">
+                    电子邮件: <span style="margin-left: 200px;color: #999">
+                    <el-tag size="mini" type="info">{{supplierInfo.email}}
+                    </el-tag></span>
+                  </div>
+                  <div  class="text item" style="font-size: 12px;padding: 5px;">
+                    联系人员:  <span style="margin-left: 200px;color: #999">
+                    <el-tag size="mini" type="info">{{supplierInfo.contact}}
+                    </el-tag></span>
+                  </div>
+                </el-card>
+              </div>
+
+              <el-row>
+              <el-col :span="12">
+                <div class="grid-content bg-purple">
+                  <el-form-item label="物资明细">
                 <el-button size="mini" plain icon="el-icon-search" @click="drawer = true">查看明细</el-button>
               </el-form-item>
+                </div>
+              </el-col>
+
+              <el-col :span="12">
+                <div class="grid-content bg-purple"><el-form-item label="物资总类">
+                  <el-input-number v-model="itemNum" :disabled="true"></el-input-number>
+                </el-form-item>
+                </div>
+              </el-col>
+              </el-row>
+
               <el-form-item label="描述信息" prop="remark">
-                <el-input type="textarea" :rows="5" v-model="addRuleForm.remark"></el-input>
+                <el-input type="textarea" :rows="2" v-model="addRuleForm.remark"></el-input>
               </el-form-item>
               <el-form-item>
                 <el-button type="primary" @click="add">立即创建</el-button>
 
-                <el-button @click="test">重置</el-button>
+                <el-button @click="reset">重置</el-button>
               </el-form-item>
             </el-form>
+
           </el-card>
         </div>
       </el-col>
 
-      <el-col :span="14">
+      <el-col :span="13">
         <div class="grid-content bg-purple-light">
           <el-card>
             <!-- 查询搜索 -->
@@ -94,9 +225,14 @@
                 <el-button type="primary" @click="search">查询</el-button>
               </el-form-item>
             </el-form>
+            <el-alert
+                    title="勾选先下方物资后,在左侧表单的明细中添加其入库数量"
+                    type="info"
+                    show-icon style="margin-bottom:20px;">
+            </el-alert>
             <!-- 入库预选表格 -->
             <el-table
-              style="height:460px;"
+              style="height:430px;"
               :data="tableData"
               :row-key="getRowKey"
               ref="dataTable"
@@ -118,7 +254,7 @@
                 <template slot-scope="scope">
                   <el-popover placement="right"  trigger="hover">
                     <img :src="'https://www.zykhome.club/'+scope.row.imageUrl"  style="height: 200px;width: 200px"/>
-                    <img  slot="reference" :src="'https://www.zykhome.club/'+scope.row.imageUrl" :alt="scope.row.imgUrl" style="height: 38px;width: 38px;cursor: pointer">
+                    <img  slot="reference" :src="'https://www.zykhome.club/'+scope.row.imageUrl" :alt="scope.row.imgUrl" style="height: 32px;width: 32px;cursor: pointer">
                   </el-popover>
                 </template>
               </el-table-column>
@@ -193,7 +329,48 @@
 <script>
 export default {
   data() {
+    var checkEmail = (rule, value, callback) => {
+      const mailReg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
+      if (!value) {
+        return callback(new Error("邮箱不能为空"));
+      }
+      setTimeout(() => {
+        if (mailReg.test(value)) {
+          callback();
+        } else {
+          callback(new Error("请输入正确的邮箱格式"));
+        }
+      }, 100);
+    };
+    var checkPhone = (rule, value, callback) => {
+      const phoneReg = /^1[34578]\d{9}$$/;
+      if (!value) {
+        return callback(new Error("电话号码不能为空"));
+      }
+      setTimeout(() => {
+        // Number.isInteger是es6验证数字是否为整数的方法,实际输入的数字总是识别成字符串
+        // 所以在前面加了一个+实现隐式转换
+
+        if (!Number.isInteger(+value)) {
+          callback(new Error("请输入数字值"));
+        } else {
+          if (phoneReg.test(value)) {
+            callback();
+          } else {
+            callback(new Error("电话号码格式不正确"));
+          }
+        }
+      }, 100);
+    }
     return {
+      supplierInfo:{name:"选择后显示具体信息",address:"选择后显示地址信息",contact:"选择后显示联系人信息",
+      phone:"选择后显示联系方式",email:"选择后显示邮箱信息"},//卡片展示
+      provinceList: [], // 省列表
+      cityList: [], // 市列表
+      originList: [], // 区列表
+      cityOptions: [], // 市下拉框数据
+      originOptions: [], // 区下拉框数据,
+      existence:0,
       addRules: {
         supplierId: [
           { required: true, message: "请选中物资来源", trigger: "blur" }
@@ -202,6 +379,34 @@ export default {
         remark: [
           { required: true, message: "请输入商品说明备注", trigger: "blur" },
           { min: 5, max: 20, message: "长度在 5 到 20 个字符", trigger: "blur" }
+        ],
+        name: [
+          { required: true, message: "请输入来源名称", trigger: "blur" },
+          { min: 2, max: 50, message: "长度在 2 到 50 个字符", trigger: "blur" }
+        ],
+        address: [
+          { required: true, message: "请输入地址信息", trigger: "blur" },
+          { min: 2, max: 12, message: "长度在 2 到 12 个字符", trigger: "blur" }
+        ],
+        email: [{ required: true, validator: checkEmail, trigger: "blur" }],
+        valueProvince: [
+          { required: true, message: "请输入省份", trigger: "blur" }
+        ],
+        valueCity: [{ required: true, message: "请输入城市", trigger: "blur" }],
+        valueOrigin: [
+          { required: true, message: "请输入区县", trigger: "blur" }
+        ],
+        sort: [
+          { required: true, message: "请输入排序号", trigger: "blur" }
+        ],
+        contact: [{ required: true, message: "请输入联系人", trigger: "blur" }],
+        phone: [
+          {
+            required: true,
+            message: "请输入联系方式",
+            validator: checkPhone,
+            trigger: "blur"
+          }
         ]
       }, //添加验证
       itemNum: 0,
@@ -228,6 +433,33 @@ export default {
     };
   },
   methods: {
+    //重置信息
+    reset(){
+      this.addRuleForm={type: 1};
+      this.$refs.addRuleFormRef.clearValidate();
+      this.supplierInfo={name:"选择后显示具体信息",address:"选择后显示地址信息",contact:"选择后显示联系人信息",
+        phone:"选择后显示联系方式",email:"选择后显示邮箱信息"};
+    },
+    //改变来源选择
+    supplerSelectChange(supplierId){
+      var obj=this.suppliers.find(function (x) {
+        return x.id === supplierId;
+      });
+      this.supplierInfo=obj;
+    },
+    /**
+     * 改变来源
+     */
+    existenceChange(existence){
+      //选择已经存在的来源
+      if(existence===1){
+      }else if(existence===0){
+        this.addRuleForm.supplierId='';
+      }
+      this.$refs.addRuleFormRef.clearValidate();
+      this.supplierInfo={name:"选择后显示具体信息",address:"选择后显示地址信息",contact:"选择后显示联系人信息",
+        phone:"选择后显示联系方式",email:"选择后显示邮箱信息"};
+    },
     /**
      * 创建入库单
      */
@@ -237,6 +469,12 @@ export default {
         if (!valid) {
           return;
         } else {
+          this.addRuleForm.address =
+                this.addRuleForm.province +
+                "/" +
+                this.addRuleForm.city +
+                "/" +
+                this.addRuleForm.origin;
           var car = [];
           this.products.forEach(row => {
             if (row.number != undefined) {
@@ -377,9 +615,105 @@ export default {
         }
       });
       this.products = this.products.filter(item => item.id !== val);
+    },
+    // 选择省
+    changeProvince(val) {
+      this.provinceList.forEach((province, index) => {
+        if (val.toString() === this.provinceList[index].value) {
+          this.cityOptions = this.provinceList[index].children;
+          this.addRuleForm.valueCity = this.provinceList[
+                  index
+                  ].children[0].value; //设置市的值
+          this.addRuleForm.city = this.provinceList[index].children[0].label;
+
+          this.addRuleForm.valueOrigin = this.provinceList[
+                  index
+                  ].children[0].children[0].value; //设置县的值
+          this.addRuleForm.origin = this.provinceList[
+                  index
+                  ].children[0].children[0].label;
+
+          this.originOptions = this.provinceList[index].children[0].children;
+          //set value
+          this.addRuleForm.province = this.provinceList[index].label;
+        }
+      });
+    },
+    // 选择市
+    changeCity(val) {
+      this.cityList.forEach((city, index) => {
+        if (val.toString() === this.cityList[index].value) {
+          this.originOptions = this.cityList[index].children;
+          this.addRuleForm.valueOrigin = this.cityList[index].children[0].value; //设置县的值;
+          //set value
+          this.addRuleForm.city = this.cityList[index].label;
+        }
+      });
+    },
+    // 选择区
+    changeOrigin(val) {
+      this.addRuleForm.valueOrigin = val;
+
+      this.originList.forEach((origin, index) => {
+        if (val.toString() === this.originList[index].value) {
+          //set value
+          this.addRuleForm.origin = this.originList[index].label;
+        }
+      });
+      //添加this.$forceUpdate();进行强制渲染，效果实现。搜索资料得出结果：因为数据层次太多，render函数没有自动更新，需手动强制刷新。
+      this.$forceUpdate();
+    },
+
+    _getJsonData() {
+      this.$http.get("/json/provinces.json").then(res => {
+        this.provinceList = [];
+        this.cityList = [];
+        this.originList = [];
+        res.data.forEach(item => {
+          if (item.value.match(/0000$/)) {
+            this.provinceList.push({
+              value: item.value,
+              label: item.name,
+              children: []
+            });
+          } else if (item.value.match(/00$/)) {
+            this.cityList.push({
+              value: item.value,
+              label: item.name,
+              children: []
+            });
+          } else {
+            this.originList.push({
+              value: item.value,
+              label: item.name
+            });
+          }
+        });
+        for (let index in this.provinceList) {
+          for (let index1 in this.cityList) {
+            if (
+                    this.provinceList[index].value.slice(0, 2) ===
+                    this.cityList[index1].value.slice(0, 2)
+            ) {
+              this.provinceList[index].children.push(this.cityList[index1]);
+            }
+          }
+        }
+        for (let item1 in this.cityList) {
+          for (let item2 in this.originList) {
+            if (
+                    this.originList[item2].value.slice(0, 4) ===
+                    this.cityList[item1].value.slice(0, 4)
+            ) {
+              this.cityList[item1].children.push(this.originList[item2]);
+            }
+          }
+        }
+      });
     }
   },
   created() {
+    this._getJsonData();
     this.loadTableData();
     this.getCatetorys();
     this.getSuppliers();

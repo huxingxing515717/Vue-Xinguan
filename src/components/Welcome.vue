@@ -78,13 +78,14 @@
             </el-col>
             <el-col :span="6">
               <div class="grid-content bg-purple"></div>
-
+              <router-link to="/outStocks">
               <img
                 src="../assets/4.svg"
                 alt
                 width="60.8px;"
                 style="cursor: pointer;margin-left:20px;"
               />
+              </router-link>
               <div style="font-size:12px;margin-top:5px;margin-left:25px;">物资发放</div>
             </el-col>
           </el-card>

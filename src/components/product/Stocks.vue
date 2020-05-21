@@ -12,11 +12,11 @@
         <div class="grid-content bg-purple-dark">
           <el-card class="box-card">
             <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
-            <div id="tianxing" style="width: 650px;height:370px;"></div>
+            <div id="tianxing" style="width: 650px;height:350px;"></div>
           </el-card>
           <el-card class="box-card" style="margin-top:10px;">
             <!-- 库存饼图 -->
-            <div id="bingtu" style="width: 590px;height:250px;"></div>
+            <div id="bingtu" style="width: 590px;height:225px;"></div>
           </el-card>
         </div>
       </el-col>
@@ -44,7 +44,7 @@
                 <el-button size="mini" type="primary" @click="search" icon="el-icon-search">查询</el-button>
               </el-form-item>
             </el-form>
-            <el-table height="590" border :data="tableData" style="width: 100%">
+            <el-table height="530" border :data="tableData" style="width: 100%">
               <el-table-column prop="imageUrl" label="图片" align="center" width="80" padding="0px">
                 <!--            <template slot-scope="scope">-->
                 <!--              <img-->
@@ -57,7 +57,7 @@
                 <template slot-scope="scope">
                   <el-popover placement="right"  trigger="hover">
                     <img :src="'https://www.zykhome.club/'+scope.row.imageUrl"  style="height: 200px;width: 200px"/>
-                    <img  slot="reference" :src="'https://www.zykhome.club/'+scope.row.imageUrl" :alt="scope.row.imgUrl" style="height: 29px;width: 29px;cursor: pointer">
+                    <img  slot="reference" :src="'https://www.zykhome.club/'+scope.row.imageUrl" :alt="scope.row.imgUrl" style="height: 20px;width: 20px;cursor: pointer">
                   </el-popover>
                 </template>
               </el-table-column>
@@ -77,7 +77,8 @@
               @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
               :current-page="queryMap.pageNum"
-              layout="total, prev, pager, next, jumper"
+              :page-sizes="[9, 10, 15, 20]"
+              layout="total, prev, pager, next, jumper,sizes"
               :total="total"
             ></el-pagination>
           </el-card>
@@ -142,6 +143,8 @@ export default {
         });
         //重新绘制表格
         this.draw();
+        //饼图
+        this.findAllProductStocks();
       }
     },
 
@@ -163,7 +166,7 @@ export default {
       // 指定图表的配置项和数据
       var option = {
         title: {
-          text: "物资库存图"
+          text: "库存条形图"
         },
         toolbox: {
           show: true,
@@ -227,8 +230,8 @@ export default {
       var myChart = echarts.init(document.getElementById("bingtu"));
       var option = {
         title: {
-          text: "物资库存数量统计",
-          subtext: "纯属虚构",
+          text: "库存占比图",
+        
           left: "left"
         },
          toolbox: {
@@ -273,7 +276,6 @@ export default {
     /**
      * 物资所有的库存信息
      */
-
     async findAllProductStocks() {
       const { data: res } = await this.$http.get("product/findAllStocks", {
         params: this.queryMap

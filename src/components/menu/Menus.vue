@@ -34,7 +34,7 @@
                @click="downExcel"
               >导出</el-button>
            </el-col>
-    
+
         </el-row>
 
         <p>菜单权限树</p>
@@ -126,7 +126,7 @@
           <el-form-item label="图标">
             <el-input v-model="editForm.icon"></el-input>
           </el-form-item>
-          <el-form-item label="是否可用" prop="available">
+          <el-form-item label="是否可用" prop="disabled">
             <template>
               <el-radio v-model="editForm.disabled" :label="false">可用</el-radio>
               <el-radio v-model="editForm.disabled" :label="true">禁用</el-radio>
@@ -401,7 +401,10 @@ export default {
         <span class="custom-tree-node">
           <span>
             <i class={data.icon}></i>&nbsp;&nbsp;&nbsp;{node.label}
-            {node.data.type == 0 ? "" : "（权限）"}
+            {node.data.type == 0 ?  <el-tag style='margin-left:20px;'  effect='plain' size='mini'>菜单</el-tag>:
+                    <el-tag style='margin-left:20px;' type='warning' effect='plain' size='mini'>权限  [{node.data.perms}]</el-tag>
+
+            }
           </span>
           <span>
             <el-button

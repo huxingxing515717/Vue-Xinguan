@@ -4,10 +4,10 @@ export const hasPermission = {
         bind (el, binding, vnode) {
           var flag=false;//默认不显示
           let userInfo = vnode.context.$store.state.userInfo;
-        
-          
+
+
           var value=binding.value;
-        
+
           if(userInfo.isAdmin){
             //如果是超级管理员
             flag=true;

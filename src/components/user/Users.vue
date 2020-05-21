@@ -74,7 +74,7 @@
         </el-form-item>-->
 
         <el-form-item style="margin-left:50px;">
-          
+
           <el-button type="primary" @click="searchUser" icon="el-icon-search">查询</el-button>
           <el-button
             type="success"
@@ -93,8 +93,8 @@
         <el-table-column prop="username" label="用户名" width="110"></el-table-column>
         <el-table-column prop="sex" :formatter="showSex" label="性别" width="100">
           <template slot-scope="scope">
-            <el-tag size="mini" effect="plain" type="success" v-if="scope.row.sex==1">帅哥</el-tag>
-            <el-tag size="mini" effect="plain" type="warning" v-else>美女</el-tag>
+            <el-tag size="mini" type="success" v-if="scope.row.sex==1">帅哥</el-tag>
+            <el-tag size="mini"  type="warning" v-else>美女</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="departmentName" label="所属部门" width="180" sortable></el-table-column>
@@ -322,6 +322,7 @@
         <span>
           <template>
             <el-transfer
+              filterable
               :titles="['未拥有','已拥有']"
               :button-texts="['到左边', '到右边']"
               v-model="value"
@@ -507,7 +508,10 @@ export default {
         this.value
       );
       if (res.code == 200) {
-        this.$message.success("分配角色成功");
+        this.$notify.success({
+          title:'操作成功',
+          message:'用户分配角色成功',
+        });
       } else {
         this.$message.error("分配角色失败:" + res.msg);
       }
@@ -551,7 +555,10 @@ export default {
         const { data: res } = await this.$http.delete("user/delete/" + id);
         console.log(res);
         if (res.code == 200) {
-          this.$message.success("用户删除成功");
+          this.$notify.success({
+            title:'操作成功',
+            message:'用户删除成功',
+          });
           this.getUserList();
         } else {
           this.$message.error(res.msg);
@@ -570,7 +577,10 @@ export default {
           this.btnDisabled = true;
           const { data: res } = await this.$http.post("user/add", this.addForm);
           if (res.code == 200) {
-            this.$message.success("用户添加成功");
+            this.$notify.success({
+              title:'操作成功',
+              message:'用户添加成功',
+            });
             this.addForm = {};
             this.getUserList();
           } else {
@@ -598,8 +608,8 @@ export default {
           );
           if (res.code == 200) {
             this.$notify({
-              title: "成功",
-              message: "用户信息更新",
+              title: "操作成功",
+              message: "用户基本信息已更新",
               type: "success"
             });
             this.editForm = {};
@@ -647,7 +657,7 @@ export default {
       this.queryMap.pageNum = current;
       this.getUserList();
     },
-    
+
     /**
      * 关闭添加弹出框
      */
@@ -674,7 +684,11 @@ export default {
         this.$message.error("更新用户状态失败:" + res.msg);
         row.status = !row.status;
       } else {
-        this.$message.success("更新用户状态成功");
+        var message=row.status?'用户状态已禁用':'用户状态已启用';
+        this.$notify.success({
+          title: '操作成功',
+          message: message,
+        });
       }
     },
     /**

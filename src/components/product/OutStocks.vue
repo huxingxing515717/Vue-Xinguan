@@ -33,8 +33,8 @@
                     <el-table-column  prop="outNum" :show-overflow-tooltip='true' label="发放单号" width="180"></el-table-column>
                     <el-table-column prop="type" label="发放类型" >
                         <template slot-scope="scope">
-                            <el-tag size="mini" effect="dark" type="success" v-if="scope.row.type===0">直接发放</el-tag>
-                            <el-tag size="mini" effect="dark" v-else-if="scope.row.type===1">申请发放</el-tag>
+                            <el-tag size="mini"  type="success" v-if="scope.row.type===0">直接发放</el-tag>
+                            <el-tag size="mini"  v-else-if="scope.row.type===1">申请发放</el-tag>
                         </template>
                     </el-table-column>
                     <el-table-column prop="priority" label="紧急程度">
