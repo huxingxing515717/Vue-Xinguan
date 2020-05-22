@@ -45,7 +45,7 @@
           text-color="rgba(255,255,255,0.7)"
           unique-opened
         >
-          <Menu  :menuList="this.menuList"></Menu>
+          <MenuTree  :menuList="this.menuList"></MenuTree>
         </el-menu>
       </el-aside>
 
@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import Menu from "./Menu.vue"; //引进菜单模板
+import MenuTree from "./MenuTree.vue"; //引进菜单模板
 
 export default {
   data() {
@@ -74,7 +74,7 @@ export default {
     };
   },
   components: {
-    Menu
+    MenuTree
   },
   methods: {
     /**

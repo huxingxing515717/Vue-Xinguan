@@ -6,7 +6,7 @@
           <i :class="item.icon"></i>
           <span slot="title">{{ item.menuName}}</span>
         </template>
-        <Menu :menuList="item.children"></Menu>
+        <MenuTree :menuList="item.children"></MenuTree>
       </el-submenu>
       <el-menu-item
         v-else
@@ -35,7 +35,7 @@
 </style>
 <script>
 export default {
-  name: "Menu", //模板名称
+  name: "MenuTree", //模板名称
   data() {
     return {
      
