@@ -57,7 +57,7 @@
                 <template slot-scope="scope">
                   <el-popover placement="right"  trigger="hover">
                     <img :src="'https://www.zykhome.club/'+scope.row.imageUrl"  style="height: 200px;width: 200px"/>
-                    <img  slot="reference" :src="'https://www.zykhome.club/'+scope.row.imageUrl" :alt="scope.row.imgUrl" style="height: 20px;width: 20px;cursor: pointer">
+                    <img  slot="reference" :src="'https://www.zykhome.club/'+scope.row.imageUrl" :alt="scope.row.imgUrl" style="height: 21px;width: 21px;cursor: pointer">
                   </el-popover>
                 </template>
               </el-table-column>
@@ -231,7 +231,7 @@ export default {
       var option = {
         title: {
           text: "库存占比图",
-        
+
           left: "left"
         },
          toolbox: {

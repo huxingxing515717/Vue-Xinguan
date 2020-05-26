@@ -197,5 +197,5 @@ export default {
 </script>
 
 <style>
-.el-tooltip__popper{max-width: 200px;}
+.el-tooltip__popper{max-width: 400px;}
 </style>

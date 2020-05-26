@@ -108,7 +108,7 @@
         </el-table-column>
         <el-table-column label="操作" >
           <template slot-scope="scope">
-            <el-button   v-hasPermission="'user:edit'" type="primary" size="mini" icon="el-icon-edit" @click="edit(scope.row.id)"></el-button>
+            <el-button   v-hasPermission="'user:edit'" size="mini" type="primary" icon="el-icon-edit-outline" @click="edit(scope.row.id)"></el-button>
             <el-button v-hasPermission="'user:delete'" type="danger" size="mini" icon="el-icon-delete" @click="del(scope.row.id)"></el-button>
             <el-tooltip
               class="item"

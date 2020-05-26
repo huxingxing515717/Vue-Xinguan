@@ -28,7 +28,7 @@ import Rumors from '../components/doc/Rumors.vue'
 import RumorDetail from '../components/doc/RumorDetail.vue'
 import Health from '../components/user/Health.vue'
 import Blog from '../components/doc/Blog.vue'
-import NotFound from '../components/doc/NotFound.vue'
+import PublishStocks from '../components/product/PublishStocks'
 
 Vue.use(VueRouter)
 
@@ -159,6 +159,10 @@ const routes = [
     {
       path: '/outStocks',
       component: OutStocks
+    },
+    {
+      path: '/OutStocks/publishStocks',
+      component: PublishStocks
     },
     // {
     //   path: "/404",

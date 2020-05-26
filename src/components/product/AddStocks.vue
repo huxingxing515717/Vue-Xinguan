@@ -176,7 +176,7 @@
               <el-col :span="12">
                 <div class="grid-content bg-purple">
                   <el-form-item label="物资明细">
-                <el-button size="mini" plain icon="el-icon-search" @click="drawer = true">查看明细</el-button>
+                <el-button size="mini" plain  icon="el-icon-search" @click="drawer = true">入库明细</el-button>
               </el-form-item>
                 </div>
               </el-col>
@@ -240,8 +240,6 @@
               border
             >
               <el-table-column type="selection" :reserve-selection="true"></el-table-column>
-              <el-table-column prop="name" label="名称"></el-table-column>
-              <el-table-column prop="pnum" label="商品编号" :show-overflow-tooltip='true'></el-table-column>
               <el-table-column prop="imageUrl" label="图片" align="center" width="150px" padding="0px">
                 <!--            <template slot-scope="scope">-->
                 <!--              <img-->
@@ -258,6 +256,9 @@
                   </el-popover>
                 </template>
               </el-table-column>
+              <el-table-column prop="name" label="名称"></el-table-column>
+              <el-table-column prop="pnum" label="商品编号" :show-overflow-tooltip='true'></el-table-column>
+
               <el-table-column prop="model" label="型号"></el-table-column>
               <el-table-column prop="unit" label="单位"></el-table-column>
             </el-table>
@@ -274,8 +275,11 @@
               :total="total"
             ></el-pagination>
             <!-- 抽屉 -->
-            <el-drawer size="50%" title="入库明细" :visible.sync="drawer" :with-header="false">
+            <el-drawer size="49%" title="入库明细" :visible.sync="drawer" :with-header="false">
               <span>
+                  <el-button size="mini" style="float: right;margin: 10px;"  type="primary" icon="el-icon-remove" :disabled="products.length==0" @click="removeAllItem" >
+                      清空
+                  </el-button>
                 <el-table height="700" :data="products" border>
                   <el-table-column prop="name" label="名称" width="120px;"></el-table-column>
                   <el-table-column
@@ -289,30 +293,31 @@
                       <img
                         :src="'https://www.zykhome.club/'+scope.row.imageUrl"
                         alt
-                        style="width: 30px;height:30px"
+                        style="width: 50px;height:30px"
                       />
                     </template>
                   </el-table-column>
                   <el-table-column prop="model" label="型号" width="100px;"></el-table-column>
 
-                  <el-table-column label="数量">
+                  <el-table-column label="数量" width="160">
                     <template slot-scope="scope">
                       <el-input-number
                         size="mini"
                         v-model="scope.row.number"
-                        :min="1"
+                        :min="0"
                         :max="10"
                         label="描述文字"
                       ></el-input-number>
                     </template>
                   </el-table-column>
                   <el-table-column prop="unit" label="单位" width="80px;"></el-table-column>
-                  <el-table-column label="操作" width="150px;">
+                  <el-table-column label="操作" width="100px;" fixed="right">
                     <template slot-scope="scope">
                       <el-button
                         type="danger"
                         size="mini"
-                        icon="el-icon-close"
+                        plain
+                        icon="el-icon-remove"
                         @click="removeItem(scope.row.id)"
                       >移除</el-button>
                     </template>
@@ -363,6 +368,7 @@ export default {
       }, 100);
     }
     return {
+
       supplierInfo:{name:"选择后显示具体信息",address:"选择后显示地址信息",contact:"选择后显示联系人信息",
       phone:"选择后显示联系方式",email:"选择后显示邮箱信息"},//卡片展示
       provinceList: [], // 省列表
@@ -427,9 +433,8 @@ export default {
         pageSize: 6,
         status:0,
       },
-      form: {},
       tableData: [],
-      products: []
+      products: [],
     };
   },
   methods: {
@@ -600,11 +605,15 @@ export default {
       this.loadTableData();
     },
     /**
-     * 测试
+     * 清空所有
      */
-    test() {
-      console.log(this.products);
+    removeAllItem(){
+      this.products.forEach(row => {
+        this.$refs.dataTable.toggleRowSelection(row, false);
+      });
+      this.products=[];
     },
+
     /**
      * 移除item从抽屉中
      */
