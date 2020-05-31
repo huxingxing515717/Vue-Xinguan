@@ -94,7 +94,7 @@
         :total="total"
       ></el-pagination>
       <!-- 部门别添加弹出框 -->
-      <el-dialog title="添加部门" :visible.sync="addDialogVisible" width="50%" @close="closeAddDialog">
+      <el-dialog @open="getDeanList" title="添加部门" :visible.sync="addDialogVisible" width="50%" @close="closeAddDialog">
         <span>
           <el-form
             :model="addRuleForm"
@@ -127,6 +127,7 @@
 
       <!-- 部门别编辑弹出框 -->
       <el-dialog
+              @open="getDeanList"
         title="更新部门"
         :visible.sync="editDialogVisible"
         width="50%"
@@ -289,7 +290,9 @@ export default {
         }
       }
     },
-    //更新用户
+    /**
+	 * 更新用户
+	 */
     async update() {
       this.$refs.editRuleFormRef.validate(async valid => {
         if (!valid) {
@@ -306,19 +309,21 @@ export default {
               message: "部门信息更新",
               type: "success"
             });
-            this.editRuleForm = {};
             this.getDepartmentList();
-            this.btnDisabled = false;
-            this.btnLoading = false;
           } else {
             this.$message.error("部门信息更新失败:" + res.msg);
           }
-
+          this.editRuleForm = {};
+          this.btnDisabled = false;
+          this.btnLoading = false;
           this.editDialogVisible = false;
         }
       });
     },
-    //编辑
+    /**
+	 * 编辑
+	 * @param {Object} id
+	 */
     async edit(id) {
       const { data: res } = await this.$http.get("department/edit/" + id);
       if (res.code == 200) {

@@ -54,11 +54,11 @@
                     <el-table-column  prop="outNum" :show-overflow-tooltip='true' label="发放单号" width="180"></el-table-column>
                     <el-table-column prop="type" label="发放类型" width="100">
                         <template slot-scope="scope">
-                            <el-tag  effect="plain"  type="success" v-if="scope.row.type===0">政府领取</el-tag>
-                            <el-tag  effect="plain" type="danger"  v-else-if="scope.row.type===1">医院领取</el-tag>
-                            <el-tag  effect="plain"  type="warning"  v-else-if="scope.row.type===2">小区领取</el-tag>
-                            <el-tag  effect="plain"  type="info"  v-else-if="scope.row.type===3">个人领取</el-tag>
-                            <el-tag  effect="plain"   v-else-if="scope.row.type===4">其他领取</el-tag>
+                            <el-tag  effect="plain" size="mini"  type="success" v-if="scope.row.type===0">政府领取</el-tag>
+                            <el-tag  effect="plain" size="mini" type="danger"  v-else-if="scope.row.type===1">医院领取</el-tag>
+                            <el-tag  effect="plain" size="mini"  type="warning"  v-else-if="scope.row.type===2">小区领取</el-tag>
+                            <el-tag  effect="plain" size="mini"  type="info"  v-else-if="scope.row.type===3">个人领取</el-tag>
+                            <el-tag  effect="plain" size="mini"   v-else-if="scope.row.type===4">其他领取</el-tag>
                         </template>
                     </el-table-column>
                     <el-table-column prop="priority" label="紧急程度" width="180">
@@ -155,7 +155,7 @@
                         @size-change="handleSizeChange"
                         @current-change="handleCurrentChange"
                         :current-page="queryMap.pageNum"
-                        :page-sizes="[6, 20, 30, 40]"
+                        :page-sizes="[7, 20, 30, 40]"
                         :page-size="queryMap.pageSize"
                         layout="total, sizes, prev, pager, next, jumper"
                         :total="total"
@@ -254,7 +254,7 @@
                 dialogVisible:false,
                 pageNum:1,
                 total:0,
-                queryMap:{pageNum:1,pageSize:6, status: 0,},
+                queryMap:{pageNum:1,pageSize:7, status: 0,},
                 tableData:[],
                 pStatus:'',//步骤flag
             }
@@ -336,7 +336,7 @@
              * 重置查询表单
              */
             reset(){
-                this.queryMap={pageNum:1,pageSize:6 ,status: 0,};
+                this.queryMap={pageNum:1,pageSize:7 ,status: 0,};
             },
             /**
              * 加载表格数据

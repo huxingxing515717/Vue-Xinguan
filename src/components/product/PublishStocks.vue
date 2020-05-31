@@ -316,6 +316,7 @@
                   <el-table-column label="数量" width="160">
                     <template slot-scope="scope">
                       <el-input-number
+                              @change="outStockNumberChange(scope.row.number,scope.row.stock)"
                               size="mini"
                               v-model="scope.row.number"
                               :min="1"
@@ -389,7 +390,6 @@
                 tableData:[],
                 catetorys: [],
                 categorykeys: [],
-                consumerInfo:{},
                 queryMap: {
                     pageNum: 1,
                     pageSize: 6,
@@ -664,6 +664,11 @@
                         this.$refs.dataTable.toggleRowSelection(row, false);
                 });
                 this.products=[];
+            },
+            outStockNumberChange(currentValue, stock){
+                if(currentValue==stock){
+                    this.$message.warning("已达到可申请发放该物资数量的阈值");
+                }
             },
             /**
              * 创建发放单

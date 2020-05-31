@@ -74,7 +74,7 @@
         </el-form-item>-->
 
         <el-form-item style="margin-left:50px;">
-
+          <el-button  @click="reset" icon="el-icon-refresh">重置</el-button>
           <el-button type="primary" @click="searchUser" icon="el-icon-search">查询</el-button>
           <el-button
             type="success"
@@ -427,7 +427,6 @@ export default {
         sex: [{ required: true, message: "请选择性别", trigger: "blur" }],
         birth: [{ required: true, message: "请填写出生日期", trigger: "blur" }],
         email: [{ required: true, validator: checkEmail, trigger: "blur" }],
-        sex: [{ required: true, message: "请填写用户性别", trigger: "blur" }],
         phoneNumber: [
           {
             required: true,
@@ -447,6 +446,19 @@ export default {
     };
   },
   methods: {
+
+    /**
+     * 重置
+     */
+    reset(){
+      this.queryMap= {
+        pageNum: 1,
+                pageSize: 6,
+                username: "",
+                sex: "",
+                nickname: ""
+      };
+    },
     /**
      * 加载用户表格
      */
@@ -560,6 +572,7 @@ export default {
             message:'用户删除成功',
           });
           this.getUserList();
+          this.getDepartmets();
         } else {
           this.$message.error(res.msg);
         }
@@ -583,6 +596,7 @@ export default {
             });
             this.addForm = {};
             this.getUserList();
+            this.getDepartmets();
           } else {
             return this.$message.error("用户添加失败:" + res.msg);
           }
@@ -614,10 +628,10 @@ export default {
             });
             this.editForm = {};
             this.getUserList();
+            this.getDepartmets();
           } else {
             this.$message.error("用户信息更新失败:" + res.msg);
           }
-
           this.editDialogVisible = false;
           this.btnLoading = false;
           this.btnDisabled = false;

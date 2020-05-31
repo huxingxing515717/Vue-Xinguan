@@ -28,7 +28,8 @@ import Rumors from '../components/doc/Rumors.vue'
 import RumorDetail from '../components/doc/RumorDetail.vue'
 import Health from '../components/user/Health.vue'
 import Blog from '../components/doc/Blog.vue'
-import PublishStocks from '../components/product/PublishStocks'
+import PublishStocks from '../components/product/PublishStocks.vue'
+import NotPermission from '../components/401.vue'
 
 Vue.use(VueRouter)
 
@@ -164,14 +165,10 @@ const routes = [
       path: '/OutStocks/publishStocks',
       component: PublishStocks
     },
-    // {
-    //   path: "/404",
-    //   component: NotFound
-    // }, {
-    //   path: "/*", // 此处需特别注意置于最底部
-    //   redirect: "/404"
-    // }
-
+    {
+      path: "/401",
+      component: NotPermission
+    }
     ]
   },
 ]
@@ -186,35 +183,37 @@ import store from '../store'//引入store
 
 //路由导航守卫
 router.beforeEach((to, from, next) => {
+ 
   const token = window.localStorage.getItem('JWT_TOKEN');
   if (to.path == '/login') {
     if(!token){
       return next();
     }else{
-      next({path: '/home'})
+      return next({path: '/home'})
     }
   }
+  
+  if(to.path=='/401'){
+	  return next();
+  }
+
   if (!token) {
     return next('/login');
   }else {
     //判断是否有访问该路径的权限
-    // const urls =store.state.userInfo.url;
-    //
-    // //如果是管理员
-    // if(store.state.userInfo.isAdmin){
-    //   return next('/welcome');
-    // }else{
-    //   if(urls.indexOf(to.path) > -1){
-    //     //则包含该元素
-    //     window.sessionStorage.setItem("activePath", to.path);
-    //     return next();
-    //   }else{
-    //     alert("无法访问");
-    //   }
-    // }
-
-    window.sessionStorage.setItem("activePath", to.path);
-    return next();
+    const urls =store.state.userInfo.url;
+    //如果是管理员
+    if(store.state.userInfo.isAdmin){
+       return next();
+    }else{
+      if(urls.indexOf(to.path) > -1){
+        //则包含该元素
+        window.sessionStorage.setItem("activePath", to.path);
+        return next();
+      }else{
+        return next("/401");
+      }
+    }
   }
 })
 

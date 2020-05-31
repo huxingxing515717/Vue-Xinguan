@@ -58,7 +58,7 @@
           <el-table-column fixed="right" label="操作" width="200">
             <template slot-scope="scope">
               <el-button
-               
+
                 @click="grant(scope.row.id)"
                 type="text"
                 icon="el-icon-present"
@@ -196,7 +196,7 @@ export default {
   },
   methods: {
 
-      /**
+    /**
      * 加载菜单表格
      */
     downExcel() {
@@ -334,14 +334,16 @@ export default {
               message: "角色信息更新",
               type: "success"
             });
-            this.editDialogVisible = false;
-            this.btnDisabled = false;
-            this.btnLoading = false;
-            this.editForm = {};
             this.getRoleList();
           } else {
-            return this.$message.error("角色信息更新失败:" + res.msg);
+             this.$message.error("角色信息更新失败:" + res.msg);
           }
+
+          this.editDialogVisible = false;
+          this.btnDisabled = false;
+          this.btnLoading = false;
+          this.editForm = {};
+
         }
       });
     },

@@ -11,9 +11,10 @@
         <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span>用户信息</span>
-            <el-button style="float: right;" size="mini" type="danger">用户中心</el-button>
+            <el-button style="float: right;" size="mini" plain loading  type="primary">用户中心</el-button>
+            <el-button @click="getCode" type="primary" plain  style="float: right;margin-right: 10px;" size="mini" >获取源码</el-button>
           </div>
-          <el-tooltip class="item" effect="dark" content="Top Left 提示文字" placement="top-start">
+          <el-tooltip class="item" effect="dark" content="换头像功能还未实现" placement="top-start">
             <el-avatar
               shape="square"
               :size="90"
@@ -137,6 +138,15 @@ export default {
     };
   },
   methods: {
+
+    /**
+     * 点击获取源码
+     */
+    getCode(){
+      const w = window.open('about:blank');
+      w.location.href = 'https://github.com/zykzhangyukang/Xinguan';
+    },
+
     /**
      * 加载登入报表数据
      */

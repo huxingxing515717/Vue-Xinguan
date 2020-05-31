@@ -1,6 +1,6 @@
 <template>
   <el-container class="home-container">
-    <!--头部-->
+<!--    导航-->
     <el-header>
       <div>
         <span style="margin-left:20px;">
@@ -16,12 +16,20 @@
       </div>
       <el-dropdown>
         <div class="block">
-          <el-avatar :size="50" :src="this.userInfo.avatar" style="cursor: pointer;"></el-avatar>
+          <el-avatar  :size="50" :src="this.userInfo.avatar" style="cursor: pointer;"></el-avatar>
         </div>
         <el-dropdown-menu slot="dropdown" trigger="click">
            <el-dropdown-item>
              <span type="danger"  @click="toWelcome"><span class="el-icon-house"></span> &nbsp;系统首页</span>
           </el-dropdown-item>
+
+
+          <el-dropdown-item>
+
+            <span type="danger" @click="getContact"><span class="el-icon-ship"></span> &nbsp;交流讨论</span>
+
+          </el-dropdown-item>
+
           <el-dropdown-item>
 
             <span type="danger" @click="logout"><span class="el-icon-switch-button"></span> &nbsp;退出登入</span>
@@ -132,6 +140,14 @@ export default {
       this.isOpen = !this.isOpen;
     },
 
+    /**
+     * 点击交流
+     */
+    getContact(){
+      const w = window.open('about:blank');
+      w.location.href = 'https://www.zykcoderman.xyz/';
+    }
+
   },
   mounted() {
     this.getUserInfo();
@@ -173,7 +189,7 @@ export default {
   height: 100% !important;
 }
 .toggle-btn {
-  background-color: #409EFF !important;
+  background-color: #2d3a4b !important;
   font-size: 10px;
   line-height: 24px;
   color: #fff;
