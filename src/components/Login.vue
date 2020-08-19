@@ -93,7 +93,7 @@ export default {
       //表单用户登入数据
       loading: false,
       userLoginForm: {
-        username: "Jack",
+        username: "admin",
         password: "123456"
       },
       checked: true,
