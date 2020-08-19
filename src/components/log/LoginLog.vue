@@ -9,7 +9,7 @@
     <!-- 右侧卡片区域 -->
     <!-- 用户列表卡片区 -->
     <el-card class="box-card">
-      <el-form :inline="true" :model="queryMap" class="demo-form-inline">
+      <el-form size="mini" :inline="true" :model="queryMap" class="demo-form-inline">
         <el-form-item label="用户名">
           <el-input v-model="queryMap.username" placeholder="请输入用户名查询"></el-input>
         </el-form-item>
@@ -26,13 +26,12 @@
           <el-button @click="deleteFileOrDirectory(sels)" icon="el-icon-delete"  :disabled="this.sels.length === 0">批量</el-button>
         </el-form-item>
       </el-form>
-
-
       <!-- 表格区域 -->
       <template>
         <el-table
           border
           stripe
+          size="mini"
           :data="LoginLogData"
           style="width: 100%;"
           height="460"
@@ -66,7 +65,7 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="this.queryMap.pageNum"
-        :page-sizes="[7, 10, 15, 20]"
+        :page-sizes="[ 10, 15, 20]"
         :page-size="this.queryMap.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
@@ -82,7 +81,7 @@ export default {
       sels: [], //选中的值显示
       LoginLogData: [],
       total: 0, //总共多少条数据
-      queryMap: { pageNum: 1, pageSize: 7, location: "" } //查询对象
+      queryMap: { pageNum: 1, pageSize: 10, location: "" } //查询对象
     };
   },
   methods: {
@@ -149,9 +148,9 @@ export default {
           message: "已取消删除"
         });
       });
-      if (res == "confirm") {
+      if (res === "confirm") {
         const { data: res } = await this.$http.delete("loginLog/delete/" + id);
-        if (res.code == 200) {
+        if (res.code === 200) {
           this.$message.success("登入日志删除成功");
           this.getLoginLogList();
         } else {

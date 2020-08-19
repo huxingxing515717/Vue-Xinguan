@@ -11,8 +11,14 @@
         <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span>用户信息</span>
-            <el-button style="float: right;" size="mini" plain loading  type="primary">用户中心</el-button>
-            <el-button @click="getCode" type="primary" plain  style="float: right;margin-right: 10px;" size="mini" >获取源码</el-button>
+            <el-button style="float: right;" size="mini" plain loading type="primary">用户中心</el-button>
+            <el-button
+              @click="getCode"
+              type="primary"
+              plain
+              style="float: right;margin-right: 10px;"
+              size="mini"
+            >获取源码</el-button>
           </div>
           <el-tooltip class="item" effect="dark" content="换头像功能还未实现" placement="top-start">
             <el-avatar
@@ -38,7 +44,6 @@
             <el-col :span="6">
               <div class="grid-content bg-purple">
                 <router-link to="/products">
-
                   <img
                     src="../assets/1.svg"
                     alt
@@ -80,12 +85,12 @@
             <el-col :span="6">
               <div class="grid-content bg-purple"></div>
               <router-link to="/outStocks">
-              <img
-                src="../assets/4.svg"
-                alt
-                width="60.8px;"
-                style="cursor: pointer;margin-left:20px;"
-              />
+                <img
+                  src="../assets/4.svg"
+                  alt
+                  width="60.8px;"
+                  style="cursor: pointer;margin-left:20px;"
+                />
               </router-link>
               <div style="font-size:12px;margin-top:5px;margin-left:25px;">物资发放</div>
             </el-col>
@@ -99,22 +104,23 @@
       <!-- 右边部分 -->
       <el-col :span="11">
         <div class="grid-content bg-purple">
-          <el-card class="box-card">
-            <div slot="header" class="clearfix">
-              <span>日历</span>
-              <el-button style="float: right; padding: 3px 0" type="text">添加日程</el-button>
-            </div>
-            <div class="text item">
-              <el-calendar>
-                <!-- 这里使用的是 2.5 slot 语法，对于新项目请使用 2.6 slot 语法-->
-                <template slot="dateCell" slot-scope="{date, data}">
-                  <p
-                    :class="data.isSelected ? 'is-selected' : ''"
-                  >{{ data.day.split('-').slice(1).join('-') }} {{ data.isSelected ? '✔️' : ''}}</p>
-                </template>
-              </el-calendar>
-            </div>
+          <el-card style="min-height:650px;">
+            <el-carousel height="180px">
+              <el-carousel-item v-for="item in 3" :key="item"></el-carousel-item>
+            </el-carousel>
+            <aplayer
+              style="margin-top:20px;margin-bottom:30px;"
+              autoplay
+              :music="{
+                  title: '给我一个理由忘记',
+                  artist: 'A-Lin',
+                  src: 'http://music.163.com/song/media/outer/url?id=25640799.mp3',
+                  pic: 'http://p2.music.126.net/0POVOSSjqgVoOUGc5haWBQ==/109951163392311918.jpg'
+              }"
+              :list="musicList"
+            ></aplayer>
           </el-card>
+          <!-- <el-calendar :v-model="new Date()"></el-calendar> -->
         </div>
       </el-col>
     </el-row>
@@ -126,52 +132,106 @@
 </template>
 <script>
 import echarts from "echarts";
+import aplayer from "vue-aplayer";
 export default {
+  components: {
+    //别忘了引入组件
+    aplayer: aplayer
+  },
+
   data() {
     return {
       xData: [],
       yData: [],
-      myData:[],
+      myData: [],
       value: new Date(),
       userInfo: {},
-      tableInfo: []
+      tableInfo: [],
+      musicList: [],
     };
   },
   methods: {
-
     /**
      * 点击获取源码
      */
-    getCode(){
-      const w = window.open('about:blank');
-      w.location.href = 'https://github.com/zykzhangyukang/Xinguan';
+    getCode() {
+      const w = window.open("about:blank");
+      w.location.href = "https://github.com/zykzhangyukang/Xinguan";
     },
+    async loadMusicList() {
+      const { data: res } = await this.$http.get(
+        "music/getPlayList?listId=629987891"
+      );
+      if(res.code===200) {
+        this.musicList = res;
+      }else {
+        this.musicList = [{
+          "artist": "Eminem",
+          "lrc": "",
+          "title": "Airplanes",
+          "src": "http://music.163.com/song/media/outer/url?id=26714821.mp3",
+          "pic": "http://p4.music.126.net/H9HJibEzTL34aIT6nsqKsQ==/5682276092402519.jpg"
+        },{
+          "artist": "Tinashe",
+          "lrc": "",
+          "title": "Story of Us",
+          "src": "http://music.163.com/song/media/outer/url?id=1403428061.mp3",
+          "pic": "http://p3.music.126.net/l2XttTpEa14IEZtUsQX1HA==/109951164486978461.jpg"
+        }, {
+          "artist": "Chris Brown",
+          "lrc": "",
+          "title": "War For You",
+          "src": "http://music.163.com/song/media/outer/url?id=30431534.mp3",
+          "pic": "http://p3.music.126.net/YWkl1JXVKm7bOBAew72lGg==/109951163958771792.jpg"
+        }, {
+          "artist": "Sarah Darling",
+          "lrc": "",
+          "title": "Jack of Hearts",
+          "src": "http://music.163.com/song/media/outer/url?id=19132440.mp3",
+          "pic": "http://p4.music.126.net/4q3kpn5VLo3x7hVWttj0QA==/109951164802108652.jpg"
+        }, {
+          "artist": "Benjamin Ingrosso",
+          "lrc": "",
+          "title": "Costa Rica",
+          "src": "http://music.163.com/song/media/outer/url?id=1372897252.mp3",
+          "pic": "http://p4.music.126.net/mmm97zC81t73rToPFuXXnw==/109951164159882466.jpg"
+        }, {
+          "artist": "Yo Trane",
+          "lrc": "",
+          "title": "Affection",
+          "src": "http://music.163.com/song/media/outer/url?id=1393553542.mp3",
+          "pic": "http://p4.music.126.net/T_vdbfQPO4HE4zVE_8rgCQ==/109951164389023010.jpg"
+        }];
+      }
 
+    },
     /**
      * 加载登入报表数据
      */
     async loginReport(username) {
-      const { data: res } = await this.$http.post("loginLog/loginReport",{username:username});
+      const { data: res } = await this.$http.post("loginLog/loginReport", {
+        username: username
+      });
       if (res.code !== 200) {
-        return this.$message.error("获取登入报表数据失败:"+res.msg);
+        return this.$message.error("获取登入报表数据失败:" + res.msg);
       } else {
         var $this = this;
         this.xData = [];
         this.yData = [];
-        this.myData=[];
+        this.myData = [];
         res.data.all.forEach(e1 => {
           $this.xData.push(e1.days);
           $this.yData.push(e1.count);
         });
 
-        for(var i=0;i<this.xData.length;i++){
-          var count=0;
-          for(var j=0;j<res.data.me.length;j++){
-            if($this.xData[i]===res.data.me[j].days){
-              count=res.data.me[j].count;
+        for (var i = 0; i < this.xData.length; i++) {
+          var count = 0;
+          for (var j = 0; j < res.data.me.length; j++) {
+            if ($this.xData[i] === res.data.me[j].days) {
+              count = res.data.me[j].count;
               break;
-            }else {
-              count=0;
+            } else {
+              count = 0;
             }
           }
           $this.myData.push(count);
@@ -197,14 +257,23 @@ export default {
               yAxisIndex: "none"
             },
             dataView: { readOnly: false }, //  缩放
-            magicType: { type: ["bar","line"] }, ///　　折线  直方图切换
+            magicType: { type: ["bar", "line"] }, ///　　折线  直方图切换
             restore: {}, // 重置
             saveAsImage: {} // 导出图片
           }
         },
-        tooltip: {},
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'cross',
+            crossStyle: {
+              color: '#eee'
+            }
+          }
+        },
         legend: {
-          data: ["全部","我"]
+          type:'plain',
+          data: ["全部", "我"]
         },
         xAxis: {
           data: this.xData
@@ -214,20 +283,25 @@ export default {
         },
         series: [
           {
-            name:"全部",
+            name: "全部",
             data: this.yData,
             type: "bar",
             showBackground: true,
-            animationDuration: 900,
+            animationDuration: 1500,
             animationEasing: "cubicInOut",
+            itemStyle: {
+              shadowBlur: 10,
+              shadowOffsetX: 0,
+              shadowColor: 'rgba(30, 144, 255，0.5)'
+            },
           },
-           {
-            name:"我",
+          {
+            name: "我",
             data: this.myData,
             type: "bar",
             showBackground: true,
-            animationDuration: 900,
-            animationEasing: "cubicInOut",
+            animationDuration: 2000,
+            animationEasing: "cubicInOut"
           }
         ]
       };
@@ -245,11 +319,13 @@ export default {
       department: this.userInfo.department,
       roles: roles
     });
+     this.loadMusicList();
   },
   mounted: function() {
     this.loginReport(this.userInfo.username);
     this.draw();
-  }
+  },
+
 };
 </script>
 
@@ -264,9 +340,13 @@ export default {
 
 .el-carousel__item:nth-child(2n) {
   background-color: #99a9bf;
+  background-image: url("http://myforum.oss-cn-beijing.aliyuncs.com/postImages/1582867606734617c9668-8086-4c9b-867e-efda0bff78d63.png?Expires=1677475607&OSSAccessKeyId=LTAI4FsV5R1tnt8W8kqFqBYh&Signature=3xKM18EXDDD%2BQmsg%2B0t7uDC%2FMGg%3D");
+  background-size: 100% 100%;
 }
 
 .el-carousel__item:nth-child(2n + 1) {
   background-color: #d3dce6;
+  background-image: url("http://myforum.oss-cn-beijing.aliyuncs.com/postImages/15828676585536f809b01-a5c3-4229-8ce6-ed29a7bdaaa22.png?Expires=1677475658&OSSAccessKeyId=LTAI4FsV5R1tnt8W8kqFqBYh&Signature=k2fJfFzwKwp7f2c%2BRD7rdH%2FAj%2Bs%3D");
+  background-size: 100% 100%;
 }
 </style>

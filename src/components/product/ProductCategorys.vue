@@ -43,7 +43,7 @@
       <el-pagination
         style="margin-top:10px;"
         background
-       
+
         :show-header="true"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
@@ -56,7 +56,7 @@
       <!-- 添加弹出框 -->
       <el-dialog title="添加分类" :visible.sync="addDialogVisible" @close="addCloseDialog" width="50%">
         <span>
-          <el-form :model="addRuleForm" :rules="addRules" ref="addRuleFormRef" label-width="100px">
+          <el-form size="mini" :model="addRuleForm" :rules="addRules" ref="addRuleFormRef" label-width="100px">
             <el-form-item label="分类名称" prop="name">
               <el-input v-model="addRuleForm.name"></el-input>
             </el-form-item>
@@ -93,7 +93,7 @@
             <el-form-item label="分类名称" prop="name">
               <el-input v-model="editRuleForm.name"></el-input>
             </el-form-item>
-        
+
             <el-form-item label="备注" prop="remark">
               <el-input type="textarea" v-model="editRuleForm.remark"></el-input>
             </el-form-item>
@@ -179,18 +179,18 @@ export default {
     };
   },
   methods: {
-    async update() {
+    update: async function () {
       this.$refs.editRuleFormRef.validate(async valid => {
         if (!valid) {
           return;
         } else {
-          this.btnLoading=true;
-          this.btnDisabled=true;
-          const { data: res } = await this.$http.put(
-            "productCategory/update/" + this.editRuleForm.id,
-            this.editRuleForm
+          this.btnLoading = true;
+          this.btnDisabled = true;
+          const {data: res} = await this.$http.put(
+                  "productCategory/update/" + this.editRuleForm.id,
+                  this.editRuleForm
           );
-          if (res.code == 200) {
+          if (res.code === 200) {
             this.$notify({
               title: "成功",
               message: "分类信息更新",
@@ -198,10 +198,10 @@ export default {
             });
             this.getCategoryList();
           } else {
-             this.$message.error("分类信息更新失败:"+res.msg);
+            this.$message.error("分类信息更新失败:" + res.msg);
           }
-           this.btnLoading=false;
-          this.btnDisabled=false;
+          this.btnLoading = false;
+          this.btnDisabled = false;
           this.editDialogVisible = false;
         }
       });
@@ -209,7 +209,7 @@ export default {
       //修改
     async edit(id) {
       const { data: res } = await this.$http.get("productCategory/edit/" + id);
-      if (res.code == 200) {
+      if (res.code === 200) {
         this.editRuleForm = res.data;
       } else {
         return this.$message.error("分类信息编辑失败"+res.msg);
@@ -232,12 +232,12 @@ export default {
           message: "已取消删除"
         });
       });
-      if (res == "confirm") {
+      if (res === "confirm") {
         const { data: res } = await this.$http.delete(
           "productCategory/delete/" + id
         );
         console.log(res);
-        if (res.code == 200) {
+        if (res.code === 200) {
           this.$message.success("分类删除成功");
           this.getCategoryList();
         } else {
@@ -283,11 +283,14 @@ export default {
         } else {
            this.btnLoading=true;
           this.btnDisabled=true;
+          if(this.addRuleForm.pid == null){
+            this.addRuleForm.pid=0;
+          }
           const { data: res } = await this.$http.post(
             "productCategory/add",
             this.addRuleForm
           );
-          if (res.code == 200) {
+          if (res.code === 200) {
             this.$message.success("分类添加成功");
             this.getCategoryList();
           } else {
@@ -323,16 +326,16 @@ export default {
     editCloseDialog(){
         this.$refs.editRuleFormRef.clearValidate();
       this.editRuleForm = {};
-  
+
     },
     clearParent(){
       this.addRuleForm.pid='';
     }
-  
+
   },
   created() {
     this.getCategoryList();
-    
+
       setTimeout(() => {
           this.loading = false;
     }, 500);

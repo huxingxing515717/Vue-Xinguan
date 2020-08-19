@@ -9,7 +9,7 @@
         <!-- 卡片部分-->
         <el-card>
         <!--搜索部分-->
-            <el-form :inline="true" :model="queryMap" class="demo-form-inline">
+            <el-form size="mini" :inline="true" :model="queryMap" class="demo-form-inline">
                 <el-form-item label="发放单号">
                     <el-input v-model="queryMap.outNum" placeholder="发放单号"></el-input>
                 </el-form-item>
@@ -47,6 +47,7 @@
             </el-form>
 <!--            数据表格-->
                 <el-table
+                        size="mini"
                         border
                         :data="tableData"
                         style="width: 100%;height: 450px;">
@@ -155,7 +156,7 @@
                         @size-change="handleSizeChange"
                         @current-change="handleCurrentChange"
                         :current-page="queryMap.pageNum"
-                        :page-sizes="[7, 20, 30, 40]"
+                        :page-sizes="[10, 20, 30, 40]"
                         :page-size="queryMap.pageSize"
                         layout="total, sizes, prev, pager, next, jumper"
                         :total="total"
@@ -254,7 +255,7 @@
                 dialogVisible:false,
                 pageNum:1,
                 total:0,
-                queryMap:{pageNum:1,pageSize:7, status: 0,},
+                queryMap:{pageNum:1,pageSize:10, status: 0,},
                 tableData:[],
                 pStatus:'',//步骤flag
             }

@@ -52,7 +52,7 @@
               >{{image.width}}px X {{image.height}}px</el-tag>
               <el-popconfirm title="这是一段内容确定删除吗？" @onConfirm="del(image.id)">
                 <el-button
-                  v-hasPermission="'attachment:delete'"
+                  v-hasPermission="'image:delete'"
                   style="margin-left:30px;"
                   icon="el-icon-delete"
                   size="mini"
@@ -78,10 +78,8 @@
         :total="total"
       ></el-pagination>
       <!-- 上传弹出框 -->
-      <el-dialog title="上传图片附件" :visible.sync="centerDialogVisible" width="38%" center>
-
+      <el-dialog title="上传图片附件" @close="closeUpload" :visible.sync="centerDialogVisible" width="38%" center>
         <span>
-
           <el-upload
             accept="image/*"
             :auto-upload="false"
@@ -93,7 +91,7 @@
             drag
             :headers="headerObject"
             :on-success="handleUploadSuccess"
-            action="https://www.zykhome.club:8081/upload/image"
+            action="http://localhost:8081/upload/image"
           >
             <i class="el-icon-upload"></i>
             <div class="el-upload__text">
@@ -140,11 +138,11 @@ export default {
     /**
      * 上传之后的回调
      */
-    handleUploadSuccess(response, file, fileList){
-      if(response.code!=200){
+    handleUploadSuccess: function (response, file, fileList) {
+      if (200 !== response.code) {
         this.$refs.upload.clearFiles();
-        return this.$message.error("上传失败:"+response.msg);
-      }else {
+        return this.$message.error("上传失败:" + response.msg);
+      } else {
         this.getImgeList();
       }
     },
@@ -158,9 +156,9 @@ export default {
     /**
      * 删除图片
      */
-    async del(id) {
-      const { data: res } = await this.$http.delete("upload/delete/" + id);
-      if (res.code == 200) {
+    del: async function (id) {
+      const {data: res} = await this.$http.delete("upload/delete/" + id);
+      if (res.code === 200) {
         this.$message.success("删除图片成功");
         this.getImgeList();
       } else {
@@ -182,7 +180,7 @@ export default {
         this.list = res.data.list;
         this.srcList = [];
         this.list.forEach(function(item) {
-          $this.srcList.push("https://www.zykhome.club/" + item.path);
+          $this.srcList.push('https://www.zykhome.club/'+item.path);
         });
       }
     },
@@ -222,6 +220,6 @@ export default {
 <style>
 .el-upload-dragger {
   width: 530px !important;
-  
+
 }
 </style>

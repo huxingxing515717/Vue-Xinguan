@@ -9,7 +9,7 @@
         <!-- 卡片区域 -->
         <el-card>
             <!-- 搜索部分 -->
-            <el-form :inline="true" :model="queryMap" class="demo-form-inline">
+            <el-form size="mini" :inline="true" :model="queryMap" class="demo-form-inline">
                 <el-form-item label="类型">
                     <el-select  clearable  v-model="queryMap.type" placeholder="请选择入库类型">
                         <el-option label="捐赠" value="1"></el-option>
@@ -68,7 +68,7 @@
 
             </el-form>
             <!-- 表格区域 -->
-            <el-table  v-loading="loading" :data="tableData" border style="width: 100%;" height="395">
+            <el-table size="mini" v-loading="loading" :data="tableData" border style="width: 100%;" height="420">
                 <el-table-column label="#" prop="id" width="50"></el-table-column>
                 <el-table-column  prop="inNum" :show-overflow-tooltip='true' label="入库单号" width="180"></el-table-column>
                 <el-table-column prop="type" label="物资类型" width="100">
@@ -164,7 +164,7 @@
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
                     :current-page="queryMap.pageNum"
-                    :page-sizes="[5, 20, 30, 40]"
+                    :page-sizes="[10, 20, 30, 40]"
                     :page-size="queryMap.pageSize"
                     layout="total, sizes, prev, pager, next, jumper"
                     :total="total"
@@ -319,7 +319,7 @@
                 detailTable: [],
                 dialogVisible: false,
                 total: 0,
-                queryMap: {pageNum: 1, pageSize: 5, status: 0},
+                queryMap: {pageNum: 1, pageSize: 10, status: 0},
                 tableData: [],
                 range:[],
                 pStatus:'',//步骤flag

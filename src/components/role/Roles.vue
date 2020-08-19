@@ -13,6 +13,7 @@
         <el-col :span="8">
           <el-input
             clearable
+            size="mini"
             placeholder="请输入角色名查询"
             v-model="queryMap.roleName"
             class="input-with-select"
@@ -23,6 +24,7 @@
         </el-col>
         <el-col :span="2">
           <el-button
+                  size="mini"
             v-hasPermission="'role:add'"
             type="success"
             icon="el-icon-circle-plus-outline"
@@ -31,6 +33,7 @@
         </el-col>
         <el-col :span="2">
           <el-button
+                  size="mini"
             v-hasPermission="'role:export'"
             icon="el-icon-download"
             @click="downExcel"
@@ -44,7 +47,8 @@
           :data="roleData"
           border
           style="width: 100%;margin-top:20px;"
-          height="460"
+          height="470"
+          size="mini"
         >
           <el-table-column prop="id" label="ID" width="180"></el-table-column>
           <el-table-column prop="roleName" label="角色名" width="180"></el-table-column>

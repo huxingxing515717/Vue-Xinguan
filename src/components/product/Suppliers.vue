@@ -9,7 +9,7 @@
     <!-- 右侧卡片区域 -->
     <!-- 用户列表卡片区 -->
     <el-card class="box-card">
-      <el-form :inline="true" :model="queryMap" class="demo-form-inline">
+      <el-form size="mini" :inline="true" :model="queryMap" class="demo-form-inline">
         <el-form-item label="省市区县">
           <el-input v-model="queryMap.address" clearable @clear="search" placeholder="省市区县"></el-input>
         </el-form-item>
@@ -45,6 +45,7 @@
       <template>
         <el-table
           border
+          size="mini"
           v-loading="loading"
           stripe
           :data="supplierData"
@@ -118,7 +119,7 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="this.queryMap.pageNum"
-        :page-sizes="[6, 10, 15, 20]"
+        :page-sizes="[ 10, 15, 20]"
         :page-size="this.queryMap.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
@@ -304,7 +305,7 @@ export default {
       addDialogVisible: false, //添加弹框是否显示
       total: 0, //总共多少条数据
       supplierData: [], //表格数据
-      queryMap: { pageNum: 1, pageSize: 6, name: "" }, //查询对象
+      queryMap: { pageNum: 1, pageSize: 10, name: "" }, //查询对象
       addRuleForm: {}, //添加表单数据
       editRuleForm: {}, //修改表单数据
       deans: [], //所有系主任

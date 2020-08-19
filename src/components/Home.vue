@@ -48,7 +48,7 @@
           :collapse="isOpen"
           :router="true"
           :default-active="activePath"
-          background-color="#272c33"
+          background-color="#001529"
           :collapse-transition="false"
           text-color="rgba(255,255,255,0.7)"
           unique-opened
@@ -169,7 +169,7 @@ export default {
 /* 为对应的路由跳转时设置动画效果 */
 
 .el-header {
-  background-color: #272c33;
+  background-color: #001529;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -179,7 +179,7 @@ export default {
   padding-left: 0px;
 }
 .el-aside {
-  background-color:#272c33
+  background-color:#001529
 }
 .el-main {
   background-color: #eaedf1;
@@ -189,7 +189,7 @@ export default {
   height: 100% !important;
 }
 .toggle-btn {
-  background-color: #2d3a4b !important;
+  background-color: #2d8cf0 !important;
   font-size: 10px;
   line-height: 24px;
   color: #fff;

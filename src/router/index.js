@@ -13,23 +13,24 @@ import Products from '../components/product/Products.vue'
 import InStocks from '../components/product/InStocks.vue'
 import OutStocks from '../components/product/OutStocks.vue'
 import AddStocks from '../components/product/AddStocks.vue'
-import GobalMap from '../components/map/map.vue'
-import Swagger from '../components/doc/Swagger.vue'
-import Druid from '../components/doc/Druid.vue'
-import Attachments from '../components/doc/Attachments.vue'
+import GobalMap from '../components/other/map.vue'
+import Swagger from '../components/other/Swagger.vue'
+import Druid from '../components/other/Druid.vue'
+import Attachments from '../components/other/Attachments.vue'
 import LoginLog from '../components/log/LoginLog.vue'
 import Notices from '../components/notice/Notices.vue'
 import AddNotices from '../components/notice/AddNotices.vue'
 import Logs from '../components/log/Logs.vue'
 import Consumers from '../components/product/Consumers.vue'
 import Stocks from'../components/product/Stocks.vue'
-import Icons from '../components/doc/Icons.vue'
-import Rumors from '../components/doc/Rumors.vue'
-import RumorDetail from '../components/doc/RumorDetail.vue'
+import Icons from '../components/other/Icons.vue'
+import Rumors from '../components/other/Rumors.vue'
+import RumorDetail from '../components/other/RumorDetail.vue'
 import Health from '../components/user/Health.vue'
-import Blog from '../components/doc/Blog.vue'
+import Blog from '../components/other/Blog.vue'
 import PublishStocks from '../components/product/PublishStocks.vue'
 import NotPermission from '../components/401.vue'
+import QQ from '../components/other/QQ.vue'
 
 Vue.use(VueRouter)
 
@@ -158,6 +159,10 @@ const routes = [
       component: Blog
     },
     {
+      path: '/qq',
+      component: QQ
+    },
+    {
       path: '/outStocks',
       component: OutStocks
     },
@@ -183,7 +188,7 @@ import store from '../store'//引入store
 
 //路由导航守卫
 router.beforeEach((to, from, next) => {
- 
+
   const token = window.localStorage.getItem('JWT_TOKEN');
   if (to.path == '/login') {
     if(!token){
@@ -192,7 +197,7 @@ router.beforeEach((to, from, next) => {
       return next({path: '/home'})
     }
   }
-  
+
   if(to.path=='/401'){
 	  return next();
   }

@@ -151,7 +151,6 @@ const option = {
     {
       type: "piecewise",
       show: true,
-      // splitNumber:4,
       pieces: [
         //分段
         { min: 10000 },
@@ -160,10 +159,6 @@ const option = {
         { min: 10, max: 99 },
         { min: 1, max: 9 }
       ],
-      // align:'right'
-      //orient:'horizontal' 默认竖直
-      //left right 这些属性控制分段所在的位置
-      //textStyle() 分段大小
       inRange: {
         symbol: "rect",
         color: ["#ffc0b1", "#e70520"]
@@ -221,42 +216,42 @@ export default {
      */
     buildTable(data) {
       var data = data.data;
-      var data1 = {
+      let data1 = {
         name: "现存确诊",
         value: data.econNum,
         yesterday: data.add_daily["addecon_new"]
       };
-      var data2 = {
+      let data2 = {
         name: "累计境外输入",
         value: data.jwsrNum,
         yesterday: data.add_daily["addjwsr"]
       };
-      var data3 = {
+      let data3 = {
         name: "现无症状",
         value: data.asymptomNum,
         yesterday: data.add_daily["addasymptom"]
       };
-      var data4 = {
+      let data4 = {
         name: "现存确诊重症",
         value: data.heconNum,
         yesterday: data.add_daily["addhecon_new"]
       };
-      var data5 = {
+      let data5 = {
         name: "累计确诊",
         value: data.gntotal,
         yesterday: data.add_daily["addcon_new"]
       };
-      var data6 = {
+      let data6 = {
         name: "累计死亡",
         value: data.deathtotal,
         yesterday: data.add_daily["adddeath_new"]
       };
-      var data7 = {
+      let data7 = {
         name: "累计治愈",
         value: data.curetotal,
         yesterday: data.add_daily["addcure_new"]
       };
-      var data8 = {
+      let data8 = {
         name: "现存疑似",
         value: data.sustotal,
         yesterday: data.add_daily["wjw_addsus_new"]

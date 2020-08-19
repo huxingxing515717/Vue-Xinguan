@@ -12,6 +12,7 @@
       <el-row :gutter="20">
         <el-col :span="8">
           <el-input
+                  size="mini"
             clearable
             v-model="queryMap.name"
             placeholder="请输入部门查询"
@@ -23,6 +24,7 @@
         </el-col>
         <el-col :span="2">
           <el-button
+                  size="mini"
             v-hasPermission="'department:add'"
             type="success"
             icon="el-icon-circle-plus-outline"
@@ -31,6 +33,7 @@
         </el-col>
         <el-col :span="2">
           <el-button
+                  size="mini"
             icon="el-icon-download"
             v-hasPermission="'department:export'"
             @click="downExcel"
@@ -41,6 +44,7 @@
       <template>
         <el-table
           border
+          size="mini"
           v-loading="loading"
           stripe
           :data="departmentData"
@@ -58,7 +62,6 @@
           </el-table-column>
           <el-table-column prop="createTime" label="创建时间" sortable></el-table-column>
           <el-table-column prop="modifiedTime" label="修改时间" sortable></el-table-column>
-          <el-table-column prop="mgrName" label="部门主任" width="140"></el-table-column>
           <el-table-column prop="address" label="地址"></el-table-column>
           <el-table-column label="操作">
             <template slot-scope="scope">
@@ -94,7 +97,7 @@
         :total="total"
       ></el-pagination>
       <!-- 部门别添加弹出框 -->
-      <el-dialog @open="getDeanList" title="添加部门" :visible.sync="addDialogVisible" width="50%" @close="closeAddDialog">
+      <el-dialog title="添加部门" :visible.sync="addDialogVisible" width="50%" @close="closeAddDialog">
         <span>
           <el-form
             :model="addRuleForm"
@@ -105,11 +108,6 @@
           >
             <el-form-item label="部门名称" prop="name">
               <el-input v-model="addRuleForm.name"></el-input>
-            </el-form-item>
-            <el-form-item label="部门主任" prop="mgrId">
-              <el-select v-model="addRuleForm.mgrId" placeholder="请选择部门主任">
-                <el-option v-for="dean in deans" :key="dean.id" :label="dean.name" :value="dean.id"></el-option>
-              </el-select>
             </el-form-item>
             <el-form-item label="办公电话" prop="phone">
               <el-input v-model="addRuleForm.phone"></el-input>
@@ -127,7 +125,6 @@
 
       <!-- 部门别编辑弹出框 -->
       <el-dialog
-              @open="getDeanList"
         title="更新部门"
         :visible.sync="editDialogVisible"
         width="50%"
@@ -143,11 +140,6 @@
           >
             <el-form-item label="部门名称" prop="name">
               <el-input v-model="editRuleForm.name"></el-input>
-            </el-form-item>
-            <el-form-item label="部门主任" prop="mgrId">
-              <el-select v-model="editRuleForm.mgrId" placeholder="请选择部门主任">
-                <el-option v-for="dean in deans" :key="dean.id" :label="dean.name" :value="dean.id"></el-option>
-              </el-select>
             </el-form-item>
             <el-form-item label="办公电话" prop="phone">
               <el-input v-model="editRuleForm.phone"></el-input>
@@ -203,7 +195,6 @@ export default {
       queryMap: { pageNum: 1, pageSize: 7, name: "" }, //查询对象
       addRuleForm: {}, //添加表单数据
       editRuleForm: {}, //修改表单数据
-      deans: [], //所有部门主任
       addRules: {
         name: [
           { required: true, message: "请输入部门名称", trigger: "blur" },
@@ -213,7 +204,6 @@ export default {
           { required: true, message: "请输入办公地址", trigger: "blur" },
           { min: 4, max: 12, message: "长度在 4 到 12 个字符", trigger: "blur" }
         ],
-        mgrId: [{ required: true, message: "请选择部门主任", trigger: "blur" }],
         phone: [
           {
             required: true,
@@ -263,26 +253,26 @@ export default {
     /**
      * 删除部门
      */
-    async del(id) {
-      var res = await this.$confirm(
-        "此操作将永久删除该用户, 是否继续?",
-        "提示",
-        {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        }
+    del: async function (id) {
+      let res = await this.$confirm(
+              "此操作将永久删除该用户, 是否继续?",
+              "提示",
+              {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                type: "warning"
+              }
       ).catch(() => {
         this.$message({
           type: "info",
           message: "已取消删除"
         });
       });
-      if (res == "confirm") {
-        const { data: res } = await this.$http.delete(
-          "department/delete/" + id
+      if ("confirm" === res) {
+        const {data: res} = await this.$http.delete(
+                "department/delete/" + id
         );
-        if (res.code == 200) {
+        if (res.code === 200) {
           this.$message.success("部门删除成功");
           this.getDepartmentList();
         } else {
@@ -291,19 +281,19 @@ export default {
       }
     },
     /**
-	 * 更新用户
-	 */
-    async update() {
+     * 更新用户
+     */
+    update: async function () {
       this.$refs.editRuleFormRef.validate(async valid => {
         if (!valid) {
           return;
         } else {
           (this.btnLoading = true), (this.btnDisabled = true);
-          const { data: res } = await this.$http.put(
-            "department/update/" + this.editRuleForm.id,
-            this.editRuleForm
+          const {data: res} = await this.$http.put(
+                  "department/update/" + this.editRuleForm.id,
+                  this.editRuleForm
           );
-          if (res.code == 200) {
+          if (res.code === 200) {
             this.$notify({
               title: "成功",
               message: "部门信息更新",
@@ -321,12 +311,12 @@ export default {
       });
     },
     /**
-	 * 编辑
-	 * @param {Object} id
-	 */
-    async edit(id) {
-      const { data: res } = await this.$http.get("department/edit/" + id);
-      if (res.code == 200) {
+     * 编辑
+     * @param {Object} id
+     */
+    edit: async function (id) {
+      const {data: res} = await this.$http.get("department/edit/" + id);
+      if (res.code === 200) {
         this.editRuleForm = res.data;
       } else {
         return this.$message.error("部门信息编辑失败" + res.msg);
@@ -334,17 +324,17 @@ export default {
       this.editDialogVisible = true;
     },
     //添加
-    add() {
+    add: function () {
       this.$refs.addRuleFormRef.validate(async valid => {
         if (!valid) {
           return;
         } else {
           (this.btnLoading = true), (this.btnDisabled = true);
-          const { data: res } = await this.$http.post(
-            "department/add",
-            this.addRuleForm
+          const {data: res} = await this.$http.post(
+                  "department/add",
+                  this.addRuleForm
           );
-          if (res.code == 200) {
+          if (res.code === 200) {
             this.$message.success("部门添加成功");
             this.addRuleForm = {};
             this.getDepartmentList();
@@ -371,15 +361,6 @@ export default {
         this.departmentData = res.data.rows;
       }
     },
-    //加载所有部门主任
-    async getDeanList() {
-      const { data: res } = await this.$http.get("department/findDeanList");
-      if (res.code !== 200) {
-        return this.$message.error("获取部门主任失败");
-      } else {
-        this.deans = res.data;
-      }
-    },
     //改变页码
     handleSizeChange(newSize) {
       this.queryMap.pageSize = newSize;
@@ -403,7 +384,6 @@ export default {
   },
   created() {
     this.getDepartmentList();
-    this.getDeanList();
     setTimeout(() => {
       this.loading = false;
     }, 500);

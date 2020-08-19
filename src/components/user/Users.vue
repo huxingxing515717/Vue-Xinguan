@@ -7,7 +7,7 @@
     </el-breadcrumb>
     <!-- 用户列表卡片区 -->
     <el-card class="box-card">
-      <el-form :inline="true" ref="form" :model="queryMap" label-width="70px">
+      <el-form :inline="true" ref="form" :model="queryMap" label-width="70px" size="mini">
         <el-form-item label="部门">
           <el-select
             clearable
@@ -87,7 +87,7 @@
       </el-form>
 
       <!-- 表格区域 -->
-      <el-table v-loading="loading" :data="userList" border style="width: 100%;" height="390">
+      <el-table v-loading="loading" size="mini" :data="userList" border style="width: 100%;" height="420">
         <!-- <el-table-column type="selection" width="40"></el-table-column> -->
         <el-table-column label="#" prop="id" width="50"></el-table-column>
         <el-table-column prop="username" label="用户名" width="110"></el-table-column>

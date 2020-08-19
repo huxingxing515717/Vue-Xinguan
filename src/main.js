@@ -30,11 +30,9 @@ NProgress.configure({ minimum: 0.3 });
 Vue.prototype.$http = axios
 
 //这是线上的API接口,如果使用本地的可以注释选择本地的服务
-axios.defaults.baseURL = 'https://www.zykhome.club/api/'
 
-// axios.defaults.baseURL = 'http://www.localhost:8081/'
-
-
+// axios.defaults.baseURL = 'https://www.zykhome.club/api/'
+axios.defaults.baseURL = 'http://www.localhost:8081/'
 
 /**
  *  axios请求拦截器
