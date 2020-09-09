@@ -91,7 +91,7 @@
             drag
             :headers="headerObject"
             :on-success="handleUploadSuccess"
-            action="http://localhost:8081/upload/image"
+            :action="uploadUrl"
           >
             <i class="el-icon-upload"></i>
             <div class="el-upload__text">
@@ -115,6 +115,8 @@
 export default {
   data() {
     return {
+      //https://www.zykhome.club/api/upload/image
+      uploadUrl:'http://www.localhost:8081/upload/image',
       centerDialogVisible: false,
       loading: true,
       total: 0,

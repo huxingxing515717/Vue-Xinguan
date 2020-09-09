@@ -12,7 +12,7 @@
       <el-row :gutter="20">
         <el-col :span="8">
           <el-input
-                  size="mini"
+                  size="small"
             clearable
             v-model="queryMap.name"
             placeholder="请输入部门查询"
@@ -24,7 +24,7 @@
         </el-col>
         <el-col :span="2">
           <el-button
-                  size="mini"
+                  size="small"
             v-hasPermission="'department:add'"
             type="success"
             icon="el-icon-circle-plus-outline"
@@ -33,7 +33,7 @@
         </el-col>
         <el-col :span="2">
           <el-button
-                  size="mini"
+                  size="small"
             icon="el-icon-download"
             v-hasPermission="'department:export'"
             @click="downExcel"
@@ -44,7 +44,7 @@
       <template>
         <el-table
           border
-          size="mini"
+          size="small"
           v-loading="loading"
           stripe
           :data="departmentData"
@@ -56,7 +56,7 @@
           <el-table-column prop="name" label="部门名" width="120"></el-table-column>
           <el-table-column prop="total" label="人数" sortable width="100">
             <template slot-scope="scope">
-              <el-tag effect="plain" v-text="scope.row.total+'人'" size="mini">
+              <el-tag effect="plain" v-text="scope.row.total+'人'" size="small">
               </el-tag>
             </template>
           </el-table-column>
@@ -68,7 +68,7 @@
               <el-button
                 v-hasPermission="'department:edit'"
                 type="text"
-                size="mini"
+                size="small"
                 icon="el-icon-edit"
                 @click="edit(scope.row.id)"
               >编辑</el-button>
@@ -76,7 +76,7 @@
               <el-button
                 v-hasPermission="'department:delete'"
                 type="text"
-                size="mini"
+                size="small"
                 icon="el-icon-delete"
                 @click="del(scope.row.id)"
               >删除</el-button>

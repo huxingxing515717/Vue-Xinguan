@@ -7,7 +7,7 @@
     </el-breadcrumb>
     <!-- 用户列表卡片区 -->
     <el-card class="box-card">
-      <el-form :inline="true" ref="form" :model="queryMap" label-width="70px" size="mini">
+      <el-form :inline="true" ref="form" :model="queryMap" label-width="70px" size="small">
         <el-form-item label="部门">
           <el-select
             clearable
@@ -24,7 +24,7 @@
             >
               <span style="float: left">{{ department.name }}</span>
               <span style="float: right; color: #8492a6; font-size: 13px">
-                <el-tag size="mini" effect="plain" type="success">
+                <el-tag size="small" effect="plain" type="success">
                   {{ department.total }}人
                 </el-tag>
               </span>
@@ -87,14 +87,14 @@
       </el-form>
 
       <!-- 表格区域 -->
-      <el-table v-loading="loading" size="mini" :data="userList" border style="width: 100%;" height="420">
+      <el-table v-loading="loading" size="small" :data="userList" border style="width: 100%;" height="420">
         <!-- <el-table-column type="selection" width="40"></el-table-column> -->
         <el-table-column label="#" prop="id" width="50"></el-table-column>
         <el-table-column prop="username" label="用户名" width="110"></el-table-column>
         <el-table-column prop="sex" :formatter="showSex" label="性别" width="100">
           <template slot-scope="scope">
-            <el-tag size="mini" type="success" v-if="scope.row.sex==1">帅哥</el-tag>
-            <el-tag size="mini"  type="warning" v-else>美女</el-tag>
+            <el-tag size="small" type="success" v-if="scope.row.sex==1">帅哥</el-tag>
+            <el-tag size="small"  type="warning" v-else>美女</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="departmentName" label="所属部门" width="180" sortable></el-table-column>
@@ -108,8 +108,8 @@
         </el-table-column>
         <el-table-column label="操作" >
           <template slot-scope="scope">
-            <el-button   v-hasPermission="'user:edit'" size="mini" type="primary" icon="el-icon-edit-outline" @click="edit(scope.row.id)"></el-button>
-            <el-button v-hasPermission="'user:delete'" type="danger" size="mini" icon="el-icon-delete" @click="del(scope.row.id)"></el-button>
+            <el-button   v-hasPermission="'user:edit'" size="small" type="primary" icon="el-icon-edit-outline" @click="edit(scope.row.id)"></el-button>
+            <el-button v-hasPermission="'user:delete'" type="danger" size="small" icon="el-icon-delete" @click="del(scope.row.id)"></el-button>
             <el-tooltip
               class="item"
               effect="dark"
@@ -119,7 +119,7 @@
             >
               <el-button
                 type="warning"
-                size="mini"
+                size="small"
                 icon="el-icon-s-tools"
                 @click="assignRoles(scope.row.id)"
               ></el-button>
